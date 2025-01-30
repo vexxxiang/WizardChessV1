@@ -19,7 +19,7 @@ public class ChessBoard : MonoBehaviour
         {
             for (int z = 0; z < 8; z++) // Zmieniamy y na z (poziom planszy)
             {
-                Vector3 position = new Vector3(x * squareSize, -0.05f, z * squareSize); // Pozycja na szachownicy
+                Vector3 position = new Vector3(x * squareSize, 0.05f, z * squareSize); // Pozycja na szachownicy
                 board[x, z] = Instantiate(squarePrefab, position, Quaternion.identity, transform);
 
                 // Kolorowanie pól szachownicy
