@@ -1,0 +1,34 @@
+# Unity generated files
+[Tt]emp/
+[Tt]emp/*
+[Ll]ibrary/
+[Ll]ibrary/*
+[Aa]ssets/AssetStoreTools*
+[Aa]ssets/StreamingAssets/*
+[Aa]ssets/Editor/
+
+# User-specific files
+[Dd]ebug/
+[Dd]ebugLog.txt
+[Dd]ebug.txt
+*.pidb
+*.booproj
+*.user
+*.userprefs
+*.csproj
+*.sln
+*.suo
+.idea/
+.vscode/
+.vs/
+.vsconfig/
+
+# Windows files
+Thumbs.db
+ehthumbs.db
+
+# macOS files
+.DS_Store
+
+# Linux files
+*.swp
