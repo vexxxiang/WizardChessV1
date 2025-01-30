@@ -1,23 +1,37 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraSettings : MonoBehaviour
 {
-    public Transform boardCenter; // �rodek planszy (ustaw na obiekt reprezentuj�cy �rodek planszy)
-    public float radius = 10f; // Promie� p�okr�gu
+    public Transform boardCenter; // Środek planszy
+    public float radius = 10f; // Promień obrotu
     public float animationDuration = 2f; // Czas trwania animacji
     public ChessGameManager gameManager; // Odniesienie do ChessGameManager
+    public Slider heightSlider; // Slider do zmiany wysokości kamery
 
-    private Vector3 initialPosition; // Pocz�tkowa pozycja kamery
-    private Quaternion initialRotation; // Pocz�tkowa rotacja kamery
+    private Vector3 initialPosition; // Początkowa pozycja kamery
+    private Quaternion initialRotation; // Początkowa rotacja kamery
     private bool isAnimating = false;
+    private float minz, camz;
 
     void Start()
     {
-        // Ustawienie pocz�tkowej pozycji kamery
+        // Ustawienie początkowej pozycji kamery
         initialPosition = transform.position;
         initialRotation = transform.rotation;
+
+        // Dodajemy listener na slider, aby zmieniać wysokość
+        heightSlider.onValueChanged.AddListener(UpdateCameraHeight);
+    }
+
+    void Update()
+    {
+        // Jeżeli kamera się animuje, nie robimy zmian na bieżąco
+        if (isAnimating) return;
+
+        // Aktualizowanie patrzenia na target (środek planszy)
+        transform.LookAt(boardCenter);
     }
 
     public void RotateAroundBoard()
@@ -26,45 +40,59 @@ public class CameraSettings : MonoBehaviour
             StartCoroutine(RotateCamera());
     }
 
-
     IEnumerator RotateCamera()
     {
-        float duration = 1f; // Czas trwania animacji
         float elapsedTime = 0f;
+        float startAngle = Mathf.Atan2(transform.position.z - boardCenter.position.z, transform.position.x - boardCenter.position.x) * Mathf.Rad2Deg;
+        float endAngle = gameManager.isWhiteTurn ? 270: 90f;
 
-        Vector3 centerPoint = new Vector3(3.5f, 0f, 3.5f); // �rodek planszy
-        float radius = 10f; // Promie� obrotu kamery
-
-        // Pozycja pocz�tkowa - Kamera zaczyna od ty�u
-        Vector3 startPosition = Camera.main.transform.position;
-        float startAngle = Mathf.Atan2(startPosition.z - centerPoint.z, startPosition.x - centerPoint.x) * Mathf.Rad2Deg;
-
-        // Ko�cowy k�t w zale�no�ci od tury
-        float endAngle = gameManager.isWhiteTurn ? -90f : 90f; // Kamera zaczyna od ty�u, zatem:
-                                                               // - Dla bia�ych: od ty�u, ko�czy za bia�ymi.
-                                                               // - Dla czarnych: od ty�u, ko�czy za czarnymi.
-
-        while (elapsedTime < duration)
+        while (elapsedTime < animationDuration)
         {
-            float t = elapsedTime / duration; // Progres animacji
-            float currentAngle = Mathf.Lerp(startAngle, endAngle, t); // Aktualny k�t
+            float t = elapsedTime / animationDuration;
+            float currentAngle = Mathf.Lerp(startAngle, endAngle, t);
 
-            // Obliczenie pozycji kamery na okr�gu
-            float radianAngle = Mathf.Deg2Rad * currentAngle;
-            Vector3 offset = new Vector3(Mathf.Cos(radianAngle) * radius, 11f, Mathf.Sin(radianAngle) * radius); // Zmiana wysoko�ci kamery o 1.5f
-
-            Camera.main.transform.position = centerPoint + offset; // Pozycja kamery
-            Camera.main.transform.LookAt(centerPoint); // Ustawienie kamery, by patrzy�a na plansz�
+            // Pozycja kamery w zależności od kąta obrotu
+            Vector3 offset = new Vector3(Mathf.Cos(Mathf.Deg2Rad * currentAngle) * radius, transform.position.y, Mathf.Sin(Mathf.Deg2Rad * currentAngle) * radius);
+            transform.position = boardCenter.position + offset;
 
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        // Ustawienie ko�cowej pozycji i rotacji
-        float finalRadianAngle = Mathf.Deg2Rad * endAngle;
-        Vector3 finalOffset = new Vector3(Mathf.Cos(finalRadianAngle) * radius, 11f, Mathf.Sin(finalRadianAngle) * radius); // Zmiana wysoko�ci kamery
-        Camera.main.transform.position = centerPoint + finalOffset;
-        Camera.main.transform.LookAt(centerPoint);
+        // Ustawienie ostatecznej pozycji
+        Vector3 finalOffset = new Vector3(Mathf.Cos(Mathf.Deg2Rad * endAngle) * radius, transform.position.y, Mathf.Sin(Mathf.Deg2Rad * endAngle) * radius);
+        transform.position = boardCenter.position + finalOffset;
+
     }
 
+    void UpdateCameraHeight(float value)
+    {
+
+
+        // -7 13.5
+        if (gameManager.isWhiteTurn)
+        {
+            minz = -10f;
+            camz = 3.49f;
+
+
+        }
+        else {
+             minz = 16.5f;
+            camz = 3.51f;
+        }
+
+
+
+
+        // Obliczanie końcowej pozycji kamery
+        float height = Mathf.Lerp(0f, 15f, value); // Wartość z slidera, gdzie 0 to wysokość minimalna, a 10 to wysokość maksymalna
+
+        // Ustalamy pozycję kamery w osi Y oraz Z
+        Vector3 newPosition = transform.position;
+        newPosition.y = height;
+        newPosition.z = Mathf.Lerp(minz, camz, value); // Zmiana w osi Z w zależności od wysokości kamery
+
+        transform.position = newPosition;
+    }
 }
