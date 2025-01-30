@@ -30,7 +30,32 @@ ModelImporter:
   - first:
       74: 8472665691497325963
     second: Armature|podstawaAction.001
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.003
+    second: {fileID: 2100000, guid: 629afd9d72fa5b041bd781a094f2e34e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: "bia\u0142y"
+    second: {fileID: 2100000, guid: c853121368b2d2043a8188c4451f882c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: "bia\u0142y.001"
+    second: {fileID: 2100000, guid: c853121368b2d2043a8188c4451f882c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: "bia\u0142y.002"
+    second: {fileID: 2100000, guid: c853121368b2d2043a8188c4451f882c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: "bia\u0142y.003"
+    second: {fileID: 2100000, guid: c853121368b2d2043a8188c4451f882c, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

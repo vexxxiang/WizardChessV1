@@ -1,8 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public class Bishop : ChessPiece
 {
+    private Animator animator;
+    private bool isMoving = false; // Flaga, która sprawdza, czy animacja jest ju¿ w trakcie
+
+    // Inicjalizacja Animatora
+    void Start()
+    {
+        animator = GetComponent<Animator>();  // Pobieramy Animator z tego samego obiektu
+    }
+
     public override bool[,] GetAvailableMoves(ChessPiece[,] boardState)
     {
         bool[,] moves = new bool[8, 8];
@@ -39,5 +49,29 @@ public class Bishop : ChessPiece
                 break;
             }
         }
+    }
+
+    // Nowa metoda, która wykonuje ruch i uruchamia animacjê
+    public void MoveToPosition(Vector3 newPosition)
+    {
+        if (!isMoving) // Sprawdzamy, czy animacja ju¿ jest w trakcie
+        {
+            // Przesuñ figurê na now¹ pozycjê
+            transform.position = newPosition;
+
+            // Uruchomienie animacji po wykonaniu ruchu
+            if (animator != null)
+            {
+                animator.SetTrigger("MoveAnimation");  // Za³ó¿my, ¿e masz trigger "MoveAnimation"
+            }
+
+            isMoving = true; // Ustawiamy flagê, ¿eby nie wywo³ywaæ animacji ponownie, dopóki nie zakoñczy siê obecna animacja
+        }
+    }
+
+    // Metoda, która bêdzie wywo³ywana po zakoñczeniu animacji
+    public void OnAnimationEnd()
+    {
+        isMoving = false; // Resetujemy flagê, ¿eby animacja mog³a siê uruchomiæ przy nastêpnym ruchu
     }
 }

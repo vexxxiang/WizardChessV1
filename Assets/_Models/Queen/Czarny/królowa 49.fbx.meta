@@ -10,18 +10,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material
-    second: {fileID: 2100000, guid: 82fc01792771b064396e9c037909d5c7, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
       name: Material.001
     second: {fileID: 2100000, guid: 21fd38dd3b41a354c9009e0b70af304a, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Material.003
-    second: {fileID: 2100000, guid: 3e2840c6942b4844bb4a8a8e762f4c08, type: 2}
+    second: {fileID: 2100000, guid: 45e0ddd5ed4db004e9d3ef28caa21f55, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: czarny.001
+    second: {fileID: 2100000, guid: 82fc01792771b064396e9c037909d5c7, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

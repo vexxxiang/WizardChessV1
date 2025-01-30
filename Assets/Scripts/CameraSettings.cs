@@ -1,23 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine;
+using UnityEngine.UI; // Dodaj to do obs³ugi Slidera
 
 public class CameraSettings : MonoBehaviour
 {
-    public Transform boardCenter; // Œrodek planszy (ustaw na obiekt reprezentuj¹cy œrodek planszy)
-    public float radius = 10f; // Promieñ pó³okrêgu
+    public Transform boardCenter; // Œrodek planszy
+    public float radius = 10f; // Promieñ okrêgu
     public float animationDuration = 2f; // Czas trwania animacji
-    public ChessGameManager gameManager; // Odniesienie do ChessGameManager
+    public Slider slider; // Slider kontroluj¹cy wysokoœæ kamery
 
-    private Vector3 initialPosition; // Pocz¹tkowa pozycja kamery
-    private Quaternion initialRotation; // Pocz¹tkowa rotacja kamery
+    private float currentAngle = 0f; // Aktualny k¹t kamery
     private bool isAnimating = false;
 
     void Start()
     {
-        // Ustawienie pocz¹tkowej pozycji kamery
-        initialPosition = transform.position;
-        initialRotation = transform.rotation;
+        Vector3 centerPoint = new Vector3(3.5f, 0f, 3.5f); // Œrodek planszy
+        currentAngle = 270f; // Startowy k¹t (kamera za bia³ymi)
+        UpdateCameraPosition(currentAngle, centerPoint);
+
+        // Ustawienie listenera slidera
+        slider.onValueChanged.AddListener(SetCameraHeight);
     }
 
     public void RotateAroundBoard()
@@ -26,46 +30,52 @@ public class CameraSettings : MonoBehaviour
             StartCoroutine(RotateCamera());
     }
 
-
     IEnumerator RotateCamera()
     {
-        float duration = 1f; // Czas trwania animacji
+        isAnimating = true;
+
         float elapsedTime = 0f;
+        float startAngle = currentAngle;
+        float endAngle = currentAngle + 180f;
 
-        Vector3 centerPoint = new Vector3(3.5f, 0f, 3.5f); // Œrodek planszy
-        float radius = 10f; // Promieñ obrotu kamery
+        Vector3 centerPoint = new Vector3(3.5f, 0f, 3.5f);
 
-        // Pozycja pocz¹tkowa - Kamera zaczyna od ty³u
-        Vector3 startPosition = Camera.main.transform.position;
-        float startAngle = Mathf.Atan2(startPosition.z - centerPoint.z, startPosition.x - centerPoint.x) * Mathf.Rad2Deg;
-
-        // Koñcowy k¹t w zale¿noœci od tury
-        float endAngle = gameManager.isWhiteTurn ? -90f : 90f; // Kamera zaczyna od ty³u, zatem:
-                                                   // - Dla bia³ych: od ty³u, koñczy za bia³ymi.
-                                                   // - Dla czarnych: od ty³u, koñczy za czarnymi.
-
-        while (elapsedTime < duration)
+        while (elapsedTime < animationDuration)
         {
-            float t = elapsedTime / duration; // Progres animacji
-            float currentAngle = Mathf.Lerp(startAngle, endAngle, t); // Aktualny k¹t
+            float t = elapsedTime / animationDuration;
+            float currentAnimationAngle = Mathf.Lerp(startAngle, endAngle, t);
 
-            // Obliczenie pozycji kamery na okrêgu
-            float radianAngle = Mathf.Deg2Rad * currentAngle;
-            Vector3 offset = new Vector3(Mathf.Cos(radianAngle) * radius, 11f, Mathf.Sin(radianAngle) * radius); // Zmiana wysokoœci kamery o 1.5f
-
-            Camera.main.transform.position = centerPoint + offset; // Pozycja kamery
-            Camera.main.transform.LookAt(centerPoint); // Ustawienie kamery, by patrzy³a na planszê
+            UpdateCameraPosition(currentAnimationAngle, centerPoint);
 
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        // Ustawienie koñcowej pozycji i rotacji
-        float finalRadianAngle = Mathf.Deg2Rad * endAngle;
-        Vector3 finalOffset = new Vector3(Mathf.Cos(finalRadianAngle) * radius, 11f, Mathf.Sin(finalRadianAngle) * radius); // Zmiana wysokoœci kamery
-        Camera.main.transform.position = centerPoint + finalOffset;
+        currentAngle = endAngle % 360f;
+        UpdateCameraPosition(currentAngle, centerPoint);
+
+        isAnimating = false;
+    }
+
+    private void UpdateCameraPosition(float angle, Vector3 centerPoint)
+    {
+        float radianAngle = Mathf.Deg2Rad * angle;
+        float cameraHeight = slider.value; // Pobierz wartoœæ wysokoœci z slidera
+
+        Vector3 offset = new Vector3(
+            Mathf.Cos(radianAngle) * radius,
+            cameraHeight,
+            Mathf.Sin(radianAngle) * radius
+        );
+
+        Camera.main.transform.position = centerPoint + offset;
         Camera.main.transform.LookAt(centerPoint);
     }
 
+    public void SetCameraHeight(float height)
+    {
+        // Aktualizuj wysokoœæ kamery, jeœli slider siê zmieni
+        Vector3 centerPoint = new Vector3(3.5f, 0f, 3.5f);
+        UpdateCameraPosition(currentAngle, centerPoint);
+    }
 }
-
