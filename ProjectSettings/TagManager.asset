@@ -8,21 +8,21 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - LightBoard
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - PawnW
+  - BishopB
+  - BishopW
+  - PawnB
+  - RookB
+  - RookW
+  - KnightW
+  - KnightB
+  - KingW
+  - KingB
+  - QueenB
+  - QueenW
   - 
   - 
   - 
