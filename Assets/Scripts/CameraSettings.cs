@@ -5,94 +5,111 @@ using UnityEngine.UI;
 public class CameraSettings : MonoBehaviour
 {
     public Transform boardCenter; // Środek planszy
-    public float radius = 10f; // Promień obrotu
-    public float animationDuration = 2f; // Czas trwania animacji
+    
     public ChessGameManager gameManager; // Odniesienie do ChessGameManager
     public Slider heightSlider; // Slider do zmiany wysokości kamery
-
-    private Vector3 initialPosition; // Początkowa pozycja kamery
-    private Quaternion initialRotation; // Początkowa rotacja kamery
-    private bool isAnimating = false;
-    private float minz, camz;
+    public Transform target; // Obiekt, wokół którego ma się obracać kamera (środek)
+    public float animationDuration = 1.2f; // Czas trwania animacji (możesz dostosować)
+    private Vector3 offset; // Przesunięcie kamery w stosunku do targetu
 
     void Start()
     {
-        // Ustawienie początkowej pozycji kamery
-        initialPosition = transform.position;
-        initialRotation = transform.rotation;
 
-        // Dodajemy listener na slider, aby zmieniać wysokość
-        heightSlider.onValueChanged.AddListener(UpdateCameraHeight);
     }
-
     void Update()
     {
-        // Jeżeli kamera się animuje, nie robimy zmian na bieżąco
-        if (isAnimating) return;
 
-        // Aktualizowanie patrzenia na target (środek planszy)
-        transform.LookAt(boardCenter);
+        RotateCamera();
+        heightSlider.onValueChanged.AddListener(delegate { UpdateCameraHeight(heightSlider.value); }); ;
+        
+        
     }
+
+
+    void RotateCamera()
+    {
+        offset = new Vector3(this.transform.position.x , this.transform.position.y, this.transform.position.z);
+        // Oblicz nową pozycję kamery w zależności od rotacji obiektu
+        transform.position = offset;
+
+    }
+
+
+
 
     public void RotateAroundBoard()
     {
-        if (!isAnimating)
-            StartCoroutine(RotateCamera());
+        float startAngle = target.transform.rotation.eulerAngles.y;  // Pobieramy obecny kąt Y
+        float endAngle = gameManager.isWhiteTurn ? 0f : 180f;  // Ustawiamy kąt docelowy
+
+        StartCoroutine(RotateCamera(startAngle, endAngle));  // Uruchamiamy animację obracania
     }
 
-    IEnumerator RotateCamera()
+    IEnumerator RotateCamera(float startAngle, float endAngle)
     {
         float elapsedTime = 0f;
-        float startAngle = Mathf.Atan2(transform.position.z - boardCenter.position.z, transform.position.x - boardCenter.position.x) * Mathf.Rad2Deg;
-        float endAngle = gameManager.isWhiteTurn ? 270: 90f;
+
 
         while (elapsedTime < animationDuration)
         {
-            float t = elapsedTime / animationDuration;
-            float currentAngle = Mathf.Lerp(startAngle, endAngle, t);
+            float t = elapsedTime / animationDuration;  // Progres animacji od 0 do 1
 
-            // Pozycja kamery w zależności od kąta obrotu
-            Vector3 offset = new Vector3(Mathf.Cos(Mathf.Deg2Rad * currentAngle) * radius, transform.position.y, Mathf.Sin(Mathf.Deg2Rad * currentAngle) * radius);
-            transform.position = boardCenter.position + offset;
+            // Interpolacja Ease In Out (SmoothStep)
+            float smoothT = Mathf.SmoothStep(0f, 1f, t);  // Używamy SmoothStep dla efektu Ease In Out
 
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            float currentAngle = Mathf.LerpAngle(startAngle, endAngle, smoothT);  // Interpolacja kąta rotacji z efektem Ease In Out
+
+            // Ustawiamy nowy kąt rotacji obiektu
+            target.transform.rotation = Quaternion.Euler(0f, currentAngle, 0f);
+
+            elapsedTime += Time.deltaTime;  // Aktualizacja czasu
+            yield return null;  // Czekamy do następnej klatki
         }
 
-        // Ustawienie ostatecznej pozycji
-        Vector3 finalOffset = new Vector3(Mathf.Cos(Mathf.Deg2Rad * endAngle) * radius, transform.position.y, Mathf.Sin(Mathf.Deg2Rad * endAngle) * radius);
-        transform.position = boardCenter.position + finalOffset;
-
+        // Na końcu ustawiamy dokładnie końcową rotację, by uniknąć ewentualnych niedokładności
+        target.transform.rotation = Quaternion.Euler(0f, endAngle, 0f);
     }
 
-    void UpdateCameraHeight(float value)
+    public void UpdateCameraHeight(float value)
     {
 
-
-        // -7 13.5
         if (gameManager.isWhiteTurn)
         {
-            minz = -10f;
-            camz = 3.49f;
+            Vector3 startPoint = new Vector3(transform.position.x, 1.5f, Mathf.Lerp(-6f, 3f, 0f)); // Minimalna wysokość
+            Vector3 controlPoint1 = new Vector3(transform.position.x, 5f, Mathf.Lerp(-6f, 3f, -0.8f)); // Punkt kontrolny 1
+            Vector3 controlPoint2 = new Vector3(transform.position.x, 8f, Mathf.Lerp(-6f, 3f, -0.9f)); // Punkt kontrolny 2
+            Vector3 endPoint = new Vector3(transform.position.x, 13f, Mathf.Lerp(-6f, 3f, 1f)); // Maksymalna wysokość
+
+            // Interpolacja Béziera dla Y i Z w zależności od slidera (value od 0 do 1)
+            float t = value;
+            Vector3 bezierPosition = Mathf.Pow(1 - t, 3) * startPoint +
+                                     3 * Mathf.Pow(1 - t, 2) * t * controlPoint1 +
+                                     3 * (1 - t) * Mathf.Pow(t, 2) * controlPoint2 +
+                                     Mathf.Pow(t, 3) * endPoint;
+            // Aktualizacja pozycji kamery
+            transform.position = new Vector3(transform.position.x, bezierPosition.y, bezierPosition.z);
 
 
         }
         else {
-             minz = 16.5f;
-            camz = 3.51f;
+         
+            Vector3 startPoint = new Vector3(transform.position.x, 1.5f, Mathf.Lerp(13f, 4f, 0f)); // Minimalna wysokość
+            Vector3 controlPoint1 = new Vector3(transform.position.x, 5f, Mathf.Lerp(13f, 4f, -0.8f)); // Punkt kontrolny 1
+            Vector3 controlPoint2 = new Vector3(transform.position.x, 8f, Mathf.Lerp(13f, 4f, -0.9f)); // Punkt kontrolny 2
+            Vector3 endPoint = new Vector3(transform.position.x, 13f, Mathf.Lerp(13f, 4f, 1f)); // Maksymalna wysokość
+
+            // Interpolacja Béziera dla Y i Z w zależności od slidera (value od 0 do 1)
+            float t = value;
+            Vector3 bezierPosition = Mathf.Pow(1 - t, 3) * startPoint +
+                                     3 * Mathf.Pow(1 - t, 2) * t * controlPoint1 +
+                                     3 * (1 - t) * Mathf.Pow(t, 2) * controlPoint2 +
+                                     Mathf.Pow(t, 3) * endPoint;
+            // Aktualizacja pozycji kamery
+            transform.position = new Vector3(transform.position.x, bezierPosition.y, bezierPosition.z);
         }
 
+        
 
-
-
-        // Obliczanie końcowej pozycji kamery
-        float height = Mathf.Lerp(0f, 15f, value); // Wartość z slidera, gdzie 0 to wysokość minimalna, a 10 to wysokość maksymalna
-
-        // Ustalamy pozycję kamery w osi Y oraz Z
-        Vector3 newPosition = transform.position;
-        newPosition.y = height;
-        newPosition.z = Mathf.Lerp(minz, camz, value); // Zmiana w osi Z w zależności od wysokości kamery
-
-        transform.position = newPosition;
+        transform.LookAt(boardCenter);
     }
 }
