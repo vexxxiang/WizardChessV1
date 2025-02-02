@@ -4,6 +4,7 @@ public abstract class ChessPiece : MonoBehaviour
     public Vector2Int boardPosition; // Przechowuje pozycjê bierki na planszy
     public bool isWhite; // Okreœla, czy bierka jest bia³a
 
+
     // Metoda wirtualna do obliczenia dostêpnych ruchów dla danej bierki
     public virtual bool[,] GetAvailableMoves(ChessPiece[,] boardState)
     {

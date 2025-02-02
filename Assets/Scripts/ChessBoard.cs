@@ -1,75 +1,107 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ChessBoard : MonoBehaviour
 {
-    public GameObject squarePrefab; // Prefab pola szachownicy
-    public float squareSize = 1f;   // Rozmiar pojedynczego pola
-
-    private GameObject[,] board = new GameObject[8, 8];
-    public ChessGameManager gameManager;
-
-    void Start() 
-    {
-        CreateBoard();
-    }
-
-    void CreateBoard()
-    {
+    public GameObject squarePrefab; 
+    public float squareSize = 1f;
+    public GameObject GM;
+    List<GameObject> Plansza = new List<GameObject> { };
+    public void CreateBoard()
+    { 
         for (int x = 0; x < 8; x++)
         {
             for (int z = 0; z < 8; z++) // Zmieniamy y na z (poziom planszy)
             {
-                Vector3 position = new Vector3(x * squareSize, 0.05f, z * squareSize); // Pozycja na szachownicy
-                board[x, z] = Instantiate(squarePrefab, position, Quaternion.identity, transform);
-
-                // Kolorowanie pól szachownicy
-                Renderer renderer = board[x, z].GetComponent<Renderer>();
-                renderer.material.color = (x + z) % 2 == 0 ? Color.white : Color.black; // Kolor naprzemienny
+                var Pole = Instantiate(squarePrefab, new Vector3(x, -0.05f, z), Quaternion.identity);
+                Plansza.Add(Pole);
+                Pole.transform.SetParent(this.transform);
+                Pole.name = new string(x + " " + z);
+                Pole.GetComponent<Cube>().Position = new Vector2Int (x, z);
+                Pole.GetComponent<Cube>().WhiteColor = (x + z) % 2 == 0 ? true : false;
             }
+        }
+        foreach(GameObject i in Plansza)
+        {
+            i.GetComponent<Cube>().Refresh();
+        }
+    }
+    public void odznacz()
+    {
+        Debug.Log("odznaczam" + Plansza);
+        foreach(GameObject i in Plansza)
+        {
+            i.GetComponent<Cube>().Selected = false;
+            i.GetComponent<Cube>().Refresh();
+        }
+    }  public void _UpdateState()
+    {
+        foreach(GameObject i in Plansza)
+        {
+            i.GetComponent<Cube>().UpdateState();
         }
     }
 
     void Update()
     {
-        // Wykrywanie klikniêcia lewym przyciskiem myszy
-        if (Input.GetMouseButtonDown(0)) // 0 oznacza lewy przycisk myszy
+        if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // Tworzymy promieñ od pozycji myszy
-            RaycastHit hit; // Zmienna do przechowywania wyniku raycasta
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); 
+            RaycastHit hit;
 
-            // Jeœli promieñ trafi³ w jakikolwiek obiekt
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit)) 
             {
-                // Sprawdzamy pozycjê, w któr¹ trafi³ raycast
-                Vector3 hitPosition = hit.point;
-
-                // Obliczamy najbli¿sze pole, bior¹c pod uwagê rozmiar planszy
-                Vector2Int clickedPosition = new Vector2Int(
-                    Mathf.RoundToInt(hitPosition.x / squareSize), 
-                    Mathf.RoundToInt(hitPosition.z / squareSize)
-                );
-
-                // Upewniamy siê, ¿e klikniêcie mieœci siê w granicach planszy
-                if (clickedPosition.x >= 0 && clickedPosition.x < 8 && clickedPosition.y >= 0 && clickedPosition.y < 8)
+                _UpdateState();
+                Renderer ClickedObject = hit.transform.GetComponent<Renderer>();
+                var clickedPosition = GM.GetComponent<ChessSetup>().boardState[((int)ClickedObject.GetComponent<Cube>().Position.x), (int)ClickedObject.GetComponent<Cube>().Position.y];
+                if (ClickedObject != null ) 
                 {
-                    ChessPiece clickedPiece = hit.collider.GetComponent<ChessPiece>(); 
+                    if (ClickedObject.CompareTag("Plansza") && ClickedObject.gameObject.GetComponent<Cube>().Zajety == true) // Klikniêcie w bierkê
+                    {
 
-                    if (clickedPiece != null)
-                    {
-                        // Jeœli klikniêto bierkê
-                        Debug.Log("Klikniêto figurê: " + clickedPiece.name);
-                        gameManager.SelectPiece(clickedPiece, clickedPosition); // Wybieramy bierkê
+                        if (GM.GetComponent<ChessGameManager>().selectedPiece == null && (GM.GetComponent<ChessGameManager>().isWhiteTurn && clickedPosition.GetComponent<ChessPiece>().isWhite) || (!GM.GetComponent<ChessGameManager>().isWhiteTurn && !clickedPosition.gameObject.GetComponent<ChessPiece>().isWhite)) // Jeœli ¿adna bierka nie jest wybrana
+                        {
+                            GM.GetComponent<ChessGameManager>().SelectPiece(clickedPosition, clickedPosition.boardPosition); // Wybór bierki
+                            ClickedObject.GetComponent<Cube>().Selected = true;
+                            ClickedObject.GetComponent<Cube>().Refresh();
+                            Debug.Log("Wybrano bierkê: " + GM.GetComponent<ChessGameManager>().selectedPiece);
+                        }
+                        else if (GM.GetComponent<ChessGameManager>().selectedPiece == clickedPosition && (GM.GetComponent<ChessGameManager>().isWhiteTurn && clickedPosition.GetComponent<ChessPiece>().isWhite) || (!GM.GetComponent<ChessGameManager>().isWhiteTurn && !clickedPosition.gameObject.GetComponent<ChessPiece>().isWhite)) // Klikniêcie tej samej bierki (odznaczenie)
+                        {
+                            Debug.Log("Odznaczono bierkê: " + GM.GetComponent<ChessGameManager>().selectedPiece);
+                            ClickedObject.GetComponent<Cube>().Selected = false;
+                            ClickedObject.GetComponent<Cube>().Refresh();
+                            GM.GetComponent<ChessGameManager>().selectedPiece = null;
+                        }
+                        else if (GM.GetComponent<ChessGameManager>().selectedPiece != null && (GM.GetComponent<ChessGameManager>().isWhiteTurn && clickedPosition.GetComponent<ChessPiece>().isWhite) || (!GM.GetComponent<ChessGameManager>().isWhiteTurn && !clickedPosition.gameObject.GetComponent<ChessPiece>().isWhite))// Klikniêcie innej bierki (zmiana wyboru)
+                        {
+                            Debug.Log("Zmieniono wybór na: " + clickedPosition);
+                            odznacz();
+                            ClickedObject.GetComponent<Cube>().Selected = true;
+                            ClickedObject.GetComponent<Cube>().Refresh();
+                            GM.GetComponent<ChessGameManager>().SelectPiece(clickedPosition, clickedPosition.boardPosition);
+                        }
+
                     }
-                    else
+                    if (ClickedObject.CompareTag("Plansza") && ClickedObject.gameObject.GetComponent<Cube>().Zajety == false) // Klikniêcie na puste pole
                     {
-                        // Jeœli klikniêto puste pole
-                        Debug.Log("Klikniêto puste pole: " + clickedPosition);
-                        gameManager.MovePiece(clickedPosition); // Przemieszczamy bierkê
+                        if (GM.GetComponent<ChessGameManager>().selectedPiece != null ) // Jeœli jest wybrana bierka, próbujemy ni¹ ruszyæ
+                        {
+                            GM.GetComponent<ChessGameManager>().MovePiece(ClickedObject.GetComponent<Cube>().Position);
+                            Debug.Log("Próba ruchu bierk¹ " + GM.GetComponent<ChessGameManager>().selectedPiece + " na pole " + clickedPosition);
+                            GM.GetComponent<ChessGameManager>().selectedPiece = null;
+                            odznacz();
+                            ClickedObject.GetComponent<Cube>().Refresh();
+                        }
+                        else
+                        {
+                            Debug.Log("Klikniêto puste pole, ale ¿adna bierka nie jest wybrana.");
+                        }
                     }
-                }
-                else
-                {
-                    Debug.Log("Klikniêcie poza plansz¹: " + clickedPosition);
+                    else // Klikniêcie w coœ innego
+                    {
+                        Debug.Log("Klikniêto niezidentyfikowany obiekt: " + clickedPosition);
+                    }
                 }
             }
         }

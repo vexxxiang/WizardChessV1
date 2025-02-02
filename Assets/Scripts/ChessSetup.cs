@@ -20,15 +20,17 @@ public class ChessSetup : MonoBehaviour
     public GameObject blackKingPrefab;
     
 
-    private ChessPiece[,] boardState = new ChessPiece[8, 8];
-    
+    public ChessPiece[,] boardState = new ChessPiece[8, 8];
+
+    public GameObject _Bierki;
+
     void Start()
     {
         chessBoard = chessBoard.GetComponent<ChessBoard>();
-        SetupPieces();
+        
     }
 
-    void SetupPieces()
+    public void SetupPieces()
     {
         // Ustawienie pionków
         for (int x = 0; x < 8; x++)
@@ -62,6 +64,8 @@ public class ChessSetup : MonoBehaviour
         // Ustawienie królów
         SpawnPiece(whiteKingPrefab, new Vector2Int(4, 0), true);
         SpawnPiece(blackKingPrefab, new Vector2Int(4, 7), false);
+
+
     }
 
     void SpawnPiece(GameObject prefab, Vector2Int position, bool isWhite)
@@ -69,18 +73,21 @@ public class ChessSetup : MonoBehaviour
         Vector3 worldPosition = new Vector3(position.x, 0, position.y);
         if (isWhite == true)
         {
-            GameObject pieceObject = Instantiate(prefab, worldPosition, Quaternion.Euler(0, 0, 0), chessBoard.transform);
+            GameObject pieceObject = Instantiate(prefab, worldPosition, Quaternion.Euler(0, 0, 0), _Bierki.transform);
             ChessPiece piece = pieceObject.GetComponent<ChessPiece>();
             piece.boardPosition = position;
             piece.isWhite = isWhite;
             boardState[position.x, position.y] = piece;
+ 
+            
         }
         else {
-            GameObject pieceObject = Instantiate(prefab, worldPosition, Quaternion.Euler(0, 180, 0), chessBoard.transform);
+            GameObject pieceObject = Instantiate(prefab, worldPosition, Quaternion.Euler(0, 180, 0), _Bierki.transform);
             ChessPiece piece = pieceObject.GetComponent<ChessPiece>();
             piece.boardPosition = position;
             piece.isWhite = isWhite;
             boardState[position.x, position.y] = piece;
+
 
         }
     }

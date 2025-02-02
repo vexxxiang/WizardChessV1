@@ -3,17 +3,17 @@ using UnityEngine;
 public class ChessGameManager : MonoBehaviour
 {
     public ChessPiece[,] boardState = new ChessPiece[8, 8];  // Tablica stanu planszy (bierek)
-    private ChessPiece selectedPiece; // Wybrana bierka
+    public ChessPiece selectedPiece; // Wybrana bierka
     public bool isWhiteTurn = true;  // Sprawdzanie, której stronie nale¿y tura
-    public GameObject _Camera;
+    public GameObject _Camera, _ChessBoard;
+    
 
     void Start()
     {
-        // Przyk³ad inicjalizacji gry - np. umieszczanie bierek
-        // Mo¿esz to dostosowaæ do swojego kodu
+        _ChessBoard.GetComponent<ChessBoard>().CreateBoard();
+        this.gameObject.GetComponent<ChessSetup>().SetupPieces();
     }
 
-    // Funkcja do wyboru bierki (klikniêcie na bierkê)
     public void SelectPiece(ChessPiece piece, Vector2Int position)
     {
         if ((isWhiteTurn && piece.isWhite) || (!isWhiteTurn && !piece.isWhite))
@@ -22,10 +22,9 @@ public class ChessGameManager : MonoBehaviour
             Debug.Log("Wybrano bierkê: " + piece.name + " na pozycji: " + position);
         }
     }
-
-    // Funkcja do wykonania ruchu bierk¹ (klikniêcie na pole)
     public void MovePiece(Vector2Int targetPosition)
     {
+        Debug.Log("jestem w gm i chce ruszyc");
         if (selectedPiece != null)
         {
             // Sprawdzamy, czy ruch jest dozwolony
@@ -38,13 +37,8 @@ public class ChessGameManager : MonoBehaviour
 
                 // Prze³¹czamy turê
                 isWhiteTurn = !isWhiteTurn;
-
-                // Resetujemy wybran¹ bierkê
-                selectedPiece = null;
-
+                selectedPiece.boardPosition = targetPosition;
                 _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
-
-
             }
             else
             {
