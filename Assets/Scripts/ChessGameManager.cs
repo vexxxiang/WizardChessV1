@@ -26,7 +26,7 @@ public class ChessGameManager : MonoBehaviour
     }
     public void MovePiece(Vector2Int targetPosition)
     {
-        Debug.Log("jestem w gm i chce ruszyc");
+        //Debug.Log("jestem w gm i chce ruszyc");
         if (selectedPiece != null)
         {
             // Sprawdzamy, czy ruch jest dozwolony
@@ -45,7 +45,8 @@ public class ChessGameManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("Niedozwolony ruch na to pole.");
+                _ChessBoard.GetComponent<ChessBoard>().illegalMove(new Vector2Int(targetPosition.x,targetPosition.y));
+
             }
         }
         else

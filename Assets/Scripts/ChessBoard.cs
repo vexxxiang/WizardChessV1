@@ -7,6 +7,7 @@ public class ChessBoard : MonoBehaviour
     public float squareSize = 1f;
     public GameObject GM;
     List<GameObject> Plansza = new List<GameObject> { };
+    public Vector2Int PreLastClick;
     public void CreateBoard()
     { 
         for (int x = 0; x < 8; x++)
@@ -23,16 +24,19 @@ public class ChessBoard : MonoBehaviour
         }
         foreach(GameObject i in Plansza)
         {
-            i.GetComponent<Cube>().Refresh();
+            i.GetComponent<Cube>().PreRefresh(0);
         }
     }
-    public void odznacz()
+    public void odznacz(Vector2Int position)
     {
-        Debug.Log("odznaczam" + Plansza);
+        //Debug.Log("odznaczam" + Plansza);
         foreach(GameObject i in Plansza)
         {
-            i.GetComponent<Cube>().Selected = false;
-            i.GetComponent<Cube>().Refresh();
+            if (position == i.GetComponent<Cube>().Position)
+            {
+                i.GetComponent<Cube>().Selected = false;
+                i.GetComponent<Cube>().PreRefresh(0);
+            }
         }
     }  public void _UpdateState()
     {
@@ -41,7 +45,19 @@ public class ChessBoard : MonoBehaviour
             i.GetComponent<Cube>().UpdateState();
         }
     }
-
+    public void illegalMove(Vector2Int position) {
+        //Debug.Log("czerwony"+ position);
+        foreach (GameObject i in Plansza)
+        {
+            if (position == i.GetComponent<Cube>().Position)
+            {
+                i.gameObject.GetComponent<Renderer>().material.color = Color.red;
+                i.gameObject.GetComponent<Cube>().PreRefresh(1f);
+            }
+            
+        }
+    
+    }
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -53,33 +69,41 @@ public class ChessBoard : MonoBehaviour
             {
                 _UpdateState();
                 Renderer ClickedObject = hit.transform.GetComponent<Renderer>();
+                
                 var clickedPosition = ChessGameManager.instance.boardState[((int)ClickedObject.GetComponent<Cube>().Position.x), (int)ClickedObject.GetComponent<Cube>().Position.y];
                 if (ClickedObject != null ) 
                 {
                     if (ClickedObject.CompareTag("Plansza") && ClickedObject.gameObject.GetComponent<Cube>().Zajety == true) // Klikniêcie w bierkê
                     {
+                        if ((ChessGameManager.instance.isWhiteTurn && clickedPosition.GetComponent<ChessPiece>().isWhite) || (!GM.GetComponent<ChessGameManager>().isWhiteTurn && !clickedPosition.gameObject.GetComponent<ChessPiece>().isWhite))
+                        {
+                            if (ChessGameManager.instance.selectedPiece == null) // Jeœli ¿adna bierka nie jest wybrana
+                            {
+                                ChessGameManager.instance.SelectPiece(clickedPosition, clickedPosition.boardPosition); // Wybór bierki
+                                ClickedObject.GetComponent<Cube>().Selected = true;
+                                ClickedObject.GetComponent<Cube>().PreRefresh(0f);
+                                Debug.Log("Wybrano bierkê: " + GM.GetComponent<ChessGameManager>().selectedPiece);
+                                PreLastClick = ClickedObject.GetComponent<Cube>().Position ;
+                            }
+                            else if (ChessGameManager.instance.selectedPiece == clickedPosition) // Klikniêcie tej samej bierki (odznaczenie)
+                            {
+                                Debug.Log("Odznaczono bierkê: " + ChessGameManager.instance.selectedPiece);
+                                ClickedObject.GetComponent<Cube>().Selected = false;
+                                ClickedObject.GetComponent<Cube>().PreRefresh(0f);
+                                ChessGameManager.instance.selectedPiece = null;
+                                PreLastClick = ClickedObject.GetComponent<Cube>().Position;
+                            }
+                            else if (ChessGameManager.instance.selectedPiece != null )// Klikniêcie innej bierki (zmiana wyboru)
+                            {
+                                Debug.Log("Zmieniono wybór na: " + clickedPosition);
+                                odznacz(PreLastClick);
+                                ClickedObject.GetComponent<Cube>().Selected = true;
+                                ClickedObject.GetComponent<Cube>().PreRefresh(0f);
+                                ChessGameManager.instance.SelectPiece(clickedPosition, clickedPosition.boardPosition);
+                                PreLastClick = ClickedObject.GetComponent<Cube>().Position;
+                            }
 
-                        if (ChessGameManager.instance.selectedPiece == null && (ChessGameManager.instance.isWhiteTurn && clickedPosition.GetComponent<ChessPiece>().isWhite) || (!GM.GetComponent<ChessGameManager>().isWhiteTurn && !clickedPosition.gameObject.GetComponent<ChessPiece>().isWhite)) // Jeœli ¿adna bierka nie jest wybrana
-                        {
-                            ChessGameManager.instance.SelectPiece(clickedPosition, clickedPosition.boardPosition); // Wybór bierki
-                            ClickedObject.GetComponent<Cube>().Selected = true;
-                            ClickedObject.GetComponent<Cube>().Refresh();
-                            Debug.Log("Wybrano bierkê: " + GM.GetComponent<ChessGameManager>().selectedPiece);
-                        }
-                        else if (ChessGameManager.instance.selectedPiece == clickedPosition && (ChessGameManager.instance.isWhiteTurn && clickedPosition.GetComponent<ChessPiece>().isWhite) || (!GM.GetComponent<ChessGameManager>().isWhiteTurn && !clickedPosition.gameObject.GetComponent<ChessPiece>().isWhite)) // Klikniêcie tej samej bierki (odznaczenie)
-                        {
-                            Debug.Log("Odznaczono bierkê: " + ChessGameManager.instance.selectedPiece);
-                            ClickedObject.GetComponent<Cube>().Selected = false;
-                            ClickedObject.GetComponent<Cube>().Refresh();
-                            ChessGameManager.instance.selectedPiece = null;
-                        }
-                        else if (ChessGameManager.instance.selectedPiece != null && (ChessGameManager.instance.isWhiteTurn && clickedPosition.GetComponent<ChessPiece>().isWhite) || (!GM.GetComponent<ChessGameManager>().isWhiteTurn && !clickedPosition.gameObject.GetComponent<ChessPiece>().isWhite))// Klikniêcie innej bierki (zmiana wyboru)
-                        {
-                            Debug.Log("Zmieniono wybór na: " + clickedPosition);
-                            odznacz();
-                            ClickedObject.GetComponent<Cube>().Selected = true;
-                            ClickedObject.GetComponent<Cube>().Refresh();
-                            ChessGameManager.instance.SelectPiece(clickedPosition, clickedPosition.boardPosition);
+
                         }
 
                     }
@@ -90,8 +114,10 @@ public class ChessBoard : MonoBehaviour
                             ChessGameManager.instance.MovePiece(ClickedObject.GetComponent<Cube>().Position);
                             Debug.Log("Próba ruchu bierk¹ " + ChessGameManager.instance.selectedPiece + " na pole " + clickedPosition);
                             ChessGameManager.instance.selectedPiece = null;
-                            odznacz();
-                            ClickedObject.GetComponent<Cube>().Refresh();
+                            
+                            odznacz(PreLastClick);
+                            
+                            PreLastClick = ClickedObject.GetComponent<Cube>().Position;
                         }
                         else
                         {
