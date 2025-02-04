@@ -20,6 +20,7 @@ public class CameraSettings : MonoBehaviour
     {
 
         RotateCamera();
+        
         heightSlider.onValueChanged.AddListener(delegate { UpdateCameraHeight(heightSlider.value); }); ;
         
         

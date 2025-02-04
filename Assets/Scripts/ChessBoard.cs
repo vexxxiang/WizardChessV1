@@ -58,29 +58,35 @@ public class ChessBoard : MonoBehaviour
                 {
                     if (ClickedObject.CompareTag("Plansza") && ClickedObject.gameObject.GetComponent<Cube>().Zajety == true) // Klikniêcie w bierkê
                     {
+                        Debug.Log(clickedPosition.GetComponent<ChessPiece>().isWhite + "clickedPosition.GetComponent<ChessPiece>().isWhite");
+                        Debug.Log(GM.GetComponent<ChessGameManager>().isWhiteTurn + "(GM.GetComponent<ChessGameManager>().isWhiteTurn");
+                        if ((GM.GetComponent<ChessGameManager>().isWhiteTurn && clickedPosition.GetComponent<ChessPiece>().isWhite) || (!GM.GetComponent<ChessGameManager>().isWhiteTurn && !clickedPosition.gameObject.GetComponent<ChessPiece>().isWhite))
+                        {
 
-                        if (GM.GetComponent<ChessGameManager>().selectedPiece == null && (GM.GetComponent<ChessGameManager>().isWhiteTurn && clickedPosition.GetComponent<ChessPiece>().isWhite) || (!GM.GetComponent<ChessGameManager>().isWhiteTurn && !clickedPosition.gameObject.GetComponent<ChessPiece>().isWhite)) // Jeœli ¿adna bierka nie jest wybrana
-                        {
-                            GM.GetComponent<ChessGameManager>().SelectPiece(clickedPosition, clickedPosition.boardPosition); // Wybór bierki
-                            ClickedObject.GetComponent<Cube>().Selected = true;
-                            ClickedObject.GetComponent<Cube>().Refresh();
-                            Debug.Log("Wybrano bierkê: " + GM.GetComponent<ChessGameManager>().selectedPiece);
+                            if (GM.GetComponent<ChessGameManager>().selectedPiece == null) // Jeœli ¿adna bierka nie jest wybrana
+                            {
+                                GM.GetComponent<ChessGameManager>().SelectPiece(clickedPosition, clickedPosition.boardPosition); // Wybór bierki
+                                ClickedObject.GetComponent<Cube>().Selected = true;
+                                ClickedObject.GetComponent<Cube>().Refresh();
+                                Debug.Log("Wybrano bierkê: " + GM.GetComponent<ChessGameManager>().selectedPiece);
+                            }
+                            else if (GM.GetComponent<ChessGameManager>().selectedPiece == clickedPosition ) // Klikniêcie tej samej bierki (odznaczenie)
+                            {
+                                Debug.Log("Odznaczono bierkê: " + GM.GetComponent<ChessGameManager>().selectedPiece);
+                                ClickedObject.GetComponent<Cube>().Selected = false;
+                                ClickedObject.GetComponent<Cube>().Refresh();
+                                GM.GetComponent<ChessGameManager>().selectedPiece = null;
+                            }
+                            else if (GM.GetComponent<ChessGameManager>().selectedPiece != null )// Klikniêcie innej bierki (zmiana wyboru)
+                            {
+                                Debug.Log("Zmieniono wybór na: " + clickedPosition);
+                                odznacz();
+                                ClickedObject.GetComponent<Cube>().Selected = true;
+                                ClickedObject.GetComponent<Cube>().Refresh();
+                                GM.GetComponent<ChessGameManager>().SelectPiece(clickedPosition, clickedPosition.boardPosition);
+                            }
                         }
-                        else if (GM.GetComponent<ChessGameManager>().selectedPiece == clickedPosition && (GM.GetComponent<ChessGameManager>().isWhiteTurn && clickedPosition.GetComponent<ChessPiece>().isWhite) || (!GM.GetComponent<ChessGameManager>().isWhiteTurn && !clickedPosition.gameObject.GetComponent<ChessPiece>().isWhite)) // Klikniêcie tej samej bierki (odznaczenie)
-                        {
-                            Debug.Log("Odznaczono bierkê: " + GM.GetComponent<ChessGameManager>().selectedPiece);
-                            ClickedObject.GetComponent<Cube>().Selected = false;
-                            ClickedObject.GetComponent<Cube>().Refresh();
-                            GM.GetComponent<ChessGameManager>().selectedPiece = null;
-                        }
-                        else if (GM.GetComponent<ChessGameManager>().selectedPiece != null && (GM.GetComponent<ChessGameManager>().isWhiteTurn && clickedPosition.GetComponent<ChessPiece>().isWhite) || (!GM.GetComponent<ChessGameManager>().isWhiteTurn && !clickedPosition.gameObject.GetComponent<ChessPiece>().isWhite))// Klikniêcie innej bierki (zmiana wyboru)
-                        {
-                            Debug.Log("Zmieniono wybór na: " + clickedPosition);
-                            odznacz();
-                            ClickedObject.GetComponent<Cube>().Selected = true;
-                            ClickedObject.GetComponent<Cube>().Refresh();
-                            GM.GetComponent<ChessGameManager>().SelectPiece(clickedPosition, clickedPosition.boardPosition);
-                        }
+                       
 
                     }
                     if (ClickedObject.CompareTag("Plansza") && ClickedObject.gameObject.GetComponent<Cube>().Zajety == false) // Klikniêcie na puste pole
