@@ -9,18 +9,15 @@ public class King : ChessPiece
     {
         bool[,] moves = new bool[8, 8];
 
-        // Wszystkie kierunki
-        Rook rookPart = new Rook { boardPosition = boardPosition, isWhite = isWhite };
-        Bishop bishopPart = new Bishop { boardPosition = boardPosition, isWhite = isWhite };
-
-        bool[,] rookMoves = rookPart.GetAvailableMoves(boardState);
-        bool[,] bishopMoves = bishopPart.GetAvailableMoves(boardState);
-
-        for (int x = 0; x < 8; x++)
+        for (int x = -1; x <= 1; x++)
         {
-            for (int y = 0; y < 8; y++)
+            for (int y = -1; y <= 1; y++)
             {
-                moves[x, y] = rookMoves[x, y] || bishopMoves[x, y];
+                if (x == 0 && y == 0) continue; // Pomijamy brak ruchu
+                if (CanMoveOrCapture(boardState, boardPosition.x + x, boardPosition.y + y))
+                {
+                    moves[boardPosition.x + x, boardPosition.y + y] = true;
+                }
             }
         }
 

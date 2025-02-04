@@ -15,7 +15,9 @@ public abstract class ChessPiece : MonoBehaviour
     // Ustawia now¹ pozycjê bierki zarówno w przestrzeni gry, jak i na planszy
     public virtual void SetPosition(Vector2Int newPosition) // Zmienione na virtual
     {
+        ChessGameManager.instance.boardState[boardPosition.x, boardPosition.y] = null;
         boardPosition = newPosition; // Aktualizowanie pozycji bierki na planszy
+        ChessGameManager.instance.boardState[boardPosition.x, boardPosition.y] = this;
         transform.position = new Vector3(newPosition.x, 0, newPosition.y); // Aktualizowanie fizycznej pozycji w 3D
     }
 

@@ -11,8 +11,14 @@ public class Cube : MonoBehaviour
     public bool Zajety = false;
     GameObject Bierki;
 
+    public void PreRefresh(float czas)
+    {
+        Invoke("Refresh", czas);
+    }
     public void Refresh() 
     {
+        
+        //Debug.Log("Refersh()" + Position);
         if (Selected == true)
         {
             this.gameObject.GetComponent<Renderer>().material.color = Color.green;

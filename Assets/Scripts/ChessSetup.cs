@@ -20,7 +20,7 @@ public class ChessSetup : MonoBehaviour
     public GameObject blackKingPrefab;
     
 
-    public ChessPiece[,] boardState = new ChessPiece[8, 8];
+    //public ChessPiece[,] boardState = new ChessPiece[8, 8];
 
     public GameObject _Bierki;
 
@@ -77,7 +77,7 @@ public class ChessSetup : MonoBehaviour
             ChessPiece piece = pieceObject.GetComponent<ChessPiece>();
             piece.boardPosition = position;
             piece.isWhite = isWhite;
-            boardState[position.x, position.y] = piece;
+            ChessGameManager.instance.boardState[position.x, position.y] = piece;
  
             
         }
@@ -86,9 +86,7 @@ public class ChessSetup : MonoBehaviour
             ChessPiece piece = pieceObject.GetComponent<ChessPiece>();
             piece.boardPosition = position;
             piece.isWhite = isWhite;
-            boardState[position.x, position.y] = piece;
-
-
+            ChessGameManager.instance.boardState[position.x, position.y] = piece;
         }
     }
 }
