@@ -7,7 +7,7 @@ public class ChessGameManager : MonoBehaviour
     public ChessPiece selectedPiece; // Wybrana bierka
     public bool isWhiteTurn = true;  // Sprawdzanie, której stronie nale¿y tura
     public GameObject _Camera, _ChessBoard;
-    
+
 
     void Start()
     {
@@ -40,18 +40,42 @@ public class ChessGameManager : MonoBehaviour
                 // Prze³¹czamy turê
                 isWhiteTurn = !isWhiteTurn;
                 selectedPiece.boardPosition = targetPosition;
-                
+
                 _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
             }
             else
             {
-                _ChessBoard.GetComponent<ChessBoard>().illegalMove(new Vector2Int(targetPosition.x,targetPosition.y));
+                _ChessBoard.GetComponent<ChessBoard>().illegalMove(new Vector2Int(targetPosition.x, targetPosition.y));
 
             }
         }
         else
         {
             Debug.Log("Nie wybrano bierki.");
+        }
+    }
+    public bool TestMovePiece(Vector2Int targetPosition)
+    {
+        //Debug.Log("jestem w gm i chce ruszyc");
+        if (selectedPiece != null)
+        {
+
+            // Sprawdzamy, czy ruch jest dozwolony
+            bool[,] availableMoves = selectedPiece.GetAvailableMoves(boardState);
+
+            if (availableMoves[targetPosition.x, targetPosition.y])
+            {
+                return true;
+            }
+            else
+            {
+                _ChessBoard.GetComponent<ChessBoard>().illegalMove(targetPosition);
+                return false;
+            }
+        }
+        else {
+            Debug.Log("Nie wybrano bierki");
+            return false;
         }
     }
 }

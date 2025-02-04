@@ -75,7 +75,26 @@ public class ChessBoard : MonoBehaviour
                 {
                     if (ClickedObject.CompareTag("Plansza") && ClickedObject.gameObject.GetComponent<Cube>().Zajety == true) // Klikniêcie w bierkê
                     {
-                        if ((ChessGameManager.instance.isWhiteTurn && clickedPosition.GetComponent<ChessPiece>().isWhite) || (!GM.GetComponent<ChessGameManager>().isWhiteTurn && !clickedPosition.gameObject.GetComponent<ChessPiece>().isWhite))
+
+                        if ((ChessGameManager.instance.isWhiteTurn && !clickedPosition.GetComponent<ChessPiece>().isWhite) && ChessGameManager.instance.selectedPiece.isWhite || (!GM.GetComponent<ChessGameManager>().isWhiteTurn && clickedPosition.gameObject.GetComponent<ChessPiece>().isWhite && !ChessGameManager.instance.selectedPiece.isWhite))
+                        {
+                            Debug.Log("Atak");
+                            ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
+                            if (ChessGameManager.instance.TestMovePiece(clickedPosition.boardPosition))
+                            {
+                                ChessGameManager.instance.MovePiece(clickedPosition.boardPosition);
+                                Destroy(clickedPosition.gameObject);
+                            }
+                            else {
+                                Debug.Log("Bicie Niemozliwe");
+                            }
+                            odznacz(PreLastClick);
+                            ChessGameManager.instance.selectedPiece = null;
+                            ClickedObject.GetComponent<Cube>().Selected = false;
+                            ClickedObject.GetComponent<Cube>().PreRefresh(0f);
+                            PreLastClick = ClickedObject.GetComponent<Cube>().Position;
+                        }
+                            if ((ChessGameManager.instance.isWhiteTurn && clickedPosition.GetComponent<ChessPiece>().isWhite) || (!GM.GetComponent<ChessGameManager>().isWhiteTurn && !clickedPosition.gameObject.GetComponent<ChessPiece>().isWhite))
                         {
                             if (ChessGameManager.instance.selectedPiece == null) // Jeœli ¿adna bierka nie jest wybrana
                             {
