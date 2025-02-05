@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: -981373395236125106}
   m_Layer: 6
   m_Name: _PawnW
-  m_TagString: Untagged
+  m_TagString: Pawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -130,6 +130,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardPosition: {x: 0, y: 0}
   isWhite: 0
+  Moved: 0
 --- !u!1 &337819421255032816
 GameObject:
   m_ObjectHideFlags: 0

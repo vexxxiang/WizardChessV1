@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ChessGameManager : MonoBehaviour
 {
@@ -7,10 +8,10 @@ public class ChessGameManager : MonoBehaviour
     public ChessPiece selectedPiece; // Wybrana bierka
     public bool isWhiteTurn = true;  // Sprawdzanie, której stronie nale¿y tura
     public GameObject _Camera, _ChessBoard;
+    public GameObject PromotionPanel;
+    public ChessPiece Piece;
 
-    public void GameState() { 
-        
-    } 
+   
     void Start()
     {
         instance = this;
@@ -44,7 +45,7 @@ public class ChessGameManager : MonoBehaviour
                 isWhiteTurn = !isWhiteTurn;
                 selectedPiece.boardPosition = targetPosition;
 
-                _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
+                
             }
             else
             {
@@ -56,6 +57,38 @@ public class ChessGameManager : MonoBehaviour
         {
             Debug.Log("Nie wybrano bierki.");
         }
+        if (selectedPiece.CompareTag("Pawn"))
+        {
+            if (selectedPiece.isWhite && selectedPiece.boardPosition.y == 7)
+            {
+                PromotionPanel.SetActive(true);
+                Debug.Log("Promotion white");
+
+                Piece = selectedPiece;
+                    
+
+
+            }
+            else if (!selectedPiece.isWhite && selectedPiece.boardPosition.y == 0)
+            {
+                PromotionPanel.SetActive(true);
+                Debug.Log("Promotion black");
+
+                Piece = selectedPiece;
+
+
+
+            }
+            else
+            {
+                _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
+            }
+        }
+        else
+        {
+            _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
+        }
+
     }
     public void CastleMovePiece(Vector2Int targetPosition)
     {

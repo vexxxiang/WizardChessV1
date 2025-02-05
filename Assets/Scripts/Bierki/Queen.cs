@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Queen : ChessPiece
 {
-
+   
     public override bool[,] GetAvailableMoves(ChessPiece[,] boardState)
     {
         bool[,] moves = new bool[8, 8];

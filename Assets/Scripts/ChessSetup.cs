@@ -23,9 +23,11 @@ public class ChessSetup : MonoBehaviour
     //public ChessPiece[,] boardState = new ChessPiece[8, 8];
 
     public GameObject _Bierki;
+    public static ChessSetup instance;
 
     void Start()
     {
+        instance = this;
         chessBoard = chessBoard.GetComponent<ChessBoard>();
         
     }
@@ -35,8 +37,8 @@ public class ChessSetup : MonoBehaviour
         // Ustawienie pionków
         for (int x = 0; x < 8; x++)
         {
-            SpawnPiece(whitePawnPrefab, new Vector2Int(x, 3), true); // Bia³e pionki na drugim rzêdzie
-            SpawnPiece(blackPawnPrefab, new Vector2Int(x, 4), false); // Czarne pionki na siódmym rzêdzie
+            SpawnPiece(whitePawnPrefab, new Vector2Int(x, 1), true); // Bia³e pionki na drugim rzêdzie
+            SpawnPiece(blackPawnPrefab, new Vector2Int(x, 6), false); // Czarne pionki na siódmym rzêdzie
         }
 
         // Ustawienie wie¿
@@ -44,7 +46,7 @@ public class ChessSetup : MonoBehaviour
         SpawnPiece(whiteRookPrefab, new Vector2Int(7, 0), true);
         SpawnPiece(blackRookPrefab, new Vector2Int(0, 7), false);
         SpawnPiece(blackRookPrefab, new Vector2Int(7, 7), false);
-
+        
         // Ustawienie skoczków
         SpawnPiece(whiteKnightPrefab, new Vector2Int(1, 0), true);
         SpawnPiece(whiteKnightPrefab, new Vector2Int(6, 0), true);
@@ -64,11 +66,11 @@ public class ChessSetup : MonoBehaviour
         // Ustawienie królów
         SpawnPiece(whiteKingPrefab, new Vector2Int(4, 0), true);
         SpawnPiece(blackKingPrefab, new Vector2Int(4, 7), false);
-
-
+        
+        
     }
 
-    void SpawnPiece(GameObject prefab, Vector2Int position, bool isWhite)
+    public void SpawnPiece(GameObject prefab, Vector2Int position, bool isWhite)
     {
         Vector3 worldPosition = new Vector3(position.x, 0, position.y);
         if (isWhite == true)
