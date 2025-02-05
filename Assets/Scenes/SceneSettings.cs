@@ -14,9 +14,10 @@ public class SceneSettings: MonoBehaviour
     }
     public void ExitGame()
     {
-
-        // Jeœli ju¿ w zbudowanej aplikacji, zamykamy grê
         Application.Quit();
-
+    }
+    public void LeaveToMenu()
+    {
+        SceneManager.LoadScene("Menu");
     }
 }

@@ -2073,7 +2073,7 @@ GameObject:
   - component: {fileID: -7581909189272140876}
   m_Layer: 15
   m_Name: _KingB
-  m_TagString: Untagged
+  m_TagString: King
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

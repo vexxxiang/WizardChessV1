@@ -8,7 +8,9 @@ public class ChessGameManager : MonoBehaviour
     public bool isWhiteTurn = true;  // Sprawdzanie, której stronie nale¿y tura
     public GameObject _Camera, _ChessBoard;
 
-
+    public void GameState() { 
+        
+    } 
     void Start()
     {
         instance = this;
@@ -34,6 +36,7 @@ public class ChessGameManager : MonoBehaviour
 
             if (availableMoves[targetPosition.x, targetPosition.y])
             {
+                selectedPiece.GetComponent<ChessPiece>().Moved = true;
                 // Ruch dozwolony - ustawiamy now¹ pozycjê bierki
                 selectedPiece.SetPosition(targetPosition);
 
@@ -53,6 +56,26 @@ public class ChessGameManager : MonoBehaviour
         {
             Debug.Log("Nie wybrano bierki.");
         }
+    }
+    public void CastleMovePiece(Vector2Int targetPosition)
+    {
+       
+            // Sprawdzamy, czy ruch jest dozwolony
+           
+                selectedPiece.GetComponent<ChessPiece>().Moved = true;
+                // Ruch dozwolony - ustawiamy now¹ pozycjê bierki
+                selectedPiece.SetPosition(targetPosition);
+
+                // Prze³¹czamy turê
+                
+                selectedPiece.boardPosition = targetPosition;
+                selectedPiece = null;
+        
+        
+        
+           
+        
+       
     }
     public bool TestMovePiece(Vector2Int targetPosition)
     {

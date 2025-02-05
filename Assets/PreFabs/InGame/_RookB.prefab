@@ -3759,7 +3759,7 @@ GameObject:
   - component: {fileID: -9198186588845386527}
   m_Layer: 10
   m_Name: _RookB
-  m_TagString: Untagged
+  m_TagString: Rook
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -35,8 +35,8 @@ public class ChessSetup : MonoBehaviour
         // Ustawienie pionków
         for (int x = 0; x < 8; x++)
         {
-            SpawnPiece(whitePawnPrefab, new Vector2Int(x, 1), true); // Bia³e pionki na drugim rzêdzie
-            SpawnPiece(blackPawnPrefab, new Vector2Int(x, 6), false); // Czarne pionki na siódmym rzêdzie
+            SpawnPiece(whitePawnPrefab, new Vector2Int(x, 3), true); // Bia³e pionki na drugim rzêdzie
+            SpawnPiece(blackPawnPrefab, new Vector2Int(x, 4), false); // Czarne pionki na siódmym rzêdzie
         }
 
         // Ustawienie wie¿
