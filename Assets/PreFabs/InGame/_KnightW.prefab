@@ -1248,6 +1248,7 @@ GameObject:
   - component: {fileID: 7731065294397586183}
   - component: {fileID: -4137761913574541181}
   - component: {fileID: 2030151122826649701}
+  - component: {fileID: -5091464562030664768}
   m_Layer: 12
   m_Name: _KnightW
   m_TagString: Untagged
@@ -1301,6 +1302,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardPosition: {x: 0, y: 0}
   isWhite: 0
+  Moved: 0
+--- !u!95 &-5091464562030664768
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6917971306283229629}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fa221a9d913d16047b1ccfa728307453, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6925910819000512646
 GameObject:
   m_ObjectHideFlags: 0

@@ -74,6 +74,7 @@ GameObject:
   - component: {fileID: 1110014309177625800}
   - component: {fileID: -6248225910959928552}
   - component: {fileID: -981373395236125106}
+  - component: {fileID: -893321097101854713}
   m_Layer: 6
   m_Name: _PawnW
   m_TagString: Pawn
@@ -100,7 +101,7 @@ Transform:
   - {fileID: 7054932215430319852}
   - {fileID: 5749564672986300084}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &-6248225910959928552
 MeshCollider:
@@ -131,6 +132,26 @@ MonoBehaviour:
   boardPosition: {x: 0, y: 0}
   isWhite: 0
   Moved: 0
+--- !u!95 &-893321097101854713
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300686256047806066}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d9ad26263133c95418879ea037e008e9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &337819421255032816
 GameObject:
   m_ObjectHideFlags: 0

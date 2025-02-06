@@ -3757,6 +3757,7 @@ GameObject:
   - component: {fileID: 8399801590859290739}
   - component: {fileID: -1689510347238134608}
   - component: {fileID: -9198186588845386527}
+  - component: {fileID: -8892458898032630562}
   m_Layer: 10
   m_Name: _RookB
   m_TagString: Rook
@@ -3815,3 +3816,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardPosition: {x: 0, y: 0}
   isWhite: 0
+  Moved: 0
+--- !u!95 &-8892458898032630562
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9212614030359626441}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 50455c4e09ffc6d45a29451ed4d3cb24, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

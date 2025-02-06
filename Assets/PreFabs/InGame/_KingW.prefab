@@ -1771,6 +1771,7 @@ GameObject:
   - component: {fileID: 5541797050313971129}
   - component: {fileID: 5704387124789428479}
   - component: {fileID: 8130956294233364803}
+  - component: {fileID: 9004316150554143347}
   m_Layer: 14
   m_Name: _KingW
   m_TagString: King
@@ -1825,6 +1826,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardPosition: {x: 0, y: 0}
   isWhite: 0
+  Moved: 0
+--- !u!95 &9004316150554143347
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5162175905106611971}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 90eadfdd2c5a0ee4db24a13861648e01, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &5355512562800303448
 GameObject:
   m_ObjectHideFlags: 0

@@ -90,6 +90,9 @@ public class ChessBoard : MonoBehaviour
                             {
                                 ClickedObject.GetComponent<Cube>().Selected = false;
                                 ClickedObject.GetComponent<Cube>().PreRefresh(0f);
+                                //GM.GetComponent<AnimatorManager>().StartAnimation(ChessGameManager.instance.selectedPiece, clickedPosition);
+
+
                                 ChessGameManager.instance.MovePiece(clickedPosition.boardPosition);
                                 Destroy(clickedPosition.gameObject);
                             }

@@ -2021,6 +2021,7 @@ GameObject:
   - component: {fileID: 6442215616796335853}
   - component: {fileID: -8232148254783500176}
   - component: {fileID: -6258153450198506255}
+  - component: {fileID: -2634509521701362919}
   m_Layer: 9
   m_Name: _PawnB
   m_TagString: Pawn
@@ -2078,6 +2079,26 @@ MonoBehaviour:
   boardPosition: {x: 0, y: 0}
   isWhite: 0
   Moved: 0
+--- !u!95 &-2634509521701362919
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5921257504564495447}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d9ad26263133c95418879ea037e008e9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &5958513149301673429
 GameObject:
   m_ObjectHideFlags: 0
