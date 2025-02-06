@@ -1,0 +1,618 @@
+fileFormatVersion: 2
+guid: 5d677f086160cd34d8e78132b0d2b4c7
+ModelImporter:
+  serializedVersion: 22103
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.002_cell.001_Plane.002_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.002_cell.002_Plane.002_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.002_cell_cell.001_Plane.002_cell_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.002_cell_cell.002_Plane.002_cell_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.002_cell_cell.003_Plane.002_cell_cell.002Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.002_cell_cell_Plane.002_cell_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.003_cell.001_Plane.003_cell.005Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.003_cell.002_Plane.003_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.003_cell.004_Plane.003_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.003_cell.005_Plane.003_cell.006Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.003_cell_Plane.003_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.001_cell.001_Plane.004_cell.001_cell.007Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.001_cell.002_Plane.004_cell.001_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.001_cell.003_cell.001_Plane.004_cell.001_cell.003_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.001_cell.003_cell.002_Plane.004_cell.001_cell.003_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.001_cell.003_cell.003_Plane.004_cell.001_cell.003_cell.002Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.001_cell.003_cell.004_Plane.004_cell.001_cell.003_cell.005Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.001_cell.003_cell_cell.001_Plane.004_cell.001_cell.003_cell_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.001_cell.003_cell_cell_Plane.004_cell.001_cell.003_cell_cell.002Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.001_cell.004_Plane.004_cell.001_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.001_cell.005_Plane.004_cell.001_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.001_cell_Plane.004_cell.001_cell.006Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.002_cell.001_Plane.004_cell.002_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.002_cell.002_Plane.004_cell.002_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.002_cell_cell.001_Plane.004_cell.002_cell_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.002_cell_cell_Plane.004_cell.002_cell_cell.002Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.003_cell.001_Plane.004_cell.003_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.003_cell.002_cell.001_Plane.004_cell.003_cell.002_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.003_cell.002_cell.002_Plane.004_cell.003_cell.002_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.003_cell.002_cell.003_Plane.004_cell.003_cell.002_cell.002Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.003_cell.002_cell_Plane.004_cell.003_cell.002_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.003_cell.003_cell.001_Plane.004_cell.003_cell.003_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.003_cell.003_cell.002_Plane.004_cell.003_cell.003_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.003_cell.003_cell.003_Plane.004_cell.003_cell.003_cell.002Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.003_cell.003_cell_Plane.004_cell.003_cell.003_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.003_cell_cell.001_Plane.004_cell.003_cell_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.003_cell_cell.002_Plane.004_cell.003_cell_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.003_cell_cell_Plane.004_cell.003_cell_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.004_cell.001_Plane.004_cell.004_cell.007Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.004_cell.002_Plane.004_cell.004_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.004_cell.003_Plane.004_cell.004_cell.002Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.004_cell.004_Plane.004_cell.004_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.004_cell.005_Plane.004_cell.004_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.004_cell_Plane.004_cell.004_cell.006Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.005_cell.001_Plane.004_cell.005_cell.005Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.005_cell.002_Plane.004_cell.005_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.005_cell.003_Plane.004_cell.005_cell.002Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.005_cell_Plane.004_cell.005_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.006_cell.001_Plane.004_cell.006_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.006_cell.002_Plane.004_cell.006_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell.006_cell_Plane.004_cell.006_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell_cell.001_Plane.004_cell_cell.007Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell_cell.002_Plane.004_cell_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell_cell.003_Plane.004_cell_cell.002Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell_cell.004_Plane.004_cell_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell_cell.005_Plane.004_cell_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.004_cell_cell_Plane.004_cell_cell.006Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.005_Plane.005Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.006_Plane.006Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.007_Plane.007Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.008_Plane.008Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.009_cell.001_Plane.009_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.009_cell.002_Plane.009_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.009_cell_Plane.009_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.010_cell.001_Plane.010_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.010_cell.002_Plane.010_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.010_cell_Plane.010_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.011_cell.001_Plane.011_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.011_cell.002_Plane.011_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.011_cell.003_Plane.011_cell.002Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.011_cell_Plane.011_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.012_cell.001_Plane.012_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.012_cell.002_Plane.012_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.012_cell_Plane.012_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.013_cell.001_Plane.013_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.013_cell.002_Plane.013_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.013_cell_Plane.013_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.014_cell.001_Plane.014_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.014_cell.002_Plane.014_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.014_cell.003_Plane.014_cell.002Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.014_cell_Plane.014_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.015_cell.001_Plane.015_cell.005Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.015_cell.002_cell.001_Plane.015_cell.002_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.015_cell.002_cell.002_Plane.015_cell.002_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.015_cell.002_cell_Plane.015_cell.002_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.015_cell.003_Plane.015_cell.002Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.015_cell.004_Plane.015_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.015_cell_Plane.015_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.016_Plane.016Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.017_cell.001_Plane.017_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.017_cell.002_Plane.017_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.017_cell_Plane.017_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.018_cell.001_Plane.018_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.018_cell.002_Plane.018_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.018_cell_Plane.018_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.020_cell.001_Plane.020_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.020_cell.002_Plane.020_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.020_cell_Plane.020_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.021_cell.001_Plane.021_cell.004Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.021_cell.002_Plane.021_cell.001Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plane.021_cell_Plane.021_cell.003Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: podstawa.001_Cylinder.002Mat
+    second: {fileID: 2100000, guid: 4717a47954af33d4a96ec66bf8d4db05, type: 2}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
