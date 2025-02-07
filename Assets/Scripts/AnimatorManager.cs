@@ -9,20 +9,29 @@ public class AnimatorManager : MonoBehaviour
     public float movingSpeed; // Prêdkoœæ obrotu
     public float rotationThreshold; // Próg, kiedy uznajemy obrót za zakoñczony
     public float distanceThreshold; 
-    public float offsetStopMoving ; 
+    public float offsetStopMoving ;
+    public float TRPawn = 1f, TRRook = 0.16f, TRBishop = 2.16f, TRKnight = 1.5f, TRQueen = 1.16f, TRKing = 1.5f;
+    public GameObject _Pawn, _Rook, _Bishop, _Knight, _Queen, _King, _PawnB, _RookB, _BishopB, _KnightB, _QueenB, _KingB;
+    private bool isRunning = false;
+    GameObject model;
+    Vector3 Position;
+
 
     public ChessPiece movingFigure, targetFigure;
     public bool looking = false;
+    public Vector2Int startPos;
     public void StartAnimation(ChessPiece _movingFigure, ChessPiece _targetFigure)
     {
         movingFigure = _movingFigure;
         targetFigure = _targetFigure;
         StartCoroutine(RotateTowardsTarget());
+        startPos = movingFigure.boardPosition;
+
 
     }
         IEnumerator RotateTowardsTarget()
     {
-        Debug.Log("first step animation");
+
         if (targetFigure == null) yield break;
 
         // Ró¿nica w pozycjach miêdzy targetFigure a movingFigure
@@ -79,18 +88,15 @@ public class AnimatorManager : MonoBehaviour
             (Mathf.Abs(difference.z) - offsetStopMoving) * (isUpSide ? 1 : -1) // Kierunek w osi Z
         );
 
-        Debug.Log("quaterlogics: " + QuatersLogics);
+
 
         // Obliczenie nowej pozycji docelowej z uwzglêdnieniem offsetu
         Vector3 preTargetPosition = movingFigure.transform.position + QuatersLogics;
-        Debug.Log("pretargetpos: " + preTargetPosition);
+
 
         // P³ynne przesuwanie
         while (Vector3.Distance(movingFigure.transform.position, preTargetPosition) > distanceThreshold)
         {
-            // Debugowanie pozycji aktualnej obiektu i docelowej
-            Debug.Log("Current Position: " + movingFigure.transform.position);
-            Debug.Log("Target Position: " + preTargetPosition);
 
             // U¿ycie Vector3.MoveTowards do p³ynnego przesuwania
             movingFigure.transform.position = Vector3.MoveTowards(
@@ -103,40 +109,82 @@ public class AnimatorManager : MonoBehaviour
         }
 
         // Gdy obiekt dotrze do docelowej pozycji
-        Debug.Log("ruch zakoñczony!" );
+
         looking = true;
         PlayingAnimation();
 
 
     }
+
+
+    public void PlayingAnimation()
+    {
+        Debug.Log(movingFigure.transform.position);
+        
+        movingFigure.GetComponent<Animator>().SetBool("MoveAnimation", true);
+        isRunning = true;
+
+        
+
+
+    }
+
     void Update()
     {
-        
+
         if (targetFigure != null && looking)
         {
             Vector3 directionToTarget = targetFigure.transform.position - movingFigure.transform.position;
             Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
             movingFigure.transform.rotation = Quaternion.Lerp(movingFigure.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
+
+        if (isRunning)
+        {
+            
+            var timeRemaining = 0f;
+            //dla bia³ych
+            if (targetFigure.CompareTag("Pawn") && targetFigure.isWhite) { timeRemaining = TRPawn; model = _Pawn; }
+            else if (targetFigure.CompareTag("Rook") && targetFigure.isWhite) { timeRemaining = TRRook; model = _Rook; }
+            else if (targetFigure.CompareTag("King") && targetFigure.isWhite) { timeRemaining = TRKing; model = _King; }
+            else if (targetFigure.CompareTag("Bishop") && targetFigure.isWhite) { timeRemaining = TRBishop; model = _Bishop; }
+            else if (targetFigure.CompareTag("Knight") && targetFigure.isWhite) { timeRemaining = TRKnight; model = _Knight; }
+            else if (targetFigure.CompareTag("Queen") && targetFigure.isWhite) { timeRemaining = TRQueen; model = _Queen; }
+            //dla czarnych
+            else if (targetFigure.CompareTag("Pawn") && !targetFigure.isWhite) { timeRemaining = TRPawn; model = _PawnB; }
+            else if (targetFigure.CompareTag("Rook") && !targetFigure.isWhite) { timeRemaining = TRRook; model = _RookB; }
+            else if (targetFigure.CompareTag("King") && !targetFigure.isWhite) { timeRemaining = TRKing; model = _KingB; }
+            else if (targetFigure.CompareTag("Bishop") && !targetFigure.isWhite) { timeRemaining = TRBishop; model = _BishopB; }
+            else if (targetFigure.CompareTag("Knight") && !targetFigure.isWhite) { timeRemaining = TRKnight; model = _KnightB; }
+            else if (targetFigure.CompareTag("Queen") && !targetFigure.isWhite) { timeRemaining = TRQueen; model = _QueenB; }
+
+            
+            Invoke("changeModel", timeRemaining);
+
+            isRunning = false;
+
+
+        }
+        
     }
-
-
-
-    public void PlayingAnimation()
+    public void changeModel()
     {
-        Debug.Log(movingFigure.transform.position);
-        movingFigure.GetComponent<Animator>().SetBool("MoveAnimation", true);
-        
-        Debug.Log("animacja !");
-
-
-        Invoke("end", 1.8f);
-        
-    }
-    public void end() {
         looking = false;
+        Position = targetFigure.transform.position;
+        Quaternion Quat = targetFigure.transform.rotation;
+        Destroy(targetFigure.gameObject);
+        Instantiate(model, Position, Quat);
+
+        Invoke("end", 2f);
+        
     }
-    
+    public void end()
+    {
+        //Debug.Log(new Vector2Int((int)Position.x, (int)Position.z));
+        //ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[startPos.x,startPos.y];
+        //ChessGameManager.instance.MovePiece(new Vector2Int((int)Position.x,(int)Position.z));
+        //ChessGameManager.instance.selectedPiece = null;
+    }
 
 
 }

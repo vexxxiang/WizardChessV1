@@ -29,9 +29,10 @@ public class ChessGameManager : MonoBehaviour
     }
     public void MovePiece(Vector2Int targetPosition)
     {
-        //Debug.Log("jestem w gm i chce ruszyc");
+        Debug.Log("jestem w gm i chce ruszyc");
         if (selectedPiece != null)
         {
+            Debug.Log("cipa");
             // Sprawdzamy, czy ruch jest dozwolony
             bool[,] availableMoves = selectedPiece.GetAvailableMoves(boardState);
 
@@ -40,12 +41,23 @@ public class ChessGameManager : MonoBehaviour
                 selectedPiece.GetComponent<ChessPiece>().Moved = true;
                 // Ruch dozwolony - ustawiamy now¹ pozycjê bierki
                 selectedPiece.SetPosition(targetPosition);
+                
+                if (isWhiteTurn)
+                {
+                    selectedPiece.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
+                }
+                else
+                {
+                    selectedPiece.gameObject.transform.rotation = new Quaternion(0, 180, 0, 0);
+                }
+
 
                 // Prze³¹czamy turê
                 isWhiteTurn = !isWhiteTurn;
                 selectedPiece.boardPosition = targetPosition;
-
                 
+
+
             }
             else
             {

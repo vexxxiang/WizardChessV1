@@ -1248,10 +1248,10 @@ GameObject:
   - component: {fileID: 7731065294397586183}
   - component: {fileID: -4137761913574541181}
   - component: {fileID: 2030151122826649701}
-  - component: {fileID: -5091464562030664768}
+  - component: {fileID: 8475950262990352508}
   m_Layer: 12
   m_Name: _KnightW
-  m_TagString: Untagged
+  m_TagString: Knight
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1272,7 +1272,7 @@ Transform:
   - {fileID: 6837214900434440823}
   - {fileID: 416008703354222883}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &-4137761913574541181
 MeshCollider:
@@ -1303,7 +1303,7 @@ MonoBehaviour:
   boardPosition: {x: 0, y: 0}
   isWhite: 0
   Moved: 0
---- !u!95 &-5091464562030664768
+--- !u!95 &8475950262990352508
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -1316,7 +1316,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: fa221a9d913d16047b1ccfa728307453, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -1461,6 +1461,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6837214900434440823}
   - component: {fileID: 7957342925081426070}
+  - component: {fileID: 5743515964114367372}
+  - component: {fileID: 2340979295064265020}
   m_Layer: 12
   m_Name: Plane.003
   m_TagString: Untagged
@@ -1477,7 +1479,7 @@ Transform:
   m_GameObject: {fileID: 8026013413582369352}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: -0.00000087918306, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7731065294397586183}
@@ -1571,6 +1573,32 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.009149985, y: 0.009490194, z: 0.008660905}
   m_DirtyAABB: 0
+--- !u!64 &5743515964114367372
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8026013413582369352}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
+--- !u!114 &2340979295064265020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8026013413582369352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b57d248a41e6af459848b56e777f6c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8163333239729048442
 GameObject:
   m_ObjectHideFlags: 0

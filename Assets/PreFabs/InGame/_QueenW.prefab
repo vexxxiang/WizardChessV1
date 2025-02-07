@@ -42,6 +42,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1106913628846417767}
   - component: {fileID: 1346015201123254896}
+  - component: {fileID: 357540768599685977}
+  - component: {fileID: 4815688026770944821}
   m_Layer: 17
   m_Name: 212k.002
   m_TagString: Untagged
@@ -58,7 +60,7 @@ Transform:
   m_GameObject: {fileID: 106605945657752482}
   m_LocalRotation: {x: -0.670242, y: 0.014795553, z: 0.022985239, w: 0.741639}
   m_LocalPosition: {x: 0.0000000127141675, y: 0, z: -0.000000059604645}
-  m_LocalScale: {x: 14.239992, y: 14.239994, z: 14.239992}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1810102883680781462}
@@ -153,6 +155,32 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0016815681, y: 0.005816823, z: 0.000046632253}
     m_Extent: {x: 0.0056744143, y: 0.004758343, z: 0.00652669}
   m_DirtyAABB: 0
+--- !u!114 &357540768599685977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 106605945657752482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b57d248a41e6af459848b56e777f6c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!64 &4815688026770944821
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 106605945657752482}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1 &297710328067957209
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,7 +481,7 @@ GameObject:
   - component: {fileID: 4899646009560894742}
   m_Layer: 17
   m_Name: _QueenW
-  m_TagString: Untagged
+  m_TagString: Queen
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -475,7 +503,7 @@ Transform:
   - {fileID: 5780059380885645497}
   - {fileID: 8615792501824489138}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &5855982801569005745
 MeshCollider:
@@ -519,7 +547,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 6a777af907edaec4d9f186743bb0f898, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 

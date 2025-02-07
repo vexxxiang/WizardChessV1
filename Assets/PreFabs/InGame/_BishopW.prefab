@@ -1812,7 +1812,7 @@ GameObject:
   - component: {fileID: -8794543196799222295}
   m_Layer: 8
   m_Name: _BishopW
-  m_TagString: Untagged
+  m_TagString: Bishop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1836,7 +1836,7 @@ Transform:
   - {fileID: 2847687001556831736}
   - {fileID: 5675070061450701693}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &3807052291730070776
 MeshCollider:
@@ -1866,6 +1866,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardPosition: {x: 0, y: 0}
   isWhite: 0
+  Moved: 0
 --- !u!95 &-8794543196799222295
 Animator:
   serializedVersion: 4
@@ -1879,7 +1880,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: eb1f933574cdd24479e646d65386766f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -2559,6 +2560,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1123981095727735301}
   - component: {fileID: 1001645159592024963}
+  - component: {fileID: 1723230872409443088}
+  - component: {fileID: 174896515507171497}
   m_Layer: 8
   m_Name: berlo.001
   m_TagString: Untagged
@@ -2575,7 +2578,7 @@ Transform:
   m_GameObject: {fileID: 7183557116699841955}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: 3.4909995, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5263216372892553180}
@@ -2699,6 +2702,32 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0009715017, y: -0.000068061054, z: 0.0026994497}
     m_Extent: {x: 0.005771792, y: 0.009237714, z: 0.0047654216}
   m_DirtyAABB: 0
+--- !u!64 &1723230872409443088
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7183557116699841955}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
+--- !u!114 &174896515507171497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7183557116699841955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b57d248a41e6af459848b56e777f6c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7225490913649600866
 GameObject:
   m_ObjectHideFlags: 0

@@ -1544,6 +1544,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1612657336769339096}
   - component: {fileID: 2389027994158733406}
+  - component: {fileID: 693238432628446222}
+  - component: {fileID: 3794624811822575956}
   m_Layer: 15
   m_Name: Cube.004
   m_TagString: Untagged
@@ -1560,7 +1562,7 @@ Transform:
   m_GameObject: {fileID: 4616797773099024213}
   m_LocalRotation: {x: -0.70710677, y: 0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0.00000047683716, y: 0.0003719988, z: 0.0017383844}
-  m_LocalScale: {x: 53.81223, y: 53.81223, z: 53.81223}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5940204449590069468}
@@ -1677,6 +1679,32 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0013210946, y: 0.0051369825, z: 0.001674538}
     m_Extent: {x: 0.0013172785, y: 0.0073174527, z: 0.0032882132}
   m_DirtyAABB: 0
+--- !u!114 &693238432628446222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4616797773099024213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b57d248a41e6af459848b56e777f6c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!64 &3794624811822575956
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4616797773099024213}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1 &4695694570260002860
 GameObject:
   m_ObjectHideFlags: 0
@@ -2096,7 +2124,7 @@ Transform:
   - {fileID: 1612657336769339096}
   - {fileID: 6157985213644699505}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &-8905304205667952206
 MeshCollider:
@@ -2140,7 +2168,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 90eadfdd2c5a0ee4db24a13861648e01, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 

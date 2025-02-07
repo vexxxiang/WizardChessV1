@@ -1615,6 +1615,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8323677915610478903}
   - component: {fileID: 2442930031083488833}
+  - component: {fileID: 4888199157854768647}
+  - component: {fileID: 2316032493000926382}
   m_Layer: 11
   m_Name: Cube.001
   m_TagString: Untagged
@@ -1631,7 +1633,7 @@ Transform:
   m_GameObject: {fileID: 3746526331282055306}
   m_LocalRotation: {x: -0.5579959, y: -0.16656606, z: -0.1865131, w: 0.7912706}
   m_LocalPosition: {x: 0.0000007748604, y: 0.00037193298, z: 0.0017383099}
-  m_LocalScale: {x: 11.332593, y: 11.332593, z: 11.332593}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5522151064249091953}
@@ -1758,6 +1760,32 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0008196106, y: 0.004165879, z: -0.0024847542}
     m_Extent: {x: 0.0024158538, y: 0.003821447, z: 0.0020772368}
   m_DirtyAABB: 0
+--- !u!114 &4888199157854768647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3746526331282055306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b57d248a41e6af459848b56e777f6c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!64 &2316032493000926382
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3746526331282055306}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1 &3858732323915865782
 GameObject:
   m_ObjectHideFlags: 0
@@ -2210,7 +2238,7 @@ Transform:
   - {fileID: 290571040461184452}
   - {fileID: 5946948927033005626}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &5825248773129022383
 MeshCollider:
@@ -2254,7 +2282,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 50455c4e09ffc6d45a29451ed4d3cb24, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 

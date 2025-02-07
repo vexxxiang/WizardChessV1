@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class Cube : MonoBehaviour
 {
-
+    public static Cube instance;
     public Vector2Int Position;
     public bool WhiteColor;
     public bool Selected;
     public bool Zajety = false;
-    GameObject Bierki;
+    public GameObject Bierki;
 
+    private void Start()
+    {
+        instance = this;
+    }
     public void PreRefresh(float czas)
     {
+        
         Invoke("Refresh", czas);
     }
     public void Refresh() 
@@ -22,16 +27,19 @@ public class Cube : MonoBehaviour
         if (Selected == true)
         {
             this.gameObject.GetComponent<Renderer>().material.color = Color.green;
+            this.GetComponent<MeshRenderer>().enabled = true;
         }
         else 
         {
             if (WhiteColor)
             {
                 this.gameObject.GetComponent<Renderer>().material.color = Color.white;
+                this.GetComponent<MeshRenderer>().enabled = false;
             }
             else
             {
                 this.gameObject.GetComponent<Renderer>().material.color = Color.black;
+                this.GetComponent<MeshRenderer>().enabled = false;
             }
         }
     }
