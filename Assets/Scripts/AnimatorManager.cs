@@ -123,10 +123,6 @@ public class AnimatorManager : MonoBehaviour
         
         movingFigure.GetComponent<Animator>().SetBool("MoveAnimation", true);
         isRunning = true;
-
-        
-
-
     }
 
     void Update()
@@ -180,10 +176,11 @@ public class AnimatorManager : MonoBehaviour
     }
     public void end()
     {
-        //Debug.Log(new Vector2Int((int)Position.x, (int)Position.z));
-        //ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[startPos.x,startPos.y];
-        //ChessGameManager.instance.MovePiece(new Vector2Int((int)Position.x,(int)Position.z));
-        //ChessGameManager.instance.selectedPiece = null;
+        Debug.Log(new Vector2Int((int)Position.x, (int)Position.z));
+        ChessGameManager.instance.boardState[(int)Position.x,(int)Position.z] = null;
+        ChessGameManager.instance.atack = true;
+        ChessGameManager.instance.MovePiece(new Vector2Int((int)Position.x,(int)Position.z));
+        ChessGameManager.instance.selectedPiece = null;
     }
 
 

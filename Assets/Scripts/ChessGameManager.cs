@@ -7,9 +7,11 @@ public class ChessGameManager : MonoBehaviour
     public ChessPiece[,] boardState = new ChessPiece[8, 8];  // Tablica stanu planszy (bierek)
     public ChessPiece selectedPiece; // Wybrana bierka
     public bool isWhiteTurn = true;  // Sprawdzanie, której stronie nale¿y tura
+    public bool atack = false;
     public GameObject _Camera, _ChessBoard;
     public GameObject PromotionPanel;
     public ChessPiece Piece;
+
 
    
     void Start()
@@ -32,16 +34,17 @@ public class ChessGameManager : MonoBehaviour
         Debug.Log("jestem w gm i chce ruszyc");
         if (selectedPiece != null)
         {
-            Debug.Log("cipa");
             // Sprawdzamy, czy ruch jest dozwolony
             bool[,] availableMoves = selectedPiece.GetAvailableMoves(boardState);
-
+            Debug.Log("przed sprawdzeniem avaiblemoves");
+            Debug.Log("mozliwy ruch ?: " + availableMoves[targetPosition.x, targetPosition.y]);
             if (availableMoves[targetPosition.x, targetPosition.y])
             {
+                Debug.Log("po sprawdzeniem avaiblemoves");
                 selectedPiece.GetComponent<ChessPiece>().Moved = true;
                 // Ruch dozwolony - ustawiamy now¹ pozycjê bierki
                 selectedPiece.SetPosition(targetPosition);
-                
+
                 if (isWhiteTurn)
                 {
                     selectedPiece.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
@@ -55,9 +58,34 @@ public class ChessGameManager : MonoBehaviour
                 // Prze³¹czamy turê
                 isWhiteTurn = !isWhiteTurn;
                 selectedPiece.boardPosition = targetPosition;
-                
 
 
+
+            }
+            else if (atack)
+            {
+                Debug.Log("ruch ponad wszystko");
+                selectedPiece.GetComponent<ChessPiece>().Moved = true;
+                // Ruch dozwolony - ustawiamy now¹ pozycjê bierki
+                selectedPiece.SetPosition(targetPosition);
+
+                if (isWhiteTurn)
+                {
+                    selectedPiece.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
+                }
+                else
+                {
+                    selectedPiece.gameObject.transform.rotation = new Quaternion(0, 180, 0, 0);
+                }
+
+
+                // Prze³¹czamy turê
+                isWhiteTurn = !isWhiteTurn;
+                selectedPiece.boardPosition = targetPosition;
+
+
+
+                atack = false;
             }
             else
             {
