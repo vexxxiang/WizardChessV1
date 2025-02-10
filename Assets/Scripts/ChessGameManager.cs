@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -8,10 +9,11 @@ public class ChessGameManager : MonoBehaviour
     public ChessPiece selectedPiece; // Wybrana bierka
     public bool isWhiteTurn = true;  // Sprawdzanie, której stronie nale¿y tura
     public bool atack = false;
+    public bool PromotionNow = false;
     public GameObject _Camera, _ChessBoard;
     public GameObject PromotionPanel;
-    public ChessPiece Piece;
-
+    public ChessPiece Piece, promotionPiece;
+    public Vector3 finalPos;
 
    
     void Start()
@@ -26,66 +28,71 @@ public class ChessGameManager : MonoBehaviour
         if ((isWhiteTurn && piece.isWhite) || (!isWhiteTurn && !piece.isWhite))
         {
             selectedPiece = piece;
-            Debug.Log("Wybrano bierkê: " + piece.name + " na pozycji: " + position);
+            //Debug.Log("Wybrano bierkê: " + piece.name + " na pozycji: " + position);
         }
+    }
+
+
+    public IEnumerator RotateTowardsPlane()
+    {
+        
+       
+
+
+        if (selectedPiece == null) yield break;
+
+        var startRotation = selectedPiece.transform.rotation;
+        Debug.Log(finalPos + "<- final pos | boardPosition -> " + selectedPiece.boardPosition);
+
+        Vector3 direction = new Vector3(
+            finalPos.x - selectedPiece.boardPosition.x,
+            0, // Wysokoœæ nie zmienia siê
+            finalPos.z - selectedPiece.boardPosition.y
+        ); ;
+
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        Debug.Log(direction + "<-kierunek | rotacja -> " + targetRotation);
+   
+
+        while (Quaternion.Angle(selectedPiece.transform.rotation, targetRotation) > AnimatorManager.instace.rotationThreshold)
+        {
+            selectedPiece.transform.rotation = Quaternion.Slerp(selectedPiece.transform.rotation, targetRotation, Time.deltaTime * AnimatorManager.instace.rotationSpeed);
+            yield return null;
+        }
+
+        StartCoroutine(MoveAnimation());
+
+
+
+
+
     }
     public void MovePiece(Vector2Int targetPosition)
     {
-        Debug.Log("jestem w gm i chce ruszyc");
-        if (selectedPiece != null)
+        finalPos = new Vector3(targetPosition.x, 0, targetPosition.y);
+       if (selectedPiece != null )
         {
             // Sprawdzamy, czy ruch jest dozwolony
             bool[,] availableMoves = selectedPiece.GetAvailableMoves(boardState);
-            Debug.Log("przed sprawdzeniem avaiblemoves");
-            Debug.Log("mozliwy ruch ?: " + availableMoves[targetPosition.x, targetPosition.y]);
-            if (availableMoves[targetPosition.x, targetPosition.y])
+            if (availableMoves[targetPosition.x, targetPosition.y] && atack == false)
             {
-                Debug.Log("po sprawdzeniem avaiblemoves");
-                selectedPiece.GetComponent<ChessPiece>().Moved = true;
-                // Ruch dozwolony - ustawiamy now¹ pozycjê bierki
-                selectedPiece.SetPosition(targetPosition);
-
-                if (isWhiteTurn)
-                {
-                    selectedPiece.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
-                }
-                else
-                {
-                    selectedPiece.gameObject.transform.rotation = new Quaternion(0, 180, 0, 0);
-                }
+              
+           
 
 
-                // Prze³¹czamy turê
-                isWhiteTurn = !isWhiteTurn;
-                selectedPiece.boardPosition = targetPosition;
-
+                StartCoroutine(RotateTowardsPlane());
 
 
             }
             else if (atack)
             {
-                Debug.Log("ruch ponad wszystko");
-                selectedPiece.GetComponent<ChessPiece>().Moved = true;
-                // Ruch dozwolony - ustawiamy now¹ pozycjê bierki
-                selectedPiece.SetPosition(targetPosition);
-
-                if (isWhiteTurn)
-                {
-                    selectedPiece.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
-                }
-                else
-                {
-                    selectedPiece.gameObject.transform.rotation = new Quaternion(0, 180, 0, 0);
-                }
+                finalPos = new Vector3(targetPosition.x, 0, targetPosition.y);
+                StartCoroutine(MoveAnimation());
+                
 
 
-                // Prze³¹czamy turê
-                isWhiteTurn = !isWhiteTurn;
-                selectedPiece.boardPosition = targetPosition;
-
-
-
-                atack = false;
             }
             else
             {
@@ -99,36 +106,81 @@ public class ChessGameManager : MonoBehaviour
         }
         if (selectedPiece.CompareTag("Pawn"))
         {
-            if (selectedPiece.isWhite && selectedPiece.boardPosition.y == 7)
-            {
-                PromotionPanel.SetActive(true);
-                Debug.Log("Promotion white");
+           
+        }
 
-                Piece = selectedPiece;
-                    
+    }
 
+    public void promotion() {
 
-            }
-            else if (!selectedPiece.isWhite && selectedPiece.boardPosition.y == 0)
-            {
-                PromotionPanel.SetActive(true);
-                Debug.Log("Promotion black");
-
-                Piece = selectedPiece;
+        StartCoroutine(RotateTowardsPlane());
 
 
 
-            }
-            else
-            {
-                _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
-            }
+
+
+    }
+    IEnumerator MoveAnimation()
+    {
+        var startpos = selectedPiece.transform.position;
+        var elapsedTime = 0f;
+
+        if (selectedPiece == null) yield break;
+        while (Vector3.Distance(selectedPiece.transform.position, finalPos) > 0.001f)
+        {
+            float t = elapsedTime / 1; // Normalizacja czasu (od 0 do 1)
+            t = Mathf.SmoothStep(0f, 1f, t); // Dodanie efektu ease in-out
+
+            selectedPiece.transform.position = Vector3.Lerp(startpos, finalPos, t);
+
+            elapsedTime += Time.deltaTime;
+            yield return null; // Czekaj na kolejny frame
+        }
+        selectedPiece.transform.position = finalPos;
+        selectedPiece.GetComponent<ChessPiece>().Moved = true;
+        // Ruch dozwolony - ustawiamy now¹ pozycjê bierki
+        selectedPiece.SetPosition(new Vector2Int((int)finalPos.x,(int)finalPos.z));
+        /*
+        if (isWhiteTurn)
+        {
+            selectedPiece.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
         }
         else
         {
-            _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
+            selectedPiece.gameObject.transform.rotation = new Quaternion(0, 180, 0, 0);
         }
+        */
 
+        // Prze³¹czamy turê
+
+        if (!PromotionNow)
+        {
+            isWhiteTurn = !isWhiteTurn;
+            selectedPiece.boardPosition = new Vector2Int((int)finalPos.x, (int)finalPos.z);
+            atack = false;
+            Invoke("rotate", 1f);
+            selectedPiece = null;
+        }
+        else {
+            PromotionManager.instance.changeFigure();
+            selectedPiece.GetComponent<ChessPiece>().Moved = true;
+            isWhiteTurn = !isWhiteTurn;
+            selectedPiece.boardPosition = new Vector2Int((int)finalPos.x, (int)finalPos.z);
+            boardState[(int)finalPos.x,(int)finalPos.z] = promotionPiece;
+            Invoke("rotate", 1f);
+            selectedPiece = null;
+            PromotionNow = false;
+
+        }
+       
+        
+
+
+
+    }
+    public void rotate()
+    {
+        _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
     }
     public void CastleMovePiece(Vector2Int targetPosition)
     {
@@ -172,6 +224,20 @@ public class ChessGameManager : MonoBehaviour
         else {
             Debug.Log("Nie wybrano bierki");
             return false;
+        }
+    }
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            for(int x= 0; x<=7; ++x)
+            {
+                for (int z = 0; z <= 7; ++z)
+                {
+                    Debug.Log(boardState[x,z] + "   x:" +x  + " z:"+z);
+                }
+            }
+            
         }
     }
 }

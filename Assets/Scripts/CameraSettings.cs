@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Runtime.CompilerServices;
 
 public class CameraSettings : MonoBehaviour
 {
@@ -38,8 +39,9 @@ public class CameraSettings : MonoBehaviour
 
 
 
-    public void RotateAroundBoard()
+    public void RotateAroundBoard([CallerMemberName] string callerName = "")
     {
+        //Debug.Log($"SomeMethod was called by: {callerName}");
         float startAngle = target.transform.rotation.eulerAngles.y;  // Pobieramy obecny kąt Y
         float endAngle = gameManager.isWhiteTurn ? 0f : 180f;  // Ustawiamy kąt docelowy
 

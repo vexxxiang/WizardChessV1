@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public class Rook : ChessPiece
 {
+   
     public override bool[,] GetAvailableMoves(ChessPiece[,] boardState)
     {
         bool[,] moves = new bool[8, 8];

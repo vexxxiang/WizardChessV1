@@ -80,6 +80,10 @@ public class ChessSetup : MonoBehaviour
             piece.boardPosition = position;
             piece.isWhite = isWhite;
             ChessGameManager.instance.boardState[position.x, position.y] = piece;
+            if (ChessGameManager.instance.PromotionNow)
+            {
+                ChessGameManager.instance.promotionPiece = piece;
+            }
  
             
         }
@@ -89,6 +93,10 @@ public class ChessSetup : MonoBehaviour
             piece.boardPosition = position;
             piece.isWhite = isWhite;
             ChessGameManager.instance.boardState[position.x, position.y] = piece;
+            if (ChessGameManager.instance.PromotionNow)
+            {
+                ChessGameManager.instance.promotionPiece = piece;
+            }
         }
     }
 }

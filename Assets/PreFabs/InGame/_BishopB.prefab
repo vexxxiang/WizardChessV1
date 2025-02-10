@@ -1297,9 +1297,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3231766096438610266}
-  - component: {fileID: -1501781991961539004}
   - component: {fileID: -3209841099294816944}
   - component: {fileID: -7622431801574231433}
+  - component: {fileID: 6895705967194151052}
   m_Layer: 7
   m_Name: _BishopB
   m_TagString: Bishop
@@ -1328,20 +1328,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &-1501781991961539004
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2851441057561809888}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -2432090755550338912, guid: 21a38e1854bad964ca6c61dfb4040622, type: 3}
 --- !u!114 &-3209841099294816944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1377,6 +1363,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6895705967194151052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2851441057561809888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fb7b08e3b23559459931d1c29f2dcde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fightMode: 1
+  weapon: {fileID: 459972308413944613}
+  meshCollider: {fileID: 0}
 --- !u!1 &3087052806636990688
 GameObject:
   m_ObjectHideFlags: 0

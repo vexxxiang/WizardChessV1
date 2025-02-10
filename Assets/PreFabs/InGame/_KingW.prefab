@@ -1769,9 +1769,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5541797050313971129}
-  - component: {fileID: 5704387124789428479}
   - component: {fileID: 8130956294233364803}
   - component: {fileID: 9004316150554143347}
+  - component: {fileID: 6415988138346599675}
   m_Layer: 14
   m_Name: _KingW
   m_TagString: King
@@ -1798,20 +1798,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &5704387124789428479
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5162175905106611971}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -2432090755550338912, guid: f2caa1f3201b70f4ab6c60b2294f4d39, type: 3}
 --- !u!114 &8130956294233364803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1847,6 +1833,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6415988138346599675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5162175905106611971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fb7b08e3b23559459931d1c29f2dcde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fightMode: 1
+  weapon: {fileID: 6815523393151361584}
+  meshCollider: {fileID: 0}
 --- !u!1 &5355512562800303448
 GameObject:
   m_ObjectHideFlags: 0

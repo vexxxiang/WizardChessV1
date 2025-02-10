@@ -4,22 +4,27 @@ using UnityEngine;
 
 public class AnimatorManager : MonoBehaviour
 {
-    
+    public static AnimatorManager instace;
     public float rotationSpeed ; // Prêdkoœæ obrotu
     public float movingSpeed; // Prêdkoœæ obrotu
     public float rotationThreshold; // Próg, kiedy uznajemy obrót za zakoñczony
     public float distanceThreshold; 
     public float offsetStopMoving ;
     public float TRPawn = 1f, TRRook = 0.16f, TRBishop = 2.16f, TRKnight = 1.5f, TRQueen = 1.16f, TRKing = 1.5f;
-    public GameObject _Pawn, _Rook, _Bishop, _Knight, _Queen, _King, _PawnB, _RookB, _BishopB, _KnightB, _QueenB, _KingB;
+    public GameObject  _Pawn, _Rook, _Bishop, _Knight, _Queen, _King, _PawnB, _RookB, _BishopB, _KnightB, _QueenB, _KingB;
     private bool isRunning = false;
-    GameObject model;
+    GameObject model, destroy;
     Vector3 Position;
+    public bool first = true;
 
 
     public ChessPiece movingFigure, targetFigure;
     public bool looking = false;
     public Vector2Int startPos;
+    public void Start()
+    {
+        instace = this;
+    }
     public void StartAnimation(ChessPiece _movingFigure, ChessPiece _targetFigure)
     {
         movingFigure = _movingFigure;
@@ -52,9 +57,12 @@ public class AnimatorManager : MonoBehaviour
         }
 
         // Obrót zakoñczony, wykonujemy akcjê
-        Debug.Log("Obrót zakoñczony!");
+        //Debug.Log("Obrót zakoñczony!");
 
+       
             StartCoroutine(MoveAniamtion());
+        
+        
        
        
        
@@ -63,7 +71,7 @@ public class AnimatorManager : MonoBehaviour
 
     IEnumerator MoveAniamtion()
     {
-        Debug.Log("second step animation");
+        //Debug.Log("second step animation");
         if (targetFigure == null) yield break;
 
         // Obliczanie ró¿nicy w pozycjach (pozostawiamy Z i X do przesuniêcia)
@@ -93,21 +101,22 @@ public class AnimatorManager : MonoBehaviour
         // Obliczenie nowej pozycji docelowej z uwzglêdnieniem offsetu
         Vector3 preTargetPosition = movingFigure.transform.position + QuatersLogics;
 
-
+        var startpos = movingFigure.transform.position;
+        var elapsedTime = 0f;
         // P³ynne przesuwanie
         while (Vector3.Distance(movingFigure.transform.position, preTargetPosition) > distanceThreshold)
         {
 
-            // U¿ycie Vector3.MoveTowards do p³ynnego przesuwania
-            movingFigure.transform.position = Vector3.MoveTowards(
-                movingFigure.transform.position,
-                preTargetPosition,
-                movingSpeed * Time.deltaTime
-            );
+            float t = elapsedTime / 1; // Normalizacja czasu (od 0 do 1)
+            t = Mathf.SmoothStep(0f, 1f, t); // Dodanie efektu ease in-out
 
+            movingFigure.transform.position = Vector3.Lerp(startpos, preTargetPosition, t);
+
+            elapsedTime += Time.deltaTime;
+         
             yield return null;  // Czekaj na kolejny frame
         }
-
+        movingFigure.transform.position = preTargetPosition;
         // Gdy obiekt dotrze do docelowej pozycji
 
         looking = true;
@@ -119,7 +128,7 @@ public class AnimatorManager : MonoBehaviour
 
     public void PlayingAnimation()
     {
-        Debug.Log(movingFigure.transform.position);
+        //Debug.Log(movingFigure.transform.position);
         
         movingFigure.GetComponent<Animator>().SetBool("MoveAnimation", true);
         isRunning = true;
@@ -165,22 +174,26 @@ public class AnimatorManager : MonoBehaviour
     }
     public void changeModel()
     {
+        movingFigure.GetComponent<CollisionScript>().SwichMeshCollider();
         looking = false;
         Position = targetFigure.transform.position;
         Quaternion Quat = targetFigure.transform.rotation;
         Destroy(targetFigure.gameObject);
-        Instantiate(model, Position, Quat);
+
+        destroy = Instantiate(model, Position, Quat);
 
         Invoke("end", 2f);
         
     }
     public void end()
     {
-        Debug.Log(new Vector2Int((int)Position.x, (int)Position.z));
+        Destroy(destroy.gameObject);
+        movingFigure.GetComponent<CollisionScript>().SwichMeshCollider();
+        //Debug.Log(new Vector2Int((int)Position.x, (int)Position.z));
         ChessGameManager.instance.boardState[(int)Position.x,(int)Position.z] = null;
         ChessGameManager.instance.atack = true;
         ChessGameManager.instance.MovePiece(new Vector2Int((int)Position.x,(int)Position.z));
-        ChessGameManager.instance.selectedPiece = null;
+        
     }
 
 

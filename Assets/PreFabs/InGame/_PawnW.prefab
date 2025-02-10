@@ -74,6 +74,7 @@ GameObject:
   - component: {fileID: 1110014309177625800}
   - component: {fileID: -981373395236125106}
   - component: {fileID: -893321097101854713}
+  - component: {fileID: -6218749386606469794}
   m_Layer: 6
   m_Name: _PawnW
   m_TagString: Pawn
@@ -137,6 +138,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-6218749386606469794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300686256047806066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fb7b08e3b23559459931d1c29f2dcde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fightMode: 1
+  weapon: {fileID: 9136225354154969616}
+  meshCollider: {fileID: 0}
 --- !u!1 &337819421255032816
 GameObject:
   m_ObjectHideFlags: 0

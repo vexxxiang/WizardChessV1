@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class King : ChessPiece
 {
+   
 
     public override bool[,] GetAvailableMoves(ChessPiece[,] boardState)
     {

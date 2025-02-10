@@ -1246,9 +1246,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7731065294397586183}
-  - component: {fileID: -4137761913574541181}
   - component: {fileID: 2030151122826649701}
   - component: {fileID: 8475950262990352508}
+  - component: {fileID: 8615322295055240629}
   m_Layer: 12
   m_Name: _KnightW
   m_TagString: Knight
@@ -1274,20 +1274,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &-4137761913574541181
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6917971306283229629}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -2432090755550338912, guid: 1cc2e05a6fa93624ab0d9fd7a4a4147c, type: 3}
 --- !u!114 &2030151122826649701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1323,6 +1309,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8615322295055240629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6917971306283229629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fb7b08e3b23559459931d1c29f2dcde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fightMode: 1
+  weapon: {fileID: 8026013413582369352}
+  meshCollider: {fileID: 0}
 --- !u!1 &6925910819000512646
 GameObject:
   m_ObjectHideFlags: 0
@@ -1582,7 +1583,7 @@ MeshCollider:
   m_GameObject: {fileID: 8026013413582369352}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30

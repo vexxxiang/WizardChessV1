@@ -3783,9 +3783,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8399801590859290739}
-  - component: {fileID: -1689510347238134608}
   - component: {fileID: -9198186588845386527}
   - component: {fileID: -8892458898032630562}
+  - component: {fileID: -1843697592160063607}
   m_Layer: 10
   m_Name: _RookB
   m_TagString: Rook
@@ -3816,20 +3816,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &-1689510347238134608
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9212614030359626441}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -2432090755550338912, guid: 1c9bd9ed23d8e0048a4694c7c5edb837, type: 3}
 --- !u!114 &-9198186588845386527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3865,3 +3851,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-1843697592160063607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9212614030359626441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fb7b08e3b23559459931d1c29f2dcde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fightMode: 1
+  weapon: {fileID: 850861408920272776}
+  meshCollider: {fileID: 0}

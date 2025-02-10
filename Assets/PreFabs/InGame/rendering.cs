@@ -8,11 +8,13 @@ public class rendering : MonoBehaviour
     MeshCollider meshCollider;
     Mesh bakedMesh;
 
+
     void Start()
     {
         skinnedMesh = GetComponent<SkinnedMeshRenderer>();
         meshCollider = GetComponent<MeshCollider>();
         bakedMesh = new Mesh();
+        
     }
 
     void Update()
@@ -20,5 +22,6 @@ public class rendering : MonoBehaviour
         skinnedMesh.BakeMesh(bakedMesh);
         meshCollider.sharedMesh = bakedMesh;
     }
+  
 }
 

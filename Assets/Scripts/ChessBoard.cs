@@ -8,7 +8,13 @@ public class ChessBoard : MonoBehaviour
     public GameObject GM;
     List<GameObject> Plansza = new List<GameObject> { };
     public Vector2Int PreLastClick;
-    public GameObject _Camera;
+    public GameObject _Camera, promotionPanel;
+    public static ChessBoard instance;
+    public bool selecting = true;
+    public void Start()
+    {
+        instance = this;
+    }
     public void CreateBoard()
     { 
         for (int x = 0; x < 8; x++)
@@ -53,6 +59,7 @@ public class ChessBoard : MonoBehaviour
         {
             if (position == i.GetComponent<Cube>().Position)
             {
+                i.gameObject.GetComponent<MeshRenderer>().enabled = true;
                 i.gameObject.GetComponent<Renderer>().material.color = Color.red;
                 i.gameObject.GetComponent<Cube>().PreRefresh(1f);
             }
@@ -62,12 +69,12 @@ public class ChessBoard : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && selecting)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); 
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit)) 
+            if (Physics.Raycast(ray, out hit) ) 
             {
                 _UpdateState();
                 Renderer ClickedObject = hit.transform.GetComponent<Renderer>();
@@ -89,11 +96,13 @@ public class ChessBoard : MonoBehaviour
                             ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
                             if (ChessGameManager.instance.TestMovePiece(clickedPosition.boardPosition))
                             {
+
                                 ClickedObject.GetComponent<Cube>().Selected = false;
                                 ClickedObject.GetComponent<Cube>().PreRefresh(0f);
+                                AnimatorManager.instace.first = true;
                                 GM.GetComponent<AnimatorManager>().StartAnimation(ChessGameManager.instance.selectedPiece, clickedPosition);
+                                
 
-                               
                                 //ChessGameManager.instance.MovePiece(clickedPosition.boardPosition);
                                 //Destroy(clickedPosition.gameObject);
                             }
@@ -231,6 +240,7 @@ public class ChessBoard : MonoBehaviour
                                                     ChessGameManager.instance.CastleMovePiece(new Vector2Int(6, 0));
                                                     ChessGameManager.instance.isWhiteTurn = !ChessGameManager.instance.isWhiteTurn;
                                                     _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
+
                                                     //krótka roszada dla bia³ych
                                                     //Debug.Log("king Roszada wariacie k");
 
@@ -339,13 +349,42 @@ public class ChessBoard : MonoBehaviour
                     {
                         if (ChessGameManager.instance.selectedPiece != null ) // Jeœli jest wybrana bierka, próbujemy ni¹ ruszyæ
                         {
-                            ChessGameManager.instance.MovePiece(ClickedObject.GetComponent<Cube>().Position);
-                            //Debug.Log("Próba ruchu bierk¹ " + ChessGameManager.instance.selectedPiece + " na pole " + clickedPosition);
-                            ChessGameManager.instance.selectedPiece = null;
-                            
-                            odznacz(PreLastClick);
-                            
-                            PreLastClick = ClickedObject.GetComponent<Cube>().Position;
+
+                            if (ChessGameManager.instance.selectedPiece.CompareTag("Pawn") && ClickedObject.gameObject.GetComponent<Cube>().Position.y == 7 ||
+                                ChessGameManager.instance.selectedPiece.CompareTag("Pawn") && ClickedObject.gameObject.GetComponent<Cube>().Position.y == 0)
+                            {
+
+                                if (ChessGameManager.instance.TestMovePiece(ClickedObject.gameObject.GetComponent<Cube>().Position))
+                                {
+                                    odznacz(ChessGameManager.instance.selectedPiece.boardPosition);
+                                    ChessGameManager.instance.finalPos = new Vector3(ClickedObject.GetComponent<Cube>().Position.x, 0, ClickedObject.GetComponent<Cube>().Position.y);
+                                    ChessGameManager.instance.PromotionNow = true;
+                                    promotionPanel.SetActive(true);
+                                    selecting = false;
+                                }
+                                else 
+                                {
+                                    odznacz(ChessGameManager.instance.selectedPiece.boardPosition);
+                                    illegalMove(clickedPosition.boardPosition);
+                                    Debug.Log("ruch niedostepny");
+                                    illegalMove(clickedPosition.boardPosition);
+                                }
+                                
+                                
+
+
+
+                            }
+                            else {
+
+
+                                ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
+                                ChessGameManager.instance.MovePiece(ClickedObject.GetComponent<Cube>().Position);
+                                odznacz(PreLastClick);
+                                PreLastClick = ClickedObject.GetComponent<Cube>().Position;
+                                _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
+                            }
+
                         }
                         else
                         {

@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class PromotionManager : MonoBehaviour
 {
+    public string _Bierka;
     public GameObject _Camera;
+    public static PromotionManager instance;
+    public void Start()
+    {
+        instance = this;
+    }
     public void Rook() {
         Aprove("Rook");
     }
@@ -21,20 +27,30 @@ public class PromotionManager : MonoBehaviour
         Aprove("Knight");
     }
     public void Aprove(string Bierka) {
-        var piece = ChessGameManager.instance.Piece;
+        _Bierka = Bierka;
+        
+        ChessGameManager.instance.promotion();
+
+    }
+    public void changeFigure()
+    {
+
+        var piece = ChessGameManager.instance.selectedPiece;
         Debug.Log(piece);
-        switch (Bierka) {
+        switch (_Bierka)
+        {
             case ("Rook"):
                 gameObject.SetActive(false);
                 if (piece.GetComponent<ChessPiece>().isWhite)
                 {
                     ChessSetup.instance.SpawnPiece(ChessSetup.instance.whiteRookPrefab, piece.boardPosition, piece.isWhite);
                 }
-                else {
+                else
+                {
                     ChessSetup.instance.SpawnPiece(ChessSetup.instance.blackRookPrefab, piece.boardPosition, piece.isWhite);
                 }
-                
-                
+
+
                 break;
             case ("Bishop"):
                 gameObject.SetActive(false);
@@ -73,14 +89,16 @@ public class PromotionManager : MonoBehaviour
 
                 break;
 
-               
+
 
 
         }
 
-
+        ChessBoard.instance.selecting = true;
         Destroy(piece.gameObject);
         _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
+
     }
+
 
 }
