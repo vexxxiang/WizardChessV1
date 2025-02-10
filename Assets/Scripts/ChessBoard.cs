@@ -82,6 +82,7 @@ public class ChessBoard : MonoBehaviour
                 var clickedPosition = ChessGameManager.instance.boardState[((int)ClickedObject.GetComponent<Cube>().Position.x), (int)ClickedObject.GetComponent<Cube>().Position.y];
                 if (ClickedObject != null ) 
                 {
+                    
                     if (ClickedObject.CompareTag("Plansza") && ClickedObject.gameObject.GetComponent<Cube>().Zajety == true) // Klikniêcie w bierkê
                     {                       
                         
@@ -101,10 +102,7 @@ public class ChessBoard : MonoBehaviour
                                 ClickedObject.GetComponent<Cube>().PreRefresh(0f);
                                 AnimatorManager.instace.first = true;
                                 GM.GetComponent<AnimatorManager>().StartAnimation(ChessGameManager.instance.selectedPiece, clickedPosition);
-                                
 
-                                //ChessGameManager.instance.MovePiece(clickedPosition.boardPosition);
-                                //Destroy(clickedPosition.gameObject);
                             }
                             else {
                                 //Debug.Log("Bicie Niemozliwe");
@@ -178,6 +176,7 @@ public class ChessBoard : MonoBehaviour
 
                                     if (!clickedPosition.GetComponent<ChessPiece>().Moved && !ChessGameManager.instance.selectedPiece.GetComponent<ChessPiece>().Moved)
                                     {
+                                        
                                         //roszada dla bia³ych
                                         if (ChessGameManager.instance.isWhiteTurn)
                                         {
@@ -190,9 +189,10 @@ public class ChessBoard : MonoBehaviour
                                                     && !ChessGameManager.instance.boardState[3, 0])
                                                 {
                                                     odznacz(ChessGameManager.instance.selectedPiece.boardPosition);
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(2, 0));
-                                                    ChessGameManager.instance.selectedPiece = clickedPosition.gameObject.GetComponent<ChessPiece>();
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(3,0));
+                                                    ChessGameManager.instance.selectedPiece = clickedPosition;
+                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(3, 0));
+                                                    ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
+                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(2,0));
                                                     ChessGameManager.instance.isWhiteTurn = !ChessGameManager.instance.isWhiteTurn;
                                                     _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
                                                     
@@ -204,9 +204,10 @@ public class ChessBoard : MonoBehaviour
                                                     && !ChessGameManager.instance.boardState[5, 0] && !ChessGameManager.instance.boardState[6, 0])
                                                 {
                                                     odznacz(ChessGameManager.instance.selectedPiece.boardPosition);
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(6, 0));
-                                                    ChessGameManager.instance.selectedPiece = clickedPosition.gameObject.GetComponent<ChessPiece>();
+                                                    ChessGameManager.instance.selectedPiece = clickedPosition;
                                                     ChessGameManager.instance.CastleMovePiece(new Vector2Int(5, 0));
+                                                    ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
+                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(6, 0));
                                                     ChessGameManager.instance.isWhiteTurn = !ChessGameManager.instance.isWhiteTurn;
                                                     _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
 
@@ -222,9 +223,10 @@ public class ChessBoard : MonoBehaviour
                                                     && !ChessGameManager.instance.boardState[3, 0])
                                                 {
                                                     odznacz(ChessGameManager.instance.selectedPiece.boardPosition);
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(3, 0));
-                                                    ChessGameManager.instance.selectedPiece = clickedPosition.gameObject.GetComponent<ChessPiece>();
+                                                    ChessGameManager.instance.selectedPiece = clickedPosition;
                                                     ChessGameManager.instance.CastleMovePiece(new Vector2Int(2, 0));
+                                                    ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
+                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(3, 0));
                                                     ChessGameManager.instance.isWhiteTurn = !ChessGameManager.instance.isWhiteTurn;
                                                     _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
                                                     //D³uga roszada dla bia³ych
@@ -235,9 +237,10 @@ public class ChessBoard : MonoBehaviour
                                                     && !ChessGameManager.instance.boardState[5, 0] && !ChessGameManager.instance.boardState[6, 0])
                                                 {
                                                     odznacz(ChessGameManager.instance.selectedPiece.boardPosition);
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(5, 0));
-                                                    ChessGameManager.instance.selectedPiece = clickedPosition.gameObject.GetComponent<ChessPiece>();
+                                                    ChessGameManager.instance.selectedPiece = clickedPosition;
                                                     ChessGameManager.instance.CastleMovePiece(new Vector2Int(6, 0));
+                                                    ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
+                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(5, 0));
                                                     ChessGameManager.instance.isWhiteTurn = !ChessGameManager.instance.isWhiteTurn;
                                                     _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
 
@@ -262,9 +265,10 @@ public class ChessBoard : MonoBehaviour
                                                     && !ChessGameManager.instance.boardState[3, 7])
                                                 {
                                                     odznacz(ChessGameManager.instance.selectedPiece.boardPosition);
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(2, 7));
-                                                    ChessGameManager.instance.selectedPiece = clickedPosition.gameObject.GetComponent<ChessPiece>();
+                                                    ChessGameManager.instance.selectedPiece = clickedPosition;
                                                     ChessGameManager.instance.CastleMovePiece(new Vector2Int(3, 7));
+                                                    ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
+                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(2, 7));
                                                     ChessGameManager.instance.isWhiteTurn = !ChessGameManager.instance.isWhiteTurn;
                                                     _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
                                                     //D³uga roszada dla bia³ych
@@ -275,9 +279,10 @@ public class ChessBoard : MonoBehaviour
                                                     && !ChessGameManager.instance.boardState[5, 7] && !ChessGameManager.instance.boardState[6, 7])
                                                 {
                                                     odznacz(ChessGameManager.instance.selectedPiece.boardPosition);
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(6, 7));
-                                                    ChessGameManager.instance.selectedPiece = clickedPosition.gameObject.GetComponent<ChessPiece>();
+                                                    ChessGameManager.instance.selectedPiece = clickedPosition;
                                                     ChessGameManager.instance.CastleMovePiece(new Vector2Int(5, 7));
+                                                    ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
+                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(6, 7));
                                                     ChessGameManager.instance.isWhiteTurn = !ChessGameManager.instance.isWhiteTurn;
                                                     _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
                                                     //krótka roszada dla bia³ych
@@ -292,9 +297,10 @@ public class ChessBoard : MonoBehaviour
                                                     && !ChessGameManager.instance.boardState[3, 7])
                                                 {
                                                     odznacz(ChessGameManager.instance.selectedPiece.boardPosition);
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(3, 7));
-                                                    ChessGameManager.instance.selectedPiece = clickedPosition.gameObject.GetComponent<ChessPiece>();
+                                                    ChessGameManager.instance.selectedPiece = clickedPosition;
                                                     ChessGameManager.instance.CastleMovePiece(new Vector2Int(2, 7));
+                                                    ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
+                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(3, 7));
                                                     ChessGameManager.instance.isWhiteTurn = !ChessGameManager.instance.isWhiteTurn;
                                                     _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
                                                     //D³uga roszada dla bia³ych
@@ -305,9 +311,10 @@ public class ChessBoard : MonoBehaviour
                                                     && !ChessGameManager.instance.boardState[5, 7] && !ChessGameManager.instance.boardState[6, 7])
                                                 {
                                                     odznacz(ChessGameManager.instance.selectedPiece.boardPosition);
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(5, 7));
-                                                    ChessGameManager.instance.selectedPiece = clickedPosition.gameObject.GetComponent<ChessPiece>();
+                                                    ChessGameManager.instance.selectedPiece = clickedPosition;
                                                     ChessGameManager.instance.CastleMovePiece(new Vector2Int(6, 7));
+                                                    ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
+                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(5, 7));
                                                     ChessGameManager.instance.isWhiteTurn = !ChessGameManager.instance.isWhiteTurn;
                                                     _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
                                                     //krótka roszada dla bia³ych

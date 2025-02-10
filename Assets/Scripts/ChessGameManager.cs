@@ -15,7 +15,7 @@ public class ChessGameManager : MonoBehaviour
     public ChessPiece Piece, promotionPiece;
     public Vector3 finalPos;
 
-   
+
     void Start()
     {
         instance = this;
@@ -35,8 +35,8 @@ public class ChessGameManager : MonoBehaviour
 
     public IEnumerator RotateTowardsPlane()
     {
-        
-       
+
+
 
 
         if (selectedPiece == null) yield break;
@@ -54,7 +54,7 @@ public class ChessGameManager : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(direction);
 
         Debug.Log(direction + "<-kierunek | rotacja -> " + targetRotation);
-   
+
 
         while (Quaternion.Angle(selectedPiece.transform.rotation, targetRotation) > AnimatorManager.instace.rotationThreshold)
         {
@@ -72,14 +72,14 @@ public class ChessGameManager : MonoBehaviour
     public void MovePiece(Vector2Int targetPosition)
     {
         finalPos = new Vector3(targetPosition.x, 0, targetPosition.y);
-       if (selectedPiece != null )
+        if (selectedPiece != null)
         {
             // Sprawdzamy, czy ruch jest dozwolony
             bool[,] availableMoves = selectedPiece.GetAvailableMoves(boardState);
             if (availableMoves[targetPosition.x, targetPosition.y] && atack == false)
             {
-              
-           
+
+
 
 
                 StartCoroutine(RotateTowardsPlane());
@@ -90,7 +90,7 @@ public class ChessGameManager : MonoBehaviour
             {
                 finalPos = new Vector3(targetPosition.x, 0, targetPosition.y);
                 StartCoroutine(MoveAnimation());
-                
+
 
 
             }
@@ -106,7 +106,7 @@ public class ChessGameManager : MonoBehaviour
         }
         if (selectedPiece.CompareTag("Pawn"))
         {
-           
+
         }
 
     }
@@ -139,7 +139,7 @@ public class ChessGameManager : MonoBehaviour
         selectedPiece.transform.position = finalPos;
         selectedPiece.GetComponent<ChessPiece>().Moved = true;
         // Ruch dozwolony - ustawiamy now¹ pozycjê bierki
-        selectedPiece.SetPosition(new Vector2Int((int)finalPos.x,(int)finalPos.z));
+        selectedPiece.SetPosition(new Vector2Int((int)finalPos.x, (int)finalPos.z));
         /*
         if (isWhiteTurn)
         {
@@ -158,7 +158,7 @@ public class ChessGameManager : MonoBehaviour
             isWhiteTurn = !isWhiteTurn;
             selectedPiece.boardPosition = new Vector2Int((int)finalPos.x, (int)finalPos.z);
             atack = false;
-            Invoke("rotate", 1f);
+            Invoke("rotate", 0.5f);
             selectedPiece = null;
         }
         else {
@@ -166,14 +166,14 @@ public class ChessGameManager : MonoBehaviour
             selectedPiece.GetComponent<ChessPiece>().Moved = true;
             isWhiteTurn = !isWhiteTurn;
             selectedPiece.boardPosition = new Vector2Int((int)finalPos.x, (int)finalPos.z);
-            boardState[(int)finalPos.x,(int)finalPos.z] = promotionPiece;
-            Invoke("rotate", 1f);
+            boardState[(int)finalPos.x, (int)finalPos.z] = promotionPiece;
+            Invoke("rotate", 0.5f);
             selectedPiece = null;
             PromotionNow = false;
 
         }
-       
-        
+
+
 
 
 
@@ -182,19 +182,47 @@ public class ChessGameManager : MonoBehaviour
     {
         _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
     }
+    IEnumerator moveRoszada()
+    {
+        if (selectedPiece == null) yield break;
+
+        var startpos = selectedPiece.transform.position;
+        var elapsedTime = 0f;
+
+        
+        while (Vector3.Distance(selectedPiece.transform.position, finalPos) > 0.001f)
+        {
+            float t = elapsedTime / 1; // Normalizacja czasu (od 0 do 1)
+            t = Mathf.SmoothStep(0f, 1f, t); // Dodanie efektu ease in-out
+
+            selectedPiece.transform.position = Vector3.Lerp(startpos, finalPos, t);
+
+            elapsedTime += Time.deltaTime;
+            yield return null; // Czekaj na kolejny frame
+        }
+        selectedPiece.transform.position = finalPos;
+        selectedPiece.GetComponent<ChessPiece>().Moved = true;
+        // Ruch dozwolony - ustawiamy now¹ pozycjê bierki
+        selectedPiece.SetPosition(new Vector2Int((int)finalPos.x, (int)finalPos.z));
+        selectedPiece = null;
+
+    }
+
+
     public void CastleMovePiece(Vector2Int targetPosition)
     {
        
-            // Sprawdzamy, czy ruch jest dozwolony
-           
-                selectedPiece.GetComponent<ChessPiece>().Moved = true;
-                // Ruch dozwolony - ustawiamy now¹ pozycjê bierki
-                selectedPiece.SetPosition(targetPosition);
+        finalPos = new Vector3(targetPosition.x,0,targetPosition.y);
+        StartCoroutine(moveRoszada());
+        
 
-                // Prze³¹czamy turê
                 
-                selectedPiece.boardPosition = targetPosition;
-                selectedPiece = null;
+
+                
+        
+        
+
+
         
         
         
