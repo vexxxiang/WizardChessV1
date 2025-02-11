@@ -3,20 +3,28 @@ using UnityEngine;
 
 public class ChessBoard : MonoBehaviour
 {
-    public GameObject squarePrefab; 
+    public GameObject squarePrefab;
     public float squareSize = 1f;
-    public GameObject GM;
+    public ChessGameManager GM;
     List<GameObject> Plansza = new List<GameObject> { };
     public Vector2Int PreLastClick;
     public GameObject _Camera, promotionPanel;
     public static ChessBoard instance;
     public bool selecting = true;
+
+
+
+    public Vector2Int ClickedPlane;
+    public ChessPiece ClickedFigure;
+
+
     public void Start()
     {
         instance = this;
+        GM = ChessGameManager.instance;
     }
     public void CreateBoard()
-    { 
+    {
         for (int x = 0; x < 8; x++)
         {
             for (int z = 0; z < 8; z++) // Zmieniamy y na z (poziom planszy)
@@ -25,20 +33,35 @@ public class ChessBoard : MonoBehaviour
                 Plansza.Add(Pole);
                 Pole.transform.SetParent(this.transform);
                 Pole.name = new string(x + " " + z);
-                Pole.GetComponent<Cube>().Position = new Vector2Int (x, z);
+                Pole.GetComponent<Cube>().Position = new Vector2Int(x, z);
                 Pole.GetComponent<Cube>().WhiteColor = (x + z) % 2 == 0 ? true : false;
                 Pole.GetComponent<MeshRenderer>().enabled = false;
             }
         }
-        foreach(GameObject i in Plansza)
+        foreach (GameObject i in Plansza)
         {
             i.GetComponent<Cube>().PreRefresh(0);
         }
     }
+    public void zaznacz(Vector2Int position)
+    {
+        Debug.Log("Zaznaczam pole: " + position);
+
+        foreach (GameObject i in Plansza)
+        {
+            if (position == i.GetComponent<Cube>().Position)
+            {
+                i.gameObject.GetComponent<MeshRenderer>().enabled = true;
+                i.gameObject.GetComponent<Cube>().Selected = true;
+                i.gameObject.GetComponent<Cube>().PreRefresh(0);
+            }
+        }
+    }
     public void odznacz(Vector2Int position)
     {
-        //Debug.Log("odznaczam" + Plansza);
-        foreach(GameObject i in Plansza)
+        Debug.Log("Odznaczam pole: " + position);
+
+        foreach (GameObject i in Plansza)
         {
             if (position == i.GetComponent<Cube>().Position)
             {
@@ -46,15 +69,26 @@ public class ChessBoard : MonoBehaviour
                 i.GetComponent<Cube>().PreRefresh(0);
             }
         }
-    }  public void _UpdateState()
+    }
+    public void empty(Vector2Int position)
     {
-        foreach(GameObject i in Plansza)
+        Debug.Log("Klikniêto puste pole: " + position);
+
+        foreach (GameObject i in Plansza)
         {
-            i.GetComponent<Cube>().UpdateState();
+            if (position == i.GetComponent<Cube>().Position)
+            {
+                i.gameObject.GetComponent<MeshRenderer>().enabled = true;
+                i.gameObject.GetComponent<Renderer>().material.color = Color.gray;
+                i.gameObject.GetComponent<Cube>().PreRefresh(1f);
+            }
+
         }
     }
-    public void illegalMove(Vector2Int position) {
-        //Debug.Log("czerwony"+ position);
+    public void illegalMove(Vector2Int position)
+    {
+        Debug.Log("Nielegalny ruch dla tej bierki: " + position);
+
         foreach (GameObject i in Plansza)
         {
             if (position == i.GetComponent<Cube>().Position)
@@ -63,347 +97,133 @@ public class ChessBoard : MonoBehaviour
                 i.gameObject.GetComponent<Renderer>().material.color = Color.red;
                 i.gameObject.GetComponent<Cube>().PreRefresh(1f);
             }
-            
+
         }
-    
+
     }
     void Update()
     {
+
+
         if (Input.GetMouseButtonDown(0) && selecting)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); 
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit) ) 
+            if (Physics.Raycast(ray, out hit))
             {
-                _UpdateState();
-                Renderer ClickedObject = hit.transform.GetComponent<Renderer>();
-                
-                var clickedPosition = ChessGameManager.instance.boardState[((int)ClickedObject.GetComponent<Cube>().Position.x), (int)ClickedObject.GetComponent<Cube>().Position.y];
-                if (ClickedObject != null ) 
+                if (hit.collider.gameObject.CompareTag("Plansza") && selecting)
                 {
-                    
-                    if (ClickedObject.CompareTag("Plansza") && ClickedObject.gameObject.GetComponent<Cube>().Zajety == true) // Klikniêcie w bierkê
-                    {                       
-                        
-                        //atakowanie enemy
-                        if ((ChessGameManager.instance.isWhiteTurn && !clickedPosition.GetComponent<ChessPiece>().isWhite) && 
-                            ChessGameManager.instance.selectedPiece.isWhite && ChessGameManager.instance.selectedPiece != null || 
-                            (!GM.GetComponent<ChessGameManager>().isWhiteTurn && clickedPosition.gameObject.GetComponent<ChessPiece>().isWhite && 
-                            !ChessGameManager.instance.selectedPiece.isWhite && ChessGameManager.instance.selectedPiece != null))
-                        {
-
-                            //Debug.Log("Atak");
-                            ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
-                            if (ChessGameManager.instance.TestMovePiece(clickedPosition.boardPosition))
-                            {
-
-                                ClickedObject.GetComponent<Cube>().Selected = false;
-                                ClickedObject.GetComponent<Cube>().PreRefresh(0f);
-                                AnimatorManager.instace.first = true;
-                                GM.GetComponent<AnimatorManager>().StartAnimation(ChessGameManager.instance.selectedPiece, clickedPosition);
-
-                            }
-                            else {
-                                //Debug.Log("Bicie Niemozliwe");
-                            }
-                            odznacz(PreLastClick);
-                            
-                            ClickedObject.GetComponent<Cube>().Selected = false;
-                            ClickedObject.GetComponent<Cube>().PreRefresh(0f);
-                            PreLastClick = ClickedObject.GetComponent<Cube>().Position;
-
-                        }
+                    //klikniete pole
+                    ClickedPlane = hit.collider.gameObject.GetComponent<Cube>().Position;
 
 
-                        else if ((ChessGameManager.instance.isWhiteTurn && clickedPosition.GetComponent<ChessPiece>().isWhite) || 
-                            (!GM.GetComponent<ChessGameManager>().isWhiteTurn && !clickedPosition.gameObject.GetComponent<ChessPiece>().isWhite))
-                        {
+                    //klikniêcie pustego pola nie maj¹c wybranej bierki
+                    if (GM.boardState[ClickedPlane.x, ClickedPlane.y] == null && GM.selectedPiece == null)
+                    {
+                        empty(ClickedPlane);
+                    }
 
-                            //Wybieranie bierki
-                            if (ChessGameManager.instance.selectedPiece == null) // Jeœli ¿adna bierka nie jest wybrana
-                            {
-                                ChessGameManager.instance.SelectPiece(clickedPosition, clickedPosition.boardPosition); // Wybór bierki
-                                ClickedObject.GetComponent<Cube>().Selected = true;
-                                ClickedObject.GetComponent<Cube>().PreRefresh(0f);
-                               // Debug.Log("Wybrano bierkê: " + GM.GetComponent<ChessGameManager>().selectedPiece);
-                                PreLastClick = ClickedObject.GetComponent<Cube>().Position;
-                            }
-                            //Odznaczanie bierki
-                            else if (ChessGameManager.instance.selectedPiece == clickedPosition) // Klikniêcie tej samej bierki (odznaczenie)
-                            {
-                               // Debug.Log("Odznaczono bierkê: " + ChessGameManager.instance.selectedPiece);
-                                ClickedObject.GetComponent<Cube>().Selected = false;
-                                ClickedObject.GetComponent<Cube>().PreRefresh(0f);
-                                ChessGameManager.instance.selectedPiece = null;
-                                PreLastClick = ClickedObject.GetComponent<Cube>().Position;
-                            }
-                            //roszada
-                            else if (ChessGameManager.instance.selectedPiece != null)// Klikniêcie innej bierki (zmiana wyboru)
-                            {
-                                if ((ChessGameManager.instance.isWhiteTurn && clickedPosition.GetComponent<ChessPiece>().isWhite &&
-                                ChessGameManager.instance.selectedPiece.gameObject.CompareTag("Rook") && clickedPosition.gameObject.CompareTag("King") &&
-                                !ChessGameManager.instance.boardState[1, 0] && !ChessGameManager.instance.boardState[2, 0] && !ChessGameManager.instance.boardState[3, 0] ||
-
-                                ChessGameManager.instance.isWhiteTurn && clickedPosition.GetComponent<ChessPiece>().isWhite &&
-                                ChessGameManager.instance.selectedPiece.gameObject.CompareTag("Rook") && clickedPosition.gameObject.CompareTag("King") &&
-                                !ChessGameManager.instance.boardState[5, 0] && !ChessGameManager.instance.boardState[6, 0] ||
-
-                                ChessGameManager.instance.isWhiteTurn && clickedPosition.GetComponent<ChessPiece>().isWhite &&
-                                ChessGameManager.instance.selectedPiece.gameObject.CompareTag("King") && clickedPosition.gameObject.CompareTag("Rook") &&
-                                !ChessGameManager.instance.boardState[1, 0] && !ChessGameManager.instance.boardState[2, 0] && !ChessGameManager.instance.boardState[3, 0] ||
-
-                                ChessGameManager.instance.isWhiteTurn && clickedPosition.GetComponent<ChessPiece>().isWhite &&
-                                ChessGameManager.instance.selectedPiece.gameObject.CompareTag("King") && clickedPosition.gameObject.CompareTag("Rook") &&
-                                !ChessGameManager.instance.boardState[5, 0] && !ChessGameManager.instance.boardState[6, 0]) ||
-
-                                !ChessGameManager.instance.isWhiteTurn && !clickedPosition.GetComponent<ChessPiece>().isWhite &&
-                                ChessGameManager.instance.selectedPiece.gameObject.CompareTag("Rook") && clickedPosition.gameObject.CompareTag("King") &&
-                                !ChessGameManager.instance.boardState[1, 7] && !ChessGameManager.instance.boardState[2, 7] && !ChessGameManager.instance.boardState[3, 7] ||
-
-                                !ChessGameManager.instance.isWhiteTurn && !clickedPosition.GetComponent<ChessPiece>().isWhite &&
-                                ChessGameManager.instance.selectedPiece.gameObject.CompareTag("Rook") && clickedPosition.gameObject.CompareTag("King") &&
-                                !ChessGameManager.instance.boardState[5, 7] && !ChessGameManager.instance.boardState[6, 7] ||
-
-                                !ChessGameManager.instance.isWhiteTurn && !clickedPosition.GetComponent<ChessPiece>().isWhite &&
-                                ChessGameManager.instance.selectedPiece.gameObject.CompareTag("King") && clickedPosition.gameObject.CompareTag("Rook")&&
-                                !ChessGameManager.instance.boardState[1, 7] && !ChessGameManager.instance.boardState[2, 7] && !ChessGameManager.instance.boardState[3, 7] ||
-
-                                !ChessGameManager.instance.isWhiteTurn && !clickedPosition.GetComponent<ChessPiece>().isWhite &&
-                                ChessGameManager.instance.selectedPiece.gameObject.CompareTag("King") && clickedPosition.gameObject.CompareTag("Rook")&&
-                                !ChessGameManager.instance.boardState[5, 7] && !ChessGameManager.instance.boardState[6, 7])
-                                {
-
-                                    if (!clickedPosition.GetComponent<ChessPiece>().Moved && !ChessGameManager.instance.selectedPiece.GetComponent<ChessPiece>().Moved)
-                                    {
-                                        
-                                        //roszada dla bia³ych
-                                        if (ChessGameManager.instance.isWhiteTurn)
-                                        {
-
-
-                                            if (clickedPosition.gameObject.CompareTag("Rook"))
-                                            {
-                                                if (clickedPosition.gameObject.GetComponent<ChessPiece>().boardPosition == new Vector2Int(0, 0)
-                                                    && !ChessGameManager.instance.boardState[1, 0] && !ChessGameManager.instance.boardState[2, 0]
-                                                    && !ChessGameManager.instance.boardState[3, 0])
-                                                {
-                                                    odznacz(ChessGameManager.instance.selectedPiece.boardPosition);
-                                                    ChessGameManager.instance.selectedPiece = clickedPosition;
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(3, 0));
-                                                    ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(2,0));
-                                                    ChessGameManager.instance.isWhiteTurn = !ChessGameManager.instance.isWhiteTurn;
-                                                    _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
-                                                    
-                                                    //D³uga roszada dla bia³ych
-                                                    //Debug.Log("rook Roszada wariacie d");
-
-                                                }
-                                                else if (clickedPosition.gameObject.GetComponent<ChessPiece>().boardPosition == new Vector2Int(7, 0)
-                                                    && !ChessGameManager.instance.boardState[5, 0] && !ChessGameManager.instance.boardState[6, 0])
-                                                {
-                                                    odznacz(ChessGameManager.instance.selectedPiece.boardPosition);
-                                                    ChessGameManager.instance.selectedPiece = clickedPosition;
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(5, 0));
-                                                    ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(6, 0));
-                                                    ChessGameManager.instance.isWhiteTurn = !ChessGameManager.instance.isWhiteTurn;
-                                                    _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
-
-                                                    //krótka roszada dla bia³ych
-                                                    //Debug.Log("rook Roszada wariacie k");
-
-                                                }
-                                            }
-                                            else if (clickedPosition.gameObject.CompareTag("King"))
-                                            {
-                                                if (ChessGameManager.instance.selectedPiece.GetComponent<ChessPiece>().boardPosition == new Vector2Int(0, 0)
-                                                    && !ChessGameManager.instance.boardState[1, 0] && !ChessGameManager.instance.boardState[2, 0]
-                                                    && !ChessGameManager.instance.boardState[3, 0])
-                                                {
-                                                    odznacz(ChessGameManager.instance.selectedPiece.boardPosition);
-                                                    ChessGameManager.instance.selectedPiece = clickedPosition;
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(2, 0));
-                                                    ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(3, 0));
-                                                    ChessGameManager.instance.isWhiteTurn = !ChessGameManager.instance.isWhiteTurn;
-                                                    _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
-                                                    //D³uga roszada dla bia³ych
-                                                   // Debug.Log("king Roszada wariacie d");
-
-                                                }
-                                                else if (ChessGameManager.instance.selectedPiece.GetComponent<ChessPiece>().boardPosition == new Vector2Int(7, 0)
-                                                    && !ChessGameManager.instance.boardState[5, 0] && !ChessGameManager.instance.boardState[6, 0])
-                                                {
-                                                    odznacz(ChessGameManager.instance.selectedPiece.boardPosition);
-                                                    ChessGameManager.instance.selectedPiece = clickedPosition;
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(6, 0));
-                                                    ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(5, 0));
-                                                    ChessGameManager.instance.isWhiteTurn = !ChessGameManager.instance.isWhiteTurn;
-                                                    _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
-
-                                                    //krótka roszada dla bia³ych
-                                                    //Debug.Log("king Roszada wariacie k");
-
-                                                }
-
-                                            }
-                                        }
-
-
-                                        //Roszada Czarne
-                                        if (!ChessGameManager.instance.isWhiteTurn)
-                                        {
-
-
-                                            if (clickedPosition.gameObject.CompareTag("Rook"))
-                                            {
-                                                if (clickedPosition.gameObject.GetComponent<ChessPiece>().boardPosition == new Vector2Int(0, 7)
-                                                    && !ChessGameManager.instance.boardState[1, 7] && !ChessGameManager.instance.boardState[2, 7]
-                                                    && !ChessGameManager.instance.boardState[3, 7])
-                                                {
-                                                    odznacz(ChessGameManager.instance.selectedPiece.boardPosition);
-                                                    ChessGameManager.instance.selectedPiece = clickedPosition;
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(3, 7));
-                                                    ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(2, 7));
-                                                    ChessGameManager.instance.isWhiteTurn = !ChessGameManager.instance.isWhiteTurn;
-                                                    _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
-                                                    //D³uga roszada dla bia³ych
-                                                    //Debug.Log("rook Roszada wariacie d");
-
-                                                }
-                                                else if (clickedPosition.gameObject.GetComponent<ChessPiece>().boardPosition == new Vector2Int(7, 7)
-                                                    && !ChessGameManager.instance.boardState[5, 7] && !ChessGameManager.instance.boardState[6, 7])
-                                                {
-                                                    odznacz(ChessGameManager.instance.selectedPiece.boardPosition);
-                                                    ChessGameManager.instance.selectedPiece = clickedPosition;
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(5, 7));
-                                                    ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(6, 7));
-                                                    ChessGameManager.instance.isWhiteTurn = !ChessGameManager.instance.isWhiteTurn;
-                                                    _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
-                                                    //krótka roszada dla bia³ych
-                                                    //Debug.Log("rook Roszada wariacie k");
-
-                                                }
-                                            }
-                                            else if (clickedPosition.gameObject.CompareTag("King"))
-                                            {
-                                                if (ChessGameManager.instance.selectedPiece.GetComponent<ChessPiece>().boardPosition == new Vector2Int(0, 7)
-                                                    && !ChessGameManager.instance.boardState[1, 7] && !ChessGameManager.instance.boardState[2, 7]
-                                                    && !ChessGameManager.instance.boardState[3, 7])
-                                                {
-                                                    odznacz(ChessGameManager.instance.selectedPiece.boardPosition);
-                                                    ChessGameManager.instance.selectedPiece = clickedPosition;
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(2, 7));
-                                                    ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(3, 7));
-                                                    ChessGameManager.instance.isWhiteTurn = !ChessGameManager.instance.isWhiteTurn;
-                                                    _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
-                                                    //D³uga roszada dla bia³ych
-                                                    //Debug.Log("king Roszada wariacie d");
-
-                                                }
-                                                else if (ChessGameManager.instance.selectedPiece.GetComponent<ChessPiece>().boardPosition == new Vector2Int(7, 7)
-                                                    && !ChessGameManager.instance.boardState[5, 7] && !ChessGameManager.instance.boardState[6, 7])
-                                                {
-                                                    odznacz(ChessGameManager.instance.selectedPiece.boardPosition);
-                                                    ChessGameManager.instance.selectedPiece = clickedPosition;
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(6, 7));
-                                                    ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
-                                                    ChessGameManager.instance.CastleMovePiece(new Vector2Int(5, 7));
-                                                    ChessGameManager.instance.isWhiteTurn = !ChessGameManager.instance.isWhiteTurn;
-                                                    _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
-                                                    //krótka roszada dla bia³ych
-                                                    //Debug.Log("king Roszada wariacie k");
-
-                                                }
-
-                                            }
-                                        }
-
-
-
-
-                                    }
-
-
-                                }
-                                //Zmiana bierki na inn¹
-                                else
-                                {
-                                    //Debug.Log("Zmieniono wybór na: " + clickedPosition);
-                                    odznacz(PreLastClick);
-                                    ClickedObject.GetComponent<Cube>().Selected = true;
-                                    ClickedObject.GetComponent<Cube>().PreRefresh(0f);
-                                    ChessGameManager.instance.SelectPiece(clickedPosition, clickedPosition.boardPosition);
-                                    PreLastClick = ClickedObject.GetComponent<Cube>().Position;
-                                }
-
-                                
-                            }
-
-
-                        }
-                       
+                    else if (selecting && GM.boardState[ClickedPlane.x, ClickedPlane.y] == null && GM.selectedPiece != null)
+                    {
+                        odznacz(GM.selectedPiece.boardPosition);
+                        GM.MovePiece(ClickedPlane, false);
 
                     }
-                    //Ruch wybran¹ bierk¹
-                    else if (ClickedObject.CompareTag("Plansza") && ClickedObject.gameObject.GetComponent<Cube>().Zajety == false) // Klikniêcie na puste pole
+                    else if (GM.boardState[ClickedPlane.x, ClickedPlane.y] != null && GM.selectedPiece != null)
                     {
-                        if (ChessGameManager.instance.selectedPiece != null ) // Jeœli jest wybrana bierka, próbujemy ni¹ ruszyæ
+                        if (GM.boardState[ClickedPlane.x, ClickedPlane.y].isWhite == GM.isWhiteTurn)
                         {
-
-                            if (ChessGameManager.instance.selectedPiece.CompareTag("Pawn") && ClickedObject.gameObject.GetComponent<Cube>().Position.y == 7 ||
-                                ChessGameManager.instance.selectedPiece.CompareTag("Pawn") && ClickedObject.gameObject.GetComponent<Cube>().Position.y == 0)
+                            if (GM.boardState[ClickedPlane.x, ClickedPlane.y].gameObject.CompareTag("King") && GM.selectedPiece.gameObject.CompareTag("Rook") && !GM.boardState[ClickedPlane.x, ClickedPlane.y].Moved && !GM.selectedPiece.Moved ||
+                                GM.boardState[ClickedPlane.x, ClickedPlane.y].gameObject.CompareTag("Rook") && GM.selectedPiece.gameObject.CompareTag("King") && !GM.boardState[ClickedPlane.x, ClickedPlane.y].Moved && !GM.selectedPiece.Moved)
                             {
 
-                                if (ChessGameManager.instance.TestMovePiece(ClickedObject.gameObject.GetComponent<Cube>().Position))
+                                if (GM.selectedPiece.CompareTag("Rook"))
                                 {
-                                    odznacz(ChessGameManager.instance.selectedPiece.boardPosition);
-                                    ChessGameManager.instance.finalPos = new Vector3(ClickedObject.GetComponent<Cube>().Position.x, 0, ClickedObject.GetComponent<Cube>().Position.y);
-                                    ChessGameManager.instance.PromotionNow = true;
-                                    promotionPanel.SetActive(true);
-                                    selecting = false;
+                                    var RookPos = GM.selectedPiece.boardPosition;
+
+                                    GM.Roszada(RookPos);
+                                    odznacz(GM.selectedPiece.boardPosition);
+
                                 }
-                                else 
+                                else if (GM.selectedPiece.CompareTag("King"))
                                 {
-                                    odznacz(ChessGameManager.instance.selectedPiece.boardPosition);
-                                    illegalMove(clickedPosition.boardPosition);
-                                    Debug.Log("ruch niedostepny");
-                                    illegalMove(clickedPosition.boardPosition);
+
+                                    var RookPos = GM.boardState[ClickedPlane.x, ClickedPlane.y].boardPosition;
+                                    GM.Roszada(RookPos);
+                                    odznacz(GM.selectedPiece.boardPosition);
+
                                 }
-                                
-                                
-
-
-
+                                else
+                                {
+                                    Debug.Log("Nieczekiwany b³¹d 002");
+                                }
                             }
-                            else {
-
-
-                                ChessGameManager.instance.selectedPiece = ChessGameManager.instance.boardState[PreLastClick.x, PreLastClick.y];
-                                ChessGameManager.instance.MovePiece(ClickedObject.GetComponent<Cube>().Position);
-                                odznacz(PreLastClick);
-                                PreLastClick = ClickedObject.GetComponent<Cube>().Position;
-                                _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
+                            else if (GM.selectedPiece.boardPosition == ClickedPlane && GM.selectedPiece != null)
+                            {
+                                GM.UnSelectPiece();
+                                odznacz(ClickedPlane);
                             }
 
+                            else if (GM.boardState[ClickedPlane.x, ClickedPlane.y].isWhite == GM.isWhiteTurn)
+                            {
+                                // je¿eli mamy zaznaczon¹ bierke i klikniemy inn¹ tego samego koloru to podmieniamy wybran¹ bierke
+
+                                odznacz(GM.selectedPiece.boardPosition);
+                                GM.UnSelectPiece();
+                                zaznacz(ClickedPlane);
+                                GM.SelectPiece(GM.boardState[ClickedPlane.x, ClickedPlane.y], ClickedPlane);
+                            }
+
+                        }
+
+                        else
+                        {
+                            bool[,] availableMoves = GM.selectedPiece.GetAvailableMoves(GM.boardState);
+                            if (availableMoves[ClickedPlane.x, ClickedPlane.y])
+                            {
+                                odznacz(GM.selectedPiece.boardPosition);
+                                Debug.Log(GM.selectedPiece + " Atakuje: " + GM.boardState[ClickedPlane.x, ClickedPlane.y].GetComponent<ChessPiece>() + "Na pozycji:" + ClickedPlane);
+                                GM.AtackPiece(ClickedPlane);
+                            }
+                            else
+                            {
+                                Debug.Log("Bicie niemozliwe");
+                                illegalMove(ClickedPlane);
+                            }
+                        }
+                    }
+                    else if (GM.boardState[ClickedPlane.x, ClickedPlane.y] != null && GM.selectedPiece == null)
+                    {
+                        if (GM.boardState[ClickedPlane.x, ClickedPlane.y].isWhite == GM.isWhiteTurn)
+                        {
+                            //jezelei rzadna fiugra nie jest wybrana i jest w³¹czone wybieranie figur to wybieramy tak¹
+                            if (GM.selectedPiece == null)
+
+                            {
+                                //jezeli cos jest na polu to wybieramy t¹ figure za klikniêt¹
+                                GM.SelectPiece(GM.boardState[ClickedPlane.x, ClickedPlane.y].GetComponent<ChessPiece>(), ClickedPlane);
+                                zaznacz(ClickedPlane);
+
+                            }
                         }
                         else
                         {
-                            Debug.Log("Klikniêto puste pole, ale ¿adna bierka nie jest wybrana.");
+                            Debug.Log("Klikasz bierke, ale to nie jej tura");
                         }
                     }
-                    else // Klikniêcie w coœ innego
-                    {
-                        Debug.Log("Klikniêto niezidentyfikowany obiekt: " + clickedPosition);
-                    }
+
+
+
                 }
+
             }
+
+
+
         }
     }
 }
+
+
+

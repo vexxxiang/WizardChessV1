@@ -2665,7 +2665,6 @@ GameObject:
   - component: {fileID: 1145515215}
   - component: {fileID: 1145515214}
   - component: {fileID: 1145515216}
-  - component: {fileID: 1145515217}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2695,6 +2694,29 @@ MonoBehaviour:
   Piece: {fileID: 0}
   promotionPiece: {fileID: 0}
   finalPos: {x: 0, y: 0, z: 0}
+  CP: {fileID: 0}
+  targetFigure: {fileID: 0}
+  looking: 0
+  atackIsRunning: 0
+  model: {fileID: 0}
+  TRPawn: 1
+  TRRook: 0.16
+  TRBishop: 2.16
+  TRKnight: 1.5
+  TRQueen: 1.16
+  TRKing: 1.5
+  _Pawn: {fileID: 3439881514621667500, guid: 1648b792d4c52c0499877f6bfe4d0e6a, type: 3}
+  _Rook: {fileID: 1141693374059917999, guid: 27920e0bab1ff8e4da3485ee8774dbdf, type: 3}
+  _Bishop: {fileID: 4392136847455521349, guid: e7260b3d1b4d7224686ac2ef07dc2900, type: 3}
+  _Knight: {fileID: 1321521021299827936, guid: 226917ea35922294fbc52795ef381aca, type: 3}
+  _Queen: {fileID: 7092466395304841172, guid: b71612864f0ac4c479d807faceffbaff, type: 3}
+  _King: {fileID: 3744114031844811651, guid: 88d199882e2e738419afb9fb30a03e9d, type: 3}
+  _PawnB: {fileID: 4338015046443365408, guid: 39b66af7c867f1c44b3819091be6a51f, type: 3}
+  _RookB: {fileID: 8832592319442311498, guid: fc2f02630d762914bb1d9dafc09a3105, type: 3}
+  _BishopB: {fileID: 5087646662890790228, guid: df294bc2594b3944ca97a2b79d5d3eaa, type: 3}
+  _KnightB: {fileID: 543701153637940810, guid: e1f73595a690b514dbcafaab2d7e1bd6, type: 3}
+  _QueenB: {fileID: 7340176887950476511, guid: 35c3aab5ae1556f4ab41c1152eb6fa10, type: 3}
+  _KingB: {fileID: 4835575994868412266, guid: 3c9dbbbec72da2446a0394f92391ab79, type: 3}
 --- !u!4 &1145515215
 Transform:
   m_ObjectHideFlags: 0
@@ -2736,46 +2758,6 @@ MonoBehaviour:
   whiteKingPrefab: {fileID: 5162175905106611971, guid: e6d3f7ea392457047922ec081051aef6, type: 3}
   blackKingPrefab: {fileID: 6423268683580346982, guid: c7bd569ec0c1cdf4887ffdd89b55290a, type: 3}
   _Bierki: {fileID: 1825858705}
---- !u!114 &1145515217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1145515213}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6b4d9bfc9803664291d89257713656d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotationSpeed: 5
-  movingSpeed: 4
-  rotationThreshold: 0.001
-  distanceThreshold: 0.001
-  offsetStopMoving: 0.65
-  TRPawn: 1.2
-  TRRook: 0.16
-  TRBishop: 2.16
-  TRKnight: 1.5
-  TRQueen: 1.16
-  TRKing: 1.5
-  _Pawn: {fileID: 3439881514621667500, guid: 1648b792d4c52c0499877f6bfe4d0e6a, type: 3}
-  _Rook: {fileID: 1141693374059917999, guid: 27920e0bab1ff8e4da3485ee8774dbdf, type: 3}
-  _Bishop: {fileID: 4392136847455521349, guid: e7260b3d1b4d7224686ac2ef07dc2900, type: 3}
-  _Knight: {fileID: 1321521021299827936, guid: 226917ea35922294fbc52795ef381aca, type: 3}
-  _Queen: {fileID: 7092466395304841172, guid: b71612864f0ac4c479d807faceffbaff, type: 3}
-  _King: {fileID: 3744114031844811651, guid: 88d199882e2e738419afb9fb30a03e9d, type: 3}
-  _PawnB: {fileID: 4338015046443365408, guid: 39b66af7c867f1c44b3819091be6a51f, type: 3}
-  _RookB: {fileID: 8832592319442311498, guid: fc2f02630d762914bb1d9dafc09a3105, type: 3}
-  _BishopB: {fileID: 5087646662890790228, guid: df294bc2594b3944ca97a2b79d5d3eaa, type: 3}
-  _KnightB: {fileID: 543701153637940810, guid: e1f73595a690b514dbcafaab2d7e1bd6, type: 3}
-  _QueenB: {fileID: 7340176887950476511, guid: 35c3aab5ae1556f4ab41c1152eb6fa10, type: 3}
-  _KingB: {fileID: 4835575994868412266, guid: 3c9dbbbec72da2446a0394f92391ab79, type: 3}
-  first: 1
-  movingFigure: {fileID: 0}
-  targetFigure: {fileID: 0}
-  looking: 0
-  startPos: {x: 0, y: 0}
 --- !u!1 &1181673276
 GameObject:
   m_ObjectHideFlags: 0
@@ -4002,6 +3984,8 @@ MonoBehaviour:
   _Camera: {fileID: 963194225}
   promotionPanel: {fileID: 855810260}
   selecting: 1
+  ClickedPlane: {x: 0, y: 0}
+  ClickedFigure: {fileID: 0}
 --- !u!4 &1999730343
 Transform:
   m_ObjectHideFlags: 0

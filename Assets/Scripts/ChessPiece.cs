@@ -37,4 +37,5 @@ public abstract class ChessPiece : MonoBehaviour
         if (boardState[x, y] == null) return true; // Puste pole
         return boardState[x, y].isWhite != isWhite; // Zasada przechwytywania bierki przeciwnej strony
     }
+
 }

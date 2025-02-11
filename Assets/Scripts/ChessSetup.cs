@@ -47,7 +47,7 @@ public class ChessSetup : MonoBehaviour
         SpawnPiece(blackRookPrefab, new Vector2Int(0, 7), false);
         SpawnPiece(blackRookPrefab, new Vector2Int(7, 7), false);
         
-        /*// Ustawienie skoczków
+        // Ustawienie skoczków
         SpawnPiece(whiteKnightPrefab, new Vector2Int(1, 0), true);
         SpawnPiece(whiteKnightPrefab, new Vector2Int(6, 0), true);
         SpawnPiece(blackKnightPrefab, new Vector2Int(1, 7), false);
@@ -62,7 +62,7 @@ public class ChessSetup : MonoBehaviour
         // Ustawienie hetmanów
         SpawnPiece(whiteQueenPrefab, new Vector2Int(3, 0), true);
         SpawnPiece(blackQueenPrefab, new Vector2Int(3, 7), false);
-        */
+        
 
         // Ustawienie królów
         SpawnPiece(whiteKingPrefab, new Vector2Int(4, 0), true);

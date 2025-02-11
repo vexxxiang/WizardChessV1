@@ -29,7 +29,7 @@ public class PromotionManager : MonoBehaviour
     public void Aprove(string Bierka) {
         _Bierka = Bierka;
         
-        ChessGameManager.instance.promotion();
+        //ChessGameManager.instance.promotion();
 
     }
     public void changeFigure()
