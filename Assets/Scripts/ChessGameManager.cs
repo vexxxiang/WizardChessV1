@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
+using TMPro;
 
 public class ChessGameManager : MonoBehaviour
 {
@@ -8,8 +9,8 @@ public class ChessGameManager : MonoBehaviour
     public ChessPiece[,] boardState = new ChessPiece[8, 8];  // Tablica stanu planszy (bierek)
     public ChessPiece selectedPiece; // Wybrana bierka
     public bool isWhiteTurn = true;  // Sprawdzanie, której stronie nale¿y tura
-    public bool atack = false;
-    public bool PromotionNow = false;
+
+
     public GameObject _Camera, _ChessBoard;
     public GameObject PromotionPanel;
     public ChessPiece Piece, promotionPiece;
@@ -19,10 +20,13 @@ public class ChessGameManager : MonoBehaviour
     public bool looking = false;
     public bool atackIsRunning = false;
     public GameObject model;
+    public ChessPiece selectedPieceForPromotion;
     public float TRPawn = 1f, TRRook = 0.16f, TRBishop = 2.16f, TRKnight = 1.5f, TRQueen = 1.16f, TRKing = 1.5f; // <- Czas 
     public GameObject _Pawn, _Rook, _Bishop, _Knight, _Queen, _King, _PawnB, _RookB, _BishopB, _KnightB, _QueenB, _KingB; // <- Prefaby Destroyed
     private GameObject destroy;
     private Vector3 targetPosition;
+    
+    public GameObject turaB, turaW;
 
 
 
@@ -52,24 +56,62 @@ public class ChessGameManager : MonoBehaviour
         CP = ChessBoard.instance;
         if (selectedPiece != null)
         {
+            selectedPieceForPromotion = selectedPiece;
             // Sprawdzamy, czy ruch jest dozwolony
             bool[,] availableMoves = selectedPiece.GetAvailableMoves(boardState);
             if (availableMoves[targetPosition.x, targetPosition.y] || Forced)
             {
-                CP.selecting = false;
-                StartCoroutine(AnimationFigureMove());
+                if (Promocja() == true)
+                {
+                    ChessBoard.instance.selecting = false;
+                    StartCoroutine(AnimationFigureMove());
+                    
+
+                }
+                else {
+                    ChessBoard.instance.selecting = false;
+                    StartCoroutine(AnimationFigureMove());
+                }
+                
 
 
             }
             else
             {
-                _ChessBoard.GetComponent<ChessBoard>().illegalMove(new Vector2Int(targetPosition.x, targetPosition.y));
+                ChessBoard.instance.illegalMove(new Vector2Int(targetPosition.x, targetPosition.y));
                 selectedPiece = null;
             }
         }
         else
         {
             Debug.Log("Nie wybrano bierki.");
+        }
+
+    }
+    public void AtackPiece(Vector2Int targetPosition)
+    {
+        if (selectedPiece)
+        {
+            selectedPieceForPromotion = selectedPiece;
+            ChessBoard.instance.selecting = false;
+            if (Promocja() == true)
+            {
+                ChessBoard.instance.selecting = false;
+                
+                Debug.Log("GM: atakuje ->> " + targetPosition);
+                StartCoroutine(AnimationFigureAtack());
+                
+            }
+            else {
+                Debug.Log("GM: atakuje ->> " + targetPosition);
+                StartCoroutine(AnimationFigureAtack());
+            }
+            
+
+        }
+        else
+        {
+            Debug.Log("Atakujesz a nie ma wybranej bierki");
         }
 
     }
@@ -95,6 +137,9 @@ public class ChessGameManager : MonoBehaviour
             selectedPiece.transform.rotation = Quaternion.Slerp(selectedPiece.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
             yield return null;
         }
+        
+        // dzwiek <----
+
 
         while (Vector3.Distance(selectedPiece.transform.position, new Vector3(CP.ClickedPlane.x, 0, CP.ClickedPlane.y)) > 0.001f)
         {
@@ -110,25 +155,22 @@ public class ChessGameManager : MonoBehaviour
         selectedPiece.GetComponent<ChessPiece>().Moved = true;
         selectedPiece.SetPosition(CP.ClickedPlane);
         selectedPiece = null;
-        zmianaTury();
-        CP.selecting = true;
+        if (!Promocja())
+        {
+
+            zmianaTury();
+
+        }
+        else 
+        {
+            ShowPromoPanel();
+        }
+        
+        
 
 
     }
-    public void AtackPiece(Vector2Int targetPosition)
-    {
-        if (selectedPiece)
-        {
-            Debug.Log("GM: atakuje ->> " + targetPosition);
-            StartCoroutine(AnimationFigureAtack());
-
-        }
-        else
-        {
-            Debug.Log("Atakujesz a nie ma wybranej bierki");
-        }
-
-    }
+   
     IEnumerator AnimationFigureAtack()
     {
         targetFigure = boardState[CP.ClickedPlane.x, CP.ClickedPlane.y];
@@ -203,6 +245,8 @@ public class ChessGameManager : MonoBehaviour
         looking = true;
         selectedPiece.GetComponent<Animator>().SetBool("MoveAnimation", true);
         atackIsRunning = true;
+        
+        
     }
     IEnumerator MoveRoszada(ChessPiece FirstPiece, Vector2Int FirstPos, ChessPiece SecPiece, Vector2Int SecPos)
     {
@@ -257,7 +301,7 @@ public class ChessGameManager : MonoBehaviour
         SecPiece.SetPosition(SecPos);
         selectedPiece = null;
         zmianaTury();
-        _ChessBoard.GetComponent<ChessBoard>().selecting = true;
+        
 
 
 
@@ -271,7 +315,7 @@ public class ChessGameManager : MonoBehaviour
             {
                 if (boardState[1, 0] == null && boardState[2, 0] == null && boardState[3, 0] == null)
                 {
-                    _ChessBoard.GetComponent<ChessBoard>().selecting = false;
+                    ChessBoard.instance.selecting = false;
                     StartCoroutine(MoveRoszada(boardState[0, 0], new Vector2Int(3, 0), boardState[4, 0], new Vector2Int(2, 0)));
                 }
             }
@@ -313,7 +357,31 @@ public class ChessGameManager : MonoBehaviour
     {
         _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
         isWhiteTurn = !isWhiteTurn;
+        ChessBoard.instance.selecting = true;
 
+    }
+
+    public virtual bool Promocja()
+    {
+        if (selectedPieceForPromotion.gameObject.CompareTag("Pawn"))
+        {
+            if (isWhiteTurn && ChessBoard.instance.ClickedPlane.y == 7 || !isWhiteTurn && ChessBoard.instance.ClickedPlane.y == 0)
+            {
+                Debug.Log("ruch Promocyjny");
+                return true;
+            }
+            else
+            {
+                Debug.Log("ruch Niepromocyjny err01");
+                return false;
+            }
+        }
+        else 
+        {
+            Debug.Log("ruch Niepromocyjny err02");
+            return false;
+        }
+        
     }
 
     /*
@@ -345,21 +413,43 @@ public class ChessGameManager : MonoBehaviour
 
         destroy = Instantiate(model, targetPosition, Quat);
 
-        Invoke("end", 2f);
+        StartCoroutine(end());
     }
-    public void end()
+    IEnumerator end()
     {
+        yield return new WaitForSeconds(2f); // <--- zmienic jezeli animacje beda trawy dluzej
         Destroy(destroy.gameObject);
         selectedPiece.GetComponent<CollisionScript>().SwichMeshCollider();
         ChessGameManager.instance.boardState[(int)targetPosition.x, (int)targetPosition.z] = null;
         ChessGameManager.instance.MovePiece(new Vector2Int((int)targetPosition.x, (int)targetPosition.z), true);
+        yield return new WaitForSeconds(1.1f);
+        if (Promocja())
+        {
+            ShowPromoPanel();
+        }
+    }
+    public void ShowPromoPanel()
+    {
+        PromotionPanel.SetActive(true);
 
     }
-    public void Update()
+    
+    public void FixedUpdate()
     {
+
+        if (isWhiteTurn)
+        {
+            turaB.SetActive(false);
+            turaW.SetActive(true);
+        }
+        else {
+            turaB.SetActive(true);
+            turaW.SetActive(false);
+        }
+
         if (looking)
         {
-            selectedPiece.transform.LookAt(new Vector3(CP.ClickedPlane.x, 0, CP.ClickedPlane.y));
+            selectedPiece.transform.LookAt(new Vector3(CP.ClickedPlane.x, selectedPiece.transform.position.y, CP.ClickedPlane.y));
         }
         if (atackIsRunning)
         {

@@ -26,17 +26,12 @@ public class PromotionManager : MonoBehaviour
     {
         Aprove("Knight");
     }
-    public void Aprove(string Bierka) {
-        _Bierka = Bierka;
-        
-        //ChessGameManager.instance.promotion();
-
-    }
-    public void changeFigure()
+    public void Aprove(string Bierka) 
     {
+        _Bierka = Bierka;
 
-        var piece = ChessGameManager.instance.selectedPiece;
-        Debug.Log(piece);
+        var piece = ChessGameManager.instance.selectedPieceForPromotion;
+        Debug.Log("Bierka która podlega promocji -->> " + piece + " i zamienia sie na _Bierka");
         switch (_Bierka)
         {
             case ("Rook"):
@@ -93,12 +88,16 @@ public class PromotionManager : MonoBehaviour
 
 
         }
-
+        ChessGameManager.instance.zmianaTury();
         ChessBoard.instance.selecting = true;
+        
         Destroy(piece.gameObject);
-        _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
 
     }
 
+        
+
 
 }
+
+

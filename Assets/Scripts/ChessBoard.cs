@@ -11,9 +11,6 @@ public class ChessBoard : MonoBehaviour
     public GameObject _Camera, promotionPanel;
     public static ChessBoard instance;
     public bool selecting = true;
-
-
-
     public Vector2Int ClickedPlane;
     public ChessPiece ClickedFigure;
 
@@ -114,8 +111,8 @@ public class ChessBoard : MonoBehaviour
             {
                 if (hit.collider.gameObject.CompareTag("Plansza") && selecting)
                 {
-                    //klikniete pole
-                    ClickedPlane = hit.collider.gameObject.GetComponent<Cube>().Position;
+                    Debug.Log("hit");
+                    ClickedPlane = hit.collider.gameObject.GetComponent<Cube>().Position; // <--- klikniete pole
 
 
                     //klikniêcie pustego pola nie maj¹c wybranej bierki
@@ -134,6 +131,7 @@ public class ChessBoard : MonoBehaviour
                     {
                         if (GM.boardState[ClickedPlane.x, ClickedPlane.y].isWhite == GM.isWhiteTurn)
                         {
+                            //roszada
                             if (GM.boardState[ClickedPlane.x, ClickedPlane.y].gameObject.CompareTag("King") && GM.selectedPiece.gameObject.CompareTag("Rook") && !GM.boardState[ClickedPlane.x, ClickedPlane.y].Moved && !GM.selectedPiece.Moved ||
                                 GM.boardState[ClickedPlane.x, ClickedPlane.y].gameObject.CompareTag("Rook") && GM.selectedPiece.gameObject.CompareTag("King") && !GM.boardState[ClickedPlane.x, ClickedPlane.y].Moved && !GM.selectedPiece.Moved)
                             {
@@ -159,15 +157,16 @@ public class ChessBoard : MonoBehaviour
                                     Debug.Log("Nieczekiwany b³¹d 002");
                                 }
                             }
+                            //odznaczanie bierki
                             else if (GM.selectedPiece.boardPosition == ClickedPlane && GM.selectedPiece != null)
                             {
                                 GM.UnSelectPiece();
                                 odznacz(ClickedPlane);
                             }
-
+                            // je¿eli mamy zaznaczon¹ bierke i klikniemy inn¹ tego samego koloru to podmieniamy wybran¹ bierke
                             else if (GM.boardState[ClickedPlane.x, ClickedPlane.y].isWhite == GM.isWhiteTurn)
                             {
-                                // je¿eli mamy zaznaczon¹ bierke i klikniemy inn¹ tego samego koloru to podmieniamy wybran¹ bierke
+                                
 
                                 odznacz(GM.selectedPiece.boardPosition);
                                 GM.UnSelectPiece();
@@ -176,7 +175,7 @@ public class ChessBoard : MonoBehaviour
                             }
 
                         }
-
+                        //atakowanie
                         else
                         {
                             bool[,] availableMoves = GM.selectedPiece.GetAvailableMoves(GM.boardState);
@@ -197,7 +196,7 @@ public class ChessBoard : MonoBehaviour
                     {
                         if (GM.boardState[ClickedPlane.x, ClickedPlane.y].isWhite == GM.isWhiteTurn)
                         {
-                            //jezelei rzadna fiugra nie jest wybrana i jest w³¹czone wybieranie figur to wybieramy tak¹
+                           //wybieranie figury
                             if (GM.selectedPiece == null)
 
                             {

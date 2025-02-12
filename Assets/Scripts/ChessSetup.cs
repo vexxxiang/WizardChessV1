@@ -40,7 +40,7 @@ public class ChessSetup : MonoBehaviour
             SpawnPiece(whitePawnPrefab, new Vector2Int(x, 1), true); // Bia³e pionki na drugim rzêdzie
             SpawnPiece(blackPawnPrefab, new Vector2Int(x, 6), false); // Czarne pionki na siódmym rzêdzie
         }
-
+        
         // Ustawienie wie¿
         SpawnPiece(whiteRookPrefab, new Vector2Int(0, 0), true);
         SpawnPiece(whiteRookPrefab, new Vector2Int(7, 0), true);
@@ -58,7 +58,7 @@ public class ChessSetup : MonoBehaviour
         SpawnPiece(whiteBishopPrefab, new Vector2Int(5, 0), true);
         SpawnPiece(blackBishopPrefab, new Vector2Int(2, 7), false);
         SpawnPiece(blackBishopPrefab, new Vector2Int(5, 7), false);
-
+        
         // Ustawienie hetmanów
         SpawnPiece(whiteQueenPrefab, new Vector2Int(3, 0), true);
         SpawnPiece(blackQueenPrefab, new Vector2Int(3, 7), false);
@@ -67,7 +67,8 @@ public class ChessSetup : MonoBehaviour
         // Ustawienie królów
         SpawnPiece(whiteKingPrefab, new Vector2Int(4, 0), true);
         SpawnPiece(blackKingPrefab, new Vector2Int(4, 7), false);
-        
+       
+     
         
     }
 
@@ -81,11 +82,7 @@ public class ChessSetup : MonoBehaviour
             piece.boardPosition = position;
             piece.isWhite = isWhite;
             ChessGameManager.instance.boardState[position.x, position.y] = piece;
-            if (ChessGameManager.instance.PromotionNow)
-            {
-                ChessGameManager.instance.promotionPiece = piece;
-            }
- 
+        
             
         }
         else {
@@ -94,10 +91,7 @@ public class ChessSetup : MonoBehaviour
             piece.boardPosition = position;
             piece.isWhite = isWhite;
             ChessGameManager.instance.boardState[position.x, position.y] = piece;
-            if (ChessGameManager.instance.PromotionNow)
-            {
-                ChessGameManager.instance.promotionPiece = piece;
-            }
+
         }
     }
 }
