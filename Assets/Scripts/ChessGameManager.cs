@@ -27,6 +27,7 @@ public class ChessGameManager : MonoBehaviour
     private Vector3 targetPosition;
     
     public GameObject turaB, turaW;
+    public bool isSzach = false;
 
 
 
@@ -42,13 +43,13 @@ public class ChessGameManager : MonoBehaviour
         if ((isWhiteTurn && piece.isWhite) || (!isWhiteTurn && !piece.isWhite))
         {
             selectedPiece = piece;
-            Debug.Log("Wybrano bierkê: " + piece.name + " na pozycji: " + position);
+           //Debug.Log("Wybrano bierkê: " + piece.name + " na pozycji: " + position);
         }
 
     }
     public void UnSelectPiece()
     {
-        Debug.Log("Anulowano Wybór bierkê: " + selectedPiece.name + " na pozycji: " + selectedPiece.boardPosition);
+        //Debug.Log("Anulowano Wybór bierkê: " + selectedPiece.name + " na pozycji: " + selectedPiece.boardPosition);
         selectedPiece = null;
     }
     public void MovePiece(Vector2Int targetPosition, bool Forced)
@@ -58,29 +59,62 @@ public class ChessGameManager : MonoBehaviour
         {
             selectedPieceForPromotion = selectedPiece;
             // Sprawdzamy, czy ruch jest dozwolony
-            bool[,] availableMoves = selectedPiece.GetAvailableMoves(boardState);
-            if (availableMoves[targetPosition.x, targetPosition.y] || Forced)
+            if (isSzach)
             {
-                if (Promocja() == true)
+                bool[,] availableMoves = selectedPiece.CancelingSzachMoves;
+                if (availableMoves[targetPosition.x, targetPosition.y] || Forced)
                 {
-                    ChessBoard.instance.selecting = false;
-                    StartCoroutine(AnimationFigureMove());
-                    
+                    if (Promocja() == true)
+                    {
+                        ChessBoard.instance.selecting = false;
+                        StartCoroutine(AnimationFigureMove());
+
+
+                    }
+                    else
+                    {
+                        ChessBoard.instance.selecting = false;
+                        StartCoroutine(AnimationFigureMove());
+                    }
+
+
 
                 }
-                else {
-                    ChessBoard.instance.selecting = false;
-                    StartCoroutine(AnimationFigureMove());
+                else
+                {
+                    ChessBoard.instance.illegalMove(new Vector2Int(targetPosition.x, targetPosition.y));
+                    selectedPiece = null;
                 }
-                
-
-
             }
             else
             {
-                ChessBoard.instance.illegalMove(new Vector2Int(targetPosition.x, targetPosition.y));
-                selectedPiece = null;
+                bool[,] availableMoves = selectedPiece.GetAvailableMoves(boardState);
+                if (availableMoves[targetPosition.x, targetPosition.y] || Forced)
+                {
+                    if (Promocja() == true)
+                    {
+                        ChessBoard.instance.selecting = false;
+                        StartCoroutine(AnimationFigureMove());
+
+
+                    }
+                    else
+                    {
+                        ChessBoard.instance.selecting = false;
+                        StartCoroutine(AnimationFigureMove());
+                    }
+
+
+
+                }
+                else
+                {
+                    ChessBoard.instance.illegalMove(new Vector2Int(targetPosition.x, targetPosition.y));
+                    selectedPiece = null;
+                }
             }
+            
+            
         }
         else
         {
@@ -129,7 +163,7 @@ public class ChessGameManager : MonoBehaviour
 
         Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-        Debug.Log(direction + "<-kierunek | rotacja -> " + targetRotation);
+        //Debug.Log(direction + "<-kierunek | rotacja -> " + targetRotation);
 
 
         while (Quaternion.Angle(selectedPiece.transform.rotation, targetRotation) > rotationThreshold)
@@ -170,7 +204,6 @@ public class ChessGameManager : MonoBehaviour
 
 
     }
-   
     IEnumerator AnimationFigureAtack()
     {
         targetFigure = boardState[CP.ClickedPlane.x, CP.ClickedPlane.y];
@@ -187,7 +220,7 @@ public class ChessGameManager : MonoBehaviour
 
         Quaternion targetRotation = Quaternion.LookRotation(directionr);
 
-        Debug.Log(directionr + "<-kierunek | rotacja -> " + targetRotation);
+        //Debug.Log(directionr + "<-kierunek | rotacja -> " + targetRotation);
 
 
         while (Quaternion.Angle(selectedPiece.transform.rotation, targetRotation) > rotationThreshold)
@@ -267,8 +300,8 @@ public class ChessGameManager : MonoBehaviour
         Quaternion targetRotation1 = Quaternion.LookRotation(direction1);
         Quaternion targetRotation2 = Quaternion.LookRotation(direction2);
 
-        Debug.Log(direction1 + "<-kierunek | rotacja -> " + targetRotation1);
-        Debug.Log(direction2 + "<-kierunek | rotacja -> " + targetRotation2);
+        //Debug.Log(direction1 + "<-kierunek | rotacja -> " + targetRotation1);
+        //Debug.Log(direction2 + "<-kierunek | rotacja -> " + targetRotation2);
 
 
         while (Quaternion.Angle(FirstPiece.transform.rotation, targetRotation1) > Threshold)
@@ -306,7 +339,6 @@ public class ChessGameManager : MonoBehaviour
 
 
     }
-
     public void Roszada(Vector2Int RookPos)
     {
         if (isWhiteTurn)
@@ -358,50 +390,35 @@ public class ChessGameManager : MonoBehaviour
         _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
         isWhiteTurn = !isWhiteTurn;
         ChessBoard.instance.selecting = true;
+        if (GameState.instance.SzachState(boardState,false))
+        {
+            isSzach = true;
+        }
+        else { isSzach = false; }
 
     }
-
     public virtual bool Promocja()
     {
         if (selectedPieceForPromotion.gameObject.CompareTag("Pawn"))
         {
             if (isWhiteTurn && ChessBoard.instance.ClickedPlane.y == 7 || !isWhiteTurn && ChessBoard.instance.ClickedPlane.y == 0)
             {
-                Debug.Log("ruch Promocyjny");
+                //Debug.Log("ruch Promocyjny");
                 return true;
             }
             else
             {
-                Debug.Log("ruch Niepromocyjny err01");
+                //Debug.Log("ruch Niepromocyjny err01");
                 return false;
             }
         }
         else 
         {
-            Debug.Log("ruch Niepromocyjny err02");
+            //Debug.Log("ruch Niepromocyjny err02");
             return false;
         }
         
     }
-
-    /*
-
-    public void promotion() {
-
-        StartCoroutine(RotateTowardsPlane());
-
-
-    }
-    public void CastleMovePiece(Vector2Int targetPosition)
-    {
-       
-        finalPos = new Vector3(targetPosition.x,0,targetPosition.y);
-        StartCoroutine(moveRoszada());
-        
-
-    }
-*/
-
     public void changeModel()
     {
 
@@ -493,6 +510,30 @@ public class ChessGameManager : MonoBehaviour
                     else
                     {
                         output += "[" + boardState[i, j].gameObject.tag + "]\t"; // Jeœli istnieje, wypisuje jego tag
+                    }
+                }
+                output += "\n"; // Nowa linia po ka¿dym wierszu
+            }
+
+            Debug.Log(output); // Wypisuje sformatowan¹ tablicê do konsoli
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            string output = "\n"; // Nowa linia dla czytelnoœci
+
+            for (int j = selectedPiece.CancelingSzachMoves.GetLength(0) - 1; j >= 0; j--) // Iteracja po wierszach
+            {
+                for (int i = 0; i < selectedPiece.CancelingSzachMoves.GetLength(1); i++) // Iteracja po kolumnach
+                {
+                    if (selectedPiece.CancelingSzachMoves[i, j] == false)
+                    {
+                        output += "[false]\t"; // Jeœli brak obiektu
+                    }
+                    else
+                    {
+                        output += "[" + selectedPiece.CancelingSzachMoves[i, j] + "]\t"; // Jeœli istnieje, wypisuje jego tag
                     }
                 }
                 output += "\n"; // Nowa linia po ka¿dym wierszu
