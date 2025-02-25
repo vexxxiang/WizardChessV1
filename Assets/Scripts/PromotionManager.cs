@@ -31,7 +31,7 @@ public class PromotionManager : MonoBehaviour
         _Bierka = Bierka;
 
         var piece = ChessGameManager.instance.selectedPieceForPromotion;
-        Debug.Log("Bierka która podlega promocji -->> " + piece + " i zamienia sie na _Bierka");
+        //Debug.Log("Bierka która podlega promocji -->> " + piece + " i zamienia sie na _Bierka");
         switch (_Bierka)
         {
             case ("Rook"):

@@ -42,7 +42,7 @@ public class ChessBoard : MonoBehaviour
     }
     public void zaznacz(Vector2Int position)
     {
-        Debug.Log("Zaznaczam pole: " + position);
+        //Debug.Log("Zaznaczam pole: " + position);
 
         foreach (GameObject i in Plansza)
         {
@@ -56,7 +56,7 @@ public class ChessBoard : MonoBehaviour
     }
     public void odznacz(Vector2Int position)
     {
-        Debug.Log("Odznaczam pole: " + position);
+        //Debug.Log("Odznaczam pole: " + position);
 
         foreach (GameObject i in Plansza)
         {
@@ -69,7 +69,7 @@ public class ChessBoard : MonoBehaviour
     }
     public void empty(Vector2Int position)
     {
-        Debug.Log("Klikniêto puste pole: " + position);
+        //Debug.Log("Klikniêto puste pole: " + position);
 
         foreach (GameObject i in Plansza)
         {
@@ -84,7 +84,7 @@ public class ChessBoard : MonoBehaviour
     }
     public void illegalMove(Vector2Int position)
     {
-        Debug.Log("Nielegalny ruch dla tej bierki: " + position);
+        //Debug.Log("Nielegalny ruch dla tej bierki: " + position);
 
         foreach (GameObject i in Plansza)
         {
@@ -111,7 +111,7 @@ public class ChessBoard : MonoBehaviour
             {
                 if (hit.collider.gameObject.CompareTag("Plansza") && selecting)
                 {
-                    Debug.Log("hit");
+                    //Debug.Log("hit");
                     ClickedPlane = hit.collider.gameObject.GetComponent<Cube>().Position; // <--- klikniete pole
 
 
