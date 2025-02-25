@@ -13,12 +13,6 @@ public class ChessRules : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// Sprawdza, czy król gracza o podanym kolorze jest w szachu.
-    /// </summary>
-    /// <param name="boardState">Aktualny stan planszy (8x8 tablica bierek)</param>
-    /// <param name="isWhiteTurn">Czy tura bia³ych</param>
-    /// <returns>true, jeœli król jest w szachu, false w przeciwnym wypadku</returns>
     public bool IsInCheck(ChessPiece[,] boardState, bool isWhiteTurn)
     {
         ChessPiece king = null;
@@ -61,11 +55,7 @@ public class ChessRules : MonoBehaviour
         return false;
     }
 
-    /// <summary>
-    /// Sprawdza, czy gracz o podanym kolorze ma jakikolwiek legalny ruch, który wyprowadza³by króla z szacha.
-    /// </summary>
-    /// <param name="isWhiteTurn">Czy tura bia³ych</param>
-    /// <returns>true, jeœli jest przynajmniej jeden legalny ruch, false w przeciwnym wypadku</returns>
+
     public bool HasLegalMoves(bool isWhiteTurn)
     {
         ChessPiece[,] boardState = ChessGameManager.instance.boardState;
@@ -173,9 +163,6 @@ public class ChessRules : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Ewaluje stan gry – wykrywa, czy wystêpuje szach, mat lub pat.
-    /// </summary>
     public string EvaluateGameState()
     {
         bool isWhiteTurn = ChessGameManager.instance.isWhiteTurn;
