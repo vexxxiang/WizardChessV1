@@ -187,7 +187,7 @@ public class ChessGameManager : MonoBehaviour
         }
         selectedPiece.transform.position = new Vector3(CP.ClickedPlane.x, 0, CP.ClickedPlane.y);
         selectedPiece.GetComponent<ChessPiece>().Moved = true;
-        selectedPiece.SetPosition(CP.ClickedPlane);
+        selectedPiece.SetPosition(CP.ClickedPlane, boardState);
         selectedPiece = null;
         if (!Promocja())
         {
@@ -330,8 +330,8 @@ public class ChessGameManager : MonoBehaviour
         FirstPiece.GetComponent<ChessPiece>().Moved = true;
         SecPiece.GetComponent<ChessPiece>().Moved = true;
 
-        FirstPiece.SetPosition(FirstPos);
-        SecPiece.SetPosition(SecPos);
+        FirstPiece.SetPosition(FirstPos, boardState);
+        SecPiece.SetPosition(SecPos, boardState);
         selectedPiece = null;
         zmianaTury();
         
@@ -385,16 +385,50 @@ public class ChessGameManager : MonoBehaviour
             }
         }
     }
+    public bool SimulateMoveForCheck(Vector2Int from, Vector2Int to)
+    {
+        ChessPiece[,] tempBoard = new ChessPiece[8, 8];
+
+        // Kopiujemy aktualny stan planszy
+        for (int x = 0; x < 8; x++)
+        {
+            for (int y = 0; y < 8; y++)
+            {
+                tempBoard[x, y] = boardState[x, y];
+            }
+        }
+
+        ChessPiece movedPiece = tempBoard[from.x, from.y];
+        ChessPiece capturedPiece = tempBoard[to.x, to.y];
+
+        // Wykonujemy symulacjê ruchu
+        movedPiece.SetPosition(to, tempBoard);
+
+        // Sprawdzamy czy król jest w szachu
+        bool inCheck = ChessRules.instance.IsInCheck(boardState, isWhiteTurn);
+
+
+        // Cofamy ruch
+        movedPiece.SetPosition(from, tempBoard);
+        tempBoard[to.x, to.y] = capturedPiece;
+
+        return !inCheck;
+    }
+
     public void zmianaTury()
     {
         _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
         isWhiteTurn = !isWhiteTurn;
         ChessBoard.instance.selecting = true;
-        if (GameState.instance.SzachState(boardState,false))
+        
+        if (ChessRules.instance.EvaluateGameState() == "Szach")
         {
             isSzach = true;
         }
-        else { isSzach = false; }
+        else 
+        {
+            isSzach = false; 
+        }
 
     }
     public virtual bool Promocja()
