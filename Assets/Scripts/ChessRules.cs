@@ -6,12 +6,10 @@ public class ChessRules : MonoBehaviour
 {
     public static ChessRules instance;
 
-
     private void Awake()
     {
         instance = this;
     }
-
 
     public bool IsInCheck(ChessPiece[,] boardState, bool isWhiteTurn)
     {
@@ -36,7 +34,7 @@ public class ChessRules : MonoBehaviour
             return true; // Traktujemy to jako szach – b³¹d w stanie gry.
         }
 
-        // Dla ka¿dej bierki przeciwnika sprawdŸ, czy mo¿e zagraæ na polu, na którym stoi król
+        // Dla ka¿dej bierki przeciwnika sprawdŸ, czy mo¿e zagraæ na polu, na którym stoi król (sprawdzanie czy jest szach)
         for (int x = 0; x < 8; x++)
         {
             for (int y = 0; y < 8; y++)
@@ -54,7 +52,6 @@ public class ChessRules : MonoBehaviour
         }
         return false;
     }
-
 
     public bool HasLegalMoves(bool isWhiteTurn)
     {
@@ -78,11 +75,13 @@ public class ChessRules : MonoBehaviour
                                 // Tworzymy kopiê planszy
                                 ChessPiece[,] simulation = DeepCopyBoard(boardState);
 
-                                // Symulujemy ruch
+                                // Pobieramy klon figury z oryginalnej pozycji
+                                ChessPiece movedPiece = simulation[x, y];
                                 simulation[x, y] = null;
-                                simulation[i, j] = piece;
+                                movedPiece.boardPosition = new Vector2Int(i, j);
+                                simulation[i, j] = movedPiece;
 
-                                // Sprawdzamy, czy po ruchu król nadal jest w szachu
+                                // Sprawdzamy, czy po symulowanym ruchu król nie jest w szachu
                                 if (!IsInCheck(simulation, isWhiteTurn))
                                 {
                                     return true;
@@ -96,7 +95,6 @@ public class ChessRules : MonoBehaviour
         return false;
     }
 
-
     public ChessPiece[,] DeepCopyBoard(ChessPiece[,] original)
     {
         ChessPiece[,] copy = new ChessPiece[8, 8];
@@ -107,8 +105,32 @@ public class ChessRules : MonoBehaviour
             {
                 if (original[x, y] != null)
                 {
-                    copy[x, y] = Instantiate(original[x, y]);  // Tworzymy now¹ instancjê figury
-                    copy[x, y].boardPosition = new Vector2Int(x, y);
+                    var obj = new GameObject(original[x, y].name+"kopy");
+                    var piece = original[x, y];
+                    switch (piece)
+                    {
+                        case Bishop bishop:
+                            copy[x, y] = bishop.DeepCopy<Bishop>(obj);
+                            break;
+                        case King king:
+                            copy[x, y] = king.DeepCopy<King>(obj);
+                            break;
+                        case Knight knight:
+                            copy[x, y] = knight.DeepCopy<Knight>(obj);
+                            break;
+                        case Pawn pawn:
+                            copy[x, y] = pawn.DeepCopy<Pawn>(obj);
+                            break;
+                        case Queen queen:
+                            copy[x, y] = queen.DeepCopy<Queen>(obj);
+                            break;
+                        case Rook rook:
+                            copy[x, y] = rook.DeepCopy<Rook>(obj);
+                            break;
+                    }
+                    //copy[x, y] = Instantiate(original[x, y]);  // Klonujemy figurê
+                    //copy[x, y] = original[x,y].DeepCopy(obj);
+                    //copy[x, y].boardPosition = new Vector2Int(x, y);
                 }
             }
         }
@@ -137,19 +159,16 @@ public class ChessRules : MonoBehaviour
                                 // Tworzymy symulowan¹ kopiê planszy
                                 ChessPiece[,] simulation = DeepCopyBoard(boardState);
 
-                                // Symulujemy ruch
-                                simulation[x, y] = null; // Usuwamy bierkê ze starego miejsca
-                                simulation[i, j] = piece; // Przenosimy na now¹ pozycjê
-                                Vector2Int oldPos = piece.boardPosition;
-                                piece.boardPosition = new Vector2Int(i, j);
+                                // Pobieramy klon figury
+                                ChessPiece clonedPiece = simulation[x, y];
+                                simulation[x, y] = null;
+                                clonedPiece.boardPosition = new Vector2Int(i, j);
+                                simulation[i, j] = clonedPiece;
 
-                                // Sprawdzamy, czy król nadal jest w szachu
-                                bool isValid = !IsInCheck(simulation, piece.isWhite);
+                                // Sprawdzamy, czy po ruchu król nadal jest w szachu
+                                bool isValid = !IsInCheck(simulation, clonedPiece.isWhite);
 
-                                // Przywracamy oryginaln¹ pozycjê
-                                piece.boardPosition = oldPos;
-
-                                // Jeœli ruch ratuje króla, ustawiamy CancelingSzachMoves
+                                // Ustawiamy wynik dla danego ruchu
                                 piece.CancelingSzachMoves[i, j] = isValid;
                             }
                             else

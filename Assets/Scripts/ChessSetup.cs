@@ -34,14 +34,14 @@ public class ChessSetup : MonoBehaviour
 
     public void SetupPieces()
     {
-        /*
+        
         // Ustawienie pionków
         for (int x = 0; x < 8; x++)
         {
             SpawnPiece(whitePawnPrefab, new Vector2Int(x, 1), true); // Bia³e pionki na drugim rzêdzie
             SpawnPiece(blackPawnPrefab, new Vector2Int(x, 6), false); // Czarne pionki na siódmym rzêdzie
         }
-        */
+        
         // Ustawienie wie¿
         SpawnPiece(whiteRookPrefab, new Vector2Int(0, 0), true);
         SpawnPiece(whiteRookPrefab, new Vector2Int(7, 0), true);

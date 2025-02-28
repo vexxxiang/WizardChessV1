@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ChessPiece : MonoBehaviour
+public  class ChessPiece : MonoBehaviour
 {
     public Vector2Int boardPosition;
     public bool isWhite;
