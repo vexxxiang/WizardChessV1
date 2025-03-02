@@ -10,7 +10,7 @@ public class ChessGameManager : MonoBehaviour
     public ChessPiece selectedPiece; // Wybrana bierka
     public bool isWhiteTurn = true;  // Sprawdzanie, której stronie nale¿y tura
 
-
+    public Transform _bierki;
     public GameObject _Camera, _ChessBoard;
     public GameObject PromotionPanel;
     public ChessPiece Piece, promotionPiece;
@@ -25,7 +25,10 @@ public class ChessGameManager : MonoBehaviour
     public GameObject _Pawn, _Rook, _Bishop, _Knight, _Queen, _King, _PawnB, _RookB, _BishopB, _KnightB, _QueenB, _KingB; // <- Prefaby Destroyed
     private GameObject destroy;
     private Vector3 targetPosition;
+
     
+
+
     public GameObject turaB, turaW;
     public bool isSzach = false;
 
@@ -54,14 +57,17 @@ public class ChessGameManager : MonoBehaviour
     }
     public void MovePiece(Vector2Int targetPosition, bool Forced)
     {
-        CP = ChessBoard.instance;
-        if (selectedPiece != null)
+
+
+        if (ChessRules.instance.EvaluateGameState() == "szach")
         {
-            selectedPieceForPromotion = selectedPiece;
-            // Sprawdzamy, czy ruch jest dozwolony
-            if (isSzach)
+            CP = ChessBoard.instance;
+            if (selectedPiece != null)
             {
-                bool[,] availableMoves = selectedPiece.CancelingSzachMoves;
+                selectedPieceForPromotion = selectedPiece;
+                // Sprawdzamy, czy ruch jest dozwolony
+
+                bool[,] availableMoves = selectedPiece.GetLegalMoves(boardState);
                 if (availableMoves[targetPosition.x, targetPosition.y] || Forced)
                 {
                     if (Promocja() == true)
@@ -85,43 +91,89 @@ public class ChessGameManager : MonoBehaviour
                     ChessBoard.instance.illegalMove(new Vector2Int(targetPosition.x, targetPosition.y));
                     selectedPiece = null;
                 }
+
+
+
             }
             else
             {
-                bool[,] availableMoves = selectedPiece.GetAvailableMoves(boardState);
-                if (availableMoves[targetPosition.x, targetPosition.y] || Forced)
+                Debug.Log("Nie wybrano bierki.");
+            }
+
+        }
+        else
+        {
+
+
+            CP = ChessBoard.instance;
+            if (selectedPiece != null)
+            {
+                selectedPieceForPromotion = selectedPiece;
+                // Sprawdzamy, czy ruch jest dozwolony
+                if (isSzach)
                 {
-                    if (Promocja() == true)
+                    bool[,] availableMoves = selectedPiece.CancelingSzachMoves;
+                    if (availableMoves[targetPosition.x, targetPosition.y] || Forced)
                     {
-                        ChessBoard.instance.selecting = false;
-                        StartCoroutine(AnimationFigureMove());
+                        if (Promocja() == true)
+                        {
+                            ChessBoard.instance.selecting = false;
+                            StartCoroutine(AnimationFigureMove());
+
+
+                        }
+                        else
+                        {
+                            ChessBoard.instance.selecting = false;
+                            StartCoroutine(AnimationFigureMove());
+                        }
+
 
 
                     }
                     else
                     {
-                        ChessBoard.instance.selecting = false;
-                        StartCoroutine(AnimationFigureMove());
+                        ChessBoard.instance.illegalMove(new Vector2Int(targetPosition.x, targetPosition.y));
+                        selectedPiece = null;
                     }
-
-
-
                 }
                 else
                 {
-                    ChessBoard.instance.illegalMove(new Vector2Int(targetPosition.x, targetPosition.y));
-                    selectedPiece = null;
-                }
-            }
-            
-            
-        }
-        else
-        {
-            Debug.Log("Nie wybrano bierki.");
-        }
+                    bool[,] availableMoves = selectedPiece.CancelingSzachMoves;
+                    if (availableMoves[targetPosition.x, targetPosition.y] || Forced)
+                    {
+                        if (Promocja() == true)
+                        {
+                            ChessBoard.instance.selecting = false;
+                            StartCoroutine(AnimationFigureMove());
 
+
+                        }
+                        else
+                        {
+                            ChessBoard.instance.selecting = false;
+                            StartCoroutine(AnimationFigureMove());
+                        }
+
+
+
+                    }
+                    else
+                    {
+                        ChessBoard.instance.illegalMove(new Vector2Int(targetPosition.x, targetPosition.y));
+                        selectedPiece = null;
+                    }
+                }
+
+
+            }
+            else
+            {
+                Debug.Log("Nie wybrano bierki.");
+            }
+        }
     }
+        
     public void AtackPiece(Vector2Int targetPosition)
     {
         if (selectedPiece)
@@ -417,17 +469,36 @@ public class ChessGameManager : MonoBehaviour
 
     public void zmianaTury()
     {
-        _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
-        isWhiteTurn = !isWhiteTurn;
-        ChessBoard.instance.selecting = true;
-        
+       
+
+
         if (ChessRules.instance.EvaluateGameState() == "Szach")
         {
+            _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
+            isWhiteTurn = !isWhiteTurn;
+            ChessBoard.instance.selecting = true;
             isSzach = true;
         }
-        else 
+        else if (ChessRules.instance.EvaluateGameState() == "Mat")
         {
-            isSzach = false; 
+            if (isWhiteTurn)
+            {
+                Debug.Log("wygra³y czarne");
+                DestroyKing();
+            }
+            else 
+            {
+                Debug.Log("wygra³y bia³e");
+                DestroyKing();
+            }
+        }
+
+        else
+        {
+            _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
+            isWhiteTurn = !isWhiteTurn;
+            ChessBoard.instance.selecting = true;
+            isSzach = false;
         }
 
     }
@@ -483,6 +554,24 @@ public class ChessGameManager : MonoBehaviour
     {
         PromotionPanel.SetActive(true);
 
+    }
+    public void DestroyKing()
+    {
+        foreach (Transform piece in _bierki)
+        {
+            if (piece.gameObject.CompareTag("King") && piece.GetComponent<ChessPiece>().isWhite == isWhiteTurn)
+            {
+                if (piece.GetComponent<ChessPiece>().isWhite)
+                {
+                    Instantiate(_KingB, new Vector3(piece.gameObject.transform.position.x, piece.gameObject.transform.position.y, piece.gameObject.transform.position.z), Quaternion.identity, this.transform);
+                }
+                else
+                {
+                    Instantiate(_KingB, new Vector3(piece.gameObject.transform.position.x, piece.gameObject.transform.position.y, piece.gameObject.transform.position.z), Quaternion.identity, this.transform);
+                }
+                Destroy(piece.gameObject);
+            }
+        }
     }
     
     public void FixedUpdate()
@@ -575,5 +664,6 @@ public class ChessGameManager : MonoBehaviour
 
             Debug.Log(output); // Wypisuje sformatowan¹ tablicê do konsoli
         }
+  
     }
 }

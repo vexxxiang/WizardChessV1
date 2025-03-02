@@ -75,7 +75,7 @@ public class ChessSetup : MonoBehaviour
 
     public void SpawnPiece(GameObject prefab, Vector2Int position, bool isWhite)
     {
-        Vector3 worldPosition = new Vector3(position.x, 0.2f, position.y);
+        Vector3 worldPosition = new Vector3(position.x, 0f, position.y);
         if (isWhite == true)
         {
             GameObject pieceObject = Instantiate(prefab, worldPosition, Quaternion.Euler(0, 0, 0), _Bierki.transform);

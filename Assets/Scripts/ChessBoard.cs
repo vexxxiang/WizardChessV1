@@ -114,15 +114,15 @@ public class ChessBoard : MonoBehaviour
                     //Debug.Log("hit");
                     ClickedPlane = hit.collider.gameObject.GetComponent<Cube>().Position; // <--- klikniete pole
 
-
+                    
                     //klikniêcie pustego pola nie maj¹c wybranej bierki
                     if (GM.boardState[ClickedPlane.x, ClickedPlane.y] == null && GM.selectedPiece == null)
                     {
                         empty(ClickedPlane);
                     }
-
                     else if (selecting && GM.boardState[ClickedPlane.x, ClickedPlane.y] == null && GM.selectedPiece != null)
                     {
+                        GM.selectedPiece.GetLegalMoves(GM.boardState);
                         odznacz(GM.selectedPiece.boardPosition);
                         GM.MovePiece(ClickedPlane, false);
 
@@ -178,8 +178,10 @@ public class ChessBoard : MonoBehaviour
                         //atakowanie
                         else
                         {
-                            bool[,] availableMoves = GM.selectedPiece.GetAvailableMoves(GM.boardState);
-                            if (availableMoves[ClickedPlane.x, ClickedPlane.y])
+                            ChessRules.instance.EvaluateGameState();
+                            GM.selectedPiece.GetComponent<ChessPiece>().GetLegalMoves(GM.boardState);
+                            bool[,] availableMoves = GM.selectedPiece.CancelingSzachMoves;
+                            if (availableMoves[ClickedPlane.x, ClickedPlane.y] && ChessRules.instance.EvaluateGameState() == "Nothing" || GM.selectedPiece.CancelingSzachMoves[ClickedPlane.x,ClickedPlane.y] == true && ChessRules.instance.EvaluateGameState() == "szach")
                             {
                                 odznacz(GM.selectedPiece.boardPosition);
                                 Debug.Log(GM.selectedPiece + " Atakuje: " + GM.boardState[ClickedPlane.x, ClickedPlane.y].GetComponent<ChessPiece>() + "Na pozycji:" + ClickedPlane);
