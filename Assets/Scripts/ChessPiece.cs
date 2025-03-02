@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ChessPiece : MonoBehaviour
+public  class ChessPiece : MonoBehaviour
 {
     public Vector2Int boardPosition;
     public bool isWhite;
@@ -16,7 +16,40 @@ public abstract class ChessPiece : MonoBehaviour
             King = true;
         }
     }
+    public bool[,] GetLegalMoves(ChessPiece[,] boardState)
+    {
+        bool[,] possibleMoves = GetAvailableMoves(boardState);
+        bool[,] legalMoves = new bool[8, 8];
 
+        for (int x = 0; x < 8; x++)
+        {
+            for (int y = 0; y < 8; y++)
+            {
+                CancelingSzachMoves[x, y] = false;
+                if (possibleMoves[x, y])
+                {
+                    // Tworzymy symulacjê planszy
+                    ChessPiece[,] simulation = ChessRules.instance.DeepCopyBoard(boardState);
+                    ChessPiece movedPiece = simulation[boardPosition.x, boardPosition.y];
+
+                    // Wykonujemy ruch w symulacji
+                    simulation[boardPosition.x, boardPosition.y] = null;
+                    movedPiece.boardPosition = new Vector2Int(x, y);
+                    simulation[x, y] = movedPiece;
+
+                    // Sprawdzamy, czy po ruchu król jest w szachu
+                    if (!ChessRules.instance.IsInCheck(simulation, isWhite))
+                    {
+                        legalMoves[x, y] = true;
+                        // tylko podgladowo     \/
+                        CancelingSzachMoves[x, y] = true;
+                    }
+                }
+            }
+        }
+
+        return legalMoves;
+    }
     public virtual bool[,] GetAvailableMoves(ChessPiece[,] boardState)
     {
         bool[,] moves = new bool[8, 8];
