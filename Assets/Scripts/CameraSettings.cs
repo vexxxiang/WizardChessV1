@@ -43,7 +43,7 @@ public class CameraSettings : MonoBehaviour
     {
         //Debug.Log($"SomeMethod was called by: {callerName}");
         float startAngle = target.transform.rotation.eulerAngles.y;  // Pobieramy obecny kąt Y
-        float endAngle = gameManager.isWhiteTurn ? 180f : 0f;  // Ustawiamy kąt docelowy
+        float endAngle = !gameManager.isWhiteTurn ? 180f : 0f;  // Ustawiamy kąt docelowy
 
         StartCoroutine(RotateCamera(startAngle, endAngle));  // Uruchamiamy animację obracania
     }

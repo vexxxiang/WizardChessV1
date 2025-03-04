@@ -171,6 +171,25 @@ public class ChessGameManager : MonoBehaviour
             {
                 Debug.Log("Nie wybrano bierki.");
             }
+            if (ChessRules.instance.EvaluateGameState() == "Mat")
+            { 
+            }
+
+
+            if (ChessRules.instance.EvaluateGameState() == "Mat")
+            {
+                if (isWhiteTurn)
+                {
+                    Debug.Log("wygra³y czarne");
+                    DestroyKing();
+                }
+                else
+                {
+                    Debug.Log("wygra³y bia³e");
+                    DestroyKing();
+                }
+            }
+
         }
     }
         
@@ -469,39 +488,48 @@ public class ChessGameManager : MonoBehaviour
 
     public void zmianaTury()
     {
-       
+        isWhiteTurn = !isWhiteTurn;
+        string gameState = ChessRules.instance.EvaluateGameState();
 
+        //if (!ChessRules.instance.HasLegalMoves(isWhiteTurn) && ChessRules.instance.IsInCheck(boardState,isWhiteTurn))
+        if (gameState == "Mat")
+        {
+            // ZnajdŸ i usuñ króla z planszy
+            ChessPiece king = this.gameObject.GetComponent<ChessRules>().FindKing(isWhiteTurn);
+            if (king != null)
+            {
+                Destroy(king.gameObject);
+            }
 
-        if (ChessRules.instance.EvaluateGameState() == "Szach")
+            // Wyœwietl komunikat o wygranej
+            if (isWhiteTurn)
+            {
+                Debug.Log("Wygra³y czarne");
+
+            }
+            else
+            {
+                Debug.Log("Wygra³y bia³e");
+            }
+            DestroyKing();
+            return; // Przerywamy dalsz¹ zmianê tury, bo gra siê koñczy
+        }
+        else if (gameState == "Szach")
         {
             _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
-            isWhiteTurn = !isWhiteTurn;
+            
             ChessBoard.instance.selecting = true;
             isSzach = true;
         }
-        else if (ChessRules.instance.EvaluateGameState() == "Mat")
-        {
-            if (isWhiteTurn)
-            {
-                Debug.Log("wygra³y czarne");
-                DestroyKing();
-            }
-            else 
-            {
-                Debug.Log("wygra³y bia³e");
-                DestroyKing();
-            }
-        }
-
         else
         {
             _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
-            isWhiteTurn = !isWhiteTurn;
+            
             ChessBoard.instance.selecting = true;
             isSzach = false;
         }
-
     }
+
     public virtual bool Promocja()
     {
         if (selectedPieceForPromotion.gameObject.CompareTag("Pawn"))
