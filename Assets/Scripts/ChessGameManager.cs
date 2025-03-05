@@ -495,7 +495,7 @@ public class ChessGameManager : MonoBehaviour
         if (gameState == "Mat")
         {
             // ZnajdŸ i usuñ króla z planszy
-            ChessPiece king = this.gameObject.GetComponent<ChessRules>().FindKing(isWhiteTurn);
+            ChessPiece king = this.gameObject.GetComponent<ChessRules>().FindKing(!isWhiteTurn);
             if (king != null)
             {
                 Destroy(king.gameObject);
@@ -504,12 +504,12 @@ public class ChessGameManager : MonoBehaviour
             // Wyœwietl komunikat o wygranej
             if (isWhiteTurn)
             {
-                Debug.Log("Wygra³y czarne");
+                Debug.Log("Wygra³y bia³e");
 
             }
             else
             {
-                Debug.Log("Wygra³y bia³e");
+                Debug.Log("Wygra³y czarne");
             }
             DestroyKing();
             return; // Przerywamy dalsz¹ zmianê tury, bo gra siê koñczy
@@ -587,7 +587,7 @@ public class ChessGameManager : MonoBehaviour
     {
         foreach (Transform piece in _bierki)
         {
-            if (piece.gameObject.CompareTag("King") && piece.GetComponent<ChessPiece>().isWhite == isWhiteTurn)
+            if (piece.gameObject.CompareTag("King") && piece.GetComponent<ChessPiece>().isWhite == !isWhiteTurn)
             {
                 if (piece.GetComponent<ChessPiece>().isWhite)
                 {

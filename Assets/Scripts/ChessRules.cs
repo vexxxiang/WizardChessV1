@@ -197,6 +197,7 @@ public class ChessRules : MonoBehaviour
         {
             if (!legalMoves)
             {
+                ChessGameManager.instance.isWhiteTurn = !ChessGameManager.instance.isWhiteTurn;
                 Debug.Log("Mat! Koniec gry");
                 return "Mat";
             }
