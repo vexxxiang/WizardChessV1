@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using UnityEngine;
 using UnityEngine.UIElements;
 using TMPro;
@@ -8,7 +8,7 @@ public class ChessGameManager : MonoBehaviour
     public static ChessGameManager instance;
     public ChessPiece[,] boardState = new ChessPiece[8, 8];  // Tablica stanu planszy (bierek)
     public ChessPiece selectedPiece; // Wybrana bierka
-    public bool isWhiteTurn = true;  // Sprawdzanie, ktÛrej stronie naleøy tura
+    public bool isWhiteTurn = true;  // Sprawdzanie, kt√≥rej stronie nale≈ºy tura
 
     public Transform _bierki;
     public GameObject _Camera, _ChessBoard;
@@ -46,13 +46,13 @@ public class ChessGameManager : MonoBehaviour
         if ((isWhiteTurn && piece.isWhite) || (!isWhiteTurn && !piece.isWhite))
         {
             selectedPiece = piece;
-           //Debug.Log("Wybrano bierkÍ: " + piece.name + " na pozycji: " + position);
+           //Debug.Log("Wybrano bierkƒô: " + piece.name + " na pozycji: " + position);
         }
 
     }
     public void UnSelectPiece()
     {
-        //Debug.Log("Anulowano WybÛr bierkÍ: " + selectedPiece.name + " na pozycji: " + selectedPiece.boardPosition);
+        //Debug.Log("Anulowano Wyb√≥r bierkƒô: " + selectedPiece.name + " na pozycji: " + selectedPiece.boardPosition);
         selectedPiece = null;
     }
     public void MovePiece(Vector2Int targetPosition, bool Forced)
@@ -171,6 +171,25 @@ public class ChessGameManager : MonoBehaviour
             {
                 Debug.Log("Nie wybrano bierki.");
             }
+            if (ChessRules.instance.EvaluateGameState() == "Mat")
+            { 
+            }
+
+
+            if (ChessRules.instance.EvaluateGameState() == "Mat")
+            {
+                if (isWhiteTurn)
+                {
+                    Debug.Log("wygra≈Çy czarne");
+                    DestroyKing();
+                }
+                else
+                {
+                    Debug.Log("wygra≈Çy bia≈Çe");
+                    DestroyKing();
+                }
+            }
+
         }
     }
         
@@ -282,36 +301,61 @@ public class ChessGameManager : MonoBehaviour
         }
         if (targetFigure == null) yield break;
 
-        // Obliczanie rÛønicy w pozycjach (pozostawiamy Z i X do przesuniÍcia)
+        // Obliczanie r√≥≈ºnicy w pozycjach (pozostawiamy Z i X do przesuniƒôcia)
         Vector3 difference = new Vector3(
             targetFigure.boardPosition.x - selectedPiece.boardPosition.x,
-            0, // WysokoúÊ nie zmienia siÍ
+            0, // Wysoko≈õƒá nie zmienia siƒô
             targetFigure.boardPosition.y - selectedPiece.boardPosition.y
         );
 
-        // Sprawdzamy po ktÛrej stronie znajduje siÍ movingFigure wzglÍdem targetFigure
+        // Sprawdzamy po kt√≥rej stronie znajduje siƒô movingFigure wzglƒôdem targetFigure
         Vector3 direction = difference.normalized;
+        Vector3 QuatersLogics;
+        // Ustalanie, po kt√≥rej stronie jest movingFigure:
+        // Je≈õli movingFigure jest po prawej stronie targetFigure na osi X
 
-        // Ustalanie, po ktÛrej stronie jest movingFigure:
-        // Jeúli movingFigure jest po prawej stronie targetFigure na osi X
-        bool isRightSide = difference.x > 0;
-        bool isUpSide = difference.z > 0;
+            Vector2 movePosition = new Vector2(0,0);
 
-        // Obliczamy przesuniÍcie, uwzglÍdniajπc offset
-        Vector3 QuatersLogics = new Vector3(
-            (Mathf.Abs(difference.x) - offsetStopMoving) * (isRightSide ? 1 : -1),  // Kierunek zaleøny od strony (lewa/prawa)
-            0,  // WysokoúÊ (Y) nie zmienia siÍ
-            (Mathf.Abs(difference.z) - offsetStopMoving) * (isUpSide ? 1 : -1) // Kierunek w osi Z
-        );
+            Vector2 sPos = new Vector2(selectedPiece.transform.position.x, selectedPiece.transform.position.z);
+            Vector2 ePos = new Vector2(targetFigure.transform.position.x, targetFigure.transform.position.z);
+
+            if (sPos.x > ePos.x && sPos.y == ePos.y)//zprawa
+            {
+                movePosition.x = ePos.x-sPos.x + (offsetStopMoving+0.2f);
+            }
+            else if (sPos.x < ePos.x && sPos.y == ePos.y)//zlewa
+            {
+                movePosition.x = ePos.x - sPos.x - (offsetStopMoving + 0.2f);
+            }
+            else if(sPos.x == ePos.x && sPos.y > ePos.y)//zgora
+            {
+                movePosition.y = ePos.y - sPos.y + (offsetStopMoving + 0.2f);
+            }
+            else if(sPos.x == ePos.x && sPos.y < ePos.y)//zdol
+            {
+                movePosition.y = ePos.y - sPos.y - (offsetStopMoving + 0.2f);
+            }
+            else {
+                bool isRightSide = difference.x > 0;
+                bool isUpSide = difference.z > 0;
 
 
+                movePosition.x = (Mathf.Abs(difference.x) - offsetStopMoving) * (isRightSide ? 1 : -1);
+                movePosition.y = (Mathf.Abs(difference.z) - offsetStopMoving) * (isUpSide ? 1 : -1);
+            }
 
-        // Obliczenie nowej pozycji docelowej z uwzglÍdnieniem offsetu
+            QuatersLogics = new Vector3(movePosition.x, 0, movePosition.y);
+        
+
+            
+          
+
+        // Obliczenie nowej pozycji docelowej z uwzglƒôdnieniem offsetu
         Vector3 preTargetPosition = selectedPiece.transform.position + QuatersLogics;
 
         var startpos = selectedPiece.transform.position;
         var elapsedTimeMove = 0f;
-        // P≥ynne przesuwanie
+        // P≈Çynne przesuwanie
         while (Vector3.Distance(selectedPiece.transform.position, preTargetPosition) > distanceThreshold)
         {
 
@@ -330,8 +374,38 @@ public class ChessGameManager : MonoBehaviour
         looking = true;
         selectedPiece.GetComponent<Animator>().SetBool("MoveAnimation", true);
         atackIsRunning = true;
+
+
+
+
+
+        /*
+
+        tu dzwiek po ataku
+        i sprawdzasz jaka to bierka takƒÖ innstrukcjƒÖ
+
+
+        if (selectedPiece.CompareTag("King,Knight,Pawn...")
+        {
+            tu komenda do wywo≈Çania dzwieku
+        }
+        if (selectedPiece.CompareTag("King,Knight,Pawn...")
+        {
+            tu komenda do wywo≈Çania dzwieku
+        }
+        if (selectedPiece.CompareTag("King,Knight,Pawn...")
+        {
+            tu komenda do wywo≈Çania dzwieku
+        }
+        if (selectedPiece.CompareTag("King,Knight,Pawn...")
+        {
+            tu komenda do wywo≈Çania dzwieku
+        }
         
         
+
+        */
+
     }
     IEnumerator MoveRoszada(ChessPiece FirstPiece, Vector2Int FirstPos, ChessPiece SecPiece, Vector2Int SecPos)
     {
@@ -453,10 +527,10 @@ public class ChessGameManager : MonoBehaviour
         ChessPiece movedPiece = tempBoard[from.x, from.y];
         ChessPiece capturedPiece = tempBoard[to.x, to.y];
 
-        // Wykonujemy symulacjÍ ruchu
+        // Wykonujemy symulacjƒô ruchu
         movedPiece.SetPosition(to, tempBoard);
 
-        // Sprawdzamy czy krÛl jest w szachu
+        // Sprawdzamy czy kr√≥l jest w szachu
         bool inCheck = ChessRules.instance.IsInCheck(boardState, isWhiteTurn);
 
 
@@ -469,39 +543,48 @@ public class ChessGameManager : MonoBehaviour
 
     public void zmianaTury()
     {
-       
+        isWhiteTurn = !isWhiteTurn;
+        string gameState = ChessRules.instance.EvaluateGameState();
 
+        //if (!ChessRules.instance.HasLegalMoves(isWhiteTurn) && ChessRules.instance.IsInCheck(boardState,isWhiteTurn))
+        if (gameState == "Mat")
+        {
+            // Znajd≈∫ i usu≈Ñ kr√≥la z planszy
+            ChessPiece king = this.gameObject.GetComponent<ChessRules>().FindKing(!isWhiteTurn);
+            if (king != null)
+            {
+                Destroy(king.gameObject);
+            }
 
-        if (ChessRules.instance.EvaluateGameState() == "Szach")
+            // Wy≈õwietl komunikat o wygranej
+            if (isWhiteTurn)
+            {
+                Debug.Log("Wygra≈Çy bia≈Çe");
+
+            }
+            else
+            {
+                Debug.Log("Wygra≈Çy czarne");
+            }
+            DestroyKing();
+            return; // Przerywamy dalszƒÖ zmianƒô tury, bo gra siƒô ko≈Ñczy
+        }
+        else if (gameState == "Szach")
         {
             _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
-            isWhiteTurn = !isWhiteTurn;
+            
             ChessBoard.instance.selecting = true;
             isSzach = true;
         }
-        else if (ChessRules.instance.EvaluateGameState() == "Mat")
-        {
-            if (isWhiteTurn)
-            {
-                Debug.Log("wygra≥y czarne");
-                DestroyKing();
-            }
-            else 
-            {
-                Debug.Log("wygra≥y bia≥e");
-                DestroyKing();
-            }
-        }
-
         else
         {
             _Camera.GetComponent<CameraSettings>().RotateAroundBoard();
-            isWhiteTurn = !isWhiteTurn;
+            
             ChessBoard.instance.selecting = true;
             isSzach = false;
         }
-
     }
+
     public virtual bool Promocja()
     {
         if (selectedPieceForPromotion.gameObject.CompareTag("Pawn"))
@@ -559,7 +642,7 @@ public class ChessGameManager : MonoBehaviour
     {
         foreach (Transform piece in _bierki)
         {
-            if (piece.gameObject.CompareTag("King") && piece.GetComponent<ChessPiece>().isWhite == isWhiteTurn)
+            if (piece.gameObject.CompareTag("King") && piece.GetComponent<ChessPiece>().isWhite == !isWhiteTurn)
             {
                 if (piece.GetComponent<ChessPiece>().isWhite)
                 {
@@ -595,7 +678,7 @@ public class ChessGameManager : MonoBehaviour
         {
 
             var timeRemaining = 0f;
-            //dla bia≥ych
+            //dla bia≈Çych
             if (targetFigure.CompareTag("Pawn") && targetFigure.isWhite) { timeRemaining = TRPawn; model = _Pawn; }
             else if (targetFigure.CompareTag("Rook") && targetFigure.isWhite) { timeRemaining = TRRook; model = _Rook; }
             else if (targetFigure.CompareTag("King") && targetFigure.isWhite) { timeRemaining = TRKing; model = _King; }
@@ -620,7 +703,7 @@ public class ChessGameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.K))
         {
-            string output = "\n"; // Nowa linia dla czytelnoúci
+            string output = "\n"; // Nowa linia dla czytelno≈õci
 
             for (int j = boardState.GetLength(0) - 1; j >= 0; j--) // Iteracja po wierszach
             {
@@ -628,23 +711,23 @@ public class ChessGameManager : MonoBehaviour
                 {
                     if (boardState[i, j] == null)
                     {
-                        output += "[null]\t"; // Jeúli brak obiektu
+                        output += "[null]\t"; // Je≈õli brak obiektu
                     }
                     else
                     {
-                        output += "[" + boardState[i, j].gameObject.tag + "]\t"; // Jeúli istnieje, wypisuje jego tag
+                        output += "[" + boardState[i, j].gameObject.tag + "]\t"; // Je≈õli istnieje, wypisuje jego tag
                     }
                 }
-                output += "\n"; // Nowa linia po kaødym wierszu
+                output += "\n"; // Nowa linia po ka≈ºdym wierszu
             }
 
-            Debug.Log(output); // Wypisuje sformatowanπ tablicÍ do konsoli
+            Debug.Log(output); // Wypisuje sformatowanƒÖ tablicƒô do konsoli
         }
 
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            string output = "\n"; // Nowa linia dla czytelnoúci
+            string output = "\n"; // Nowa linia dla czytelno≈õci
 
             for (int j = selectedPiece.CancelingSzachMoves.GetLength(0) - 1; j >= 0; j--) // Iteracja po wierszach
             {
@@ -652,17 +735,17 @@ public class ChessGameManager : MonoBehaviour
                 {
                     if (selectedPiece.CancelingSzachMoves[i, j] == false)
                     {
-                        output += "[false]\t"; // Jeúli brak obiektu
+                        output += "[false]\t"; // Je≈õli brak obiektu
                     }
                     else
                     {
-                        output += "[" + selectedPiece.CancelingSzachMoves[i, j] + "]\t"; // Jeúli istnieje, wypisuje jego tag
+                        output += "[" + selectedPiece.CancelingSzachMoves[i, j] + "]\t"; // Je≈õli istnieje, wypisuje jego tag
                     }
                 }
-                output += "\n"; // Nowa linia po kaødym wierszu
+                output += "\n"; // Nowa linia po ka≈ºdym wierszu
             }
 
-            Debug.Log(output); // Wypisuje sformatowanπ tablicÍ do konsoli
+            Debug.Log(output); // Wypisuje sformatowanƒÖ tablicƒô do konsoli
         }
   
     }

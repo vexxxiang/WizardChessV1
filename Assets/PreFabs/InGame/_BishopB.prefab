@@ -1343,6 +1343,7 @@ MonoBehaviour:
   boardPosition: {x: 0, y: 0}
   isWhite: 0
   Moved: 0
+  King: 0
 --- !u!95 &-7622431801574231433
 Animator:
   serializedVersion: 4
@@ -2820,8 +2821,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7610609428938943903}
   m_LocalRotation: {x: 0.5229266, y: 0.17584892, z: 0.35790756, w: 0.75334394}
-  m_LocalPosition: {x: -1.8626451e-11, y: 0.0024693639, z: -0.0000000016391277}
-  m_LocalScale: {x: 0.99999994, y: 1.0000001, z: 0.9999998}
+  m_LocalPosition: {x: 0, y: 0.0024693639, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8867843088875028350}

@@ -68,12 +68,12 @@ public class ChessRules : MonoBehaviour
                 if (piece != null && piece.isWhite == isWhiteTurn)
                 {
                     bool[,] moves = piece.GetLegalMoves(boardState);
-                    
+
                     for (int i = 0; i < 8; i++)
                     {
                         for (int j = 0; j < 8; j++)
                         {
-                            
+
                             if (moves[i, j])
                             {
                                 return true;
@@ -96,14 +96,14 @@ public class ChessRules : MonoBehaviour
                 Destroy(child.gameObject);
             }
         }
-        
+
         for (int x = 0; x < 8; x++)
         {
             for (int y = 0; y < 8; y++)
             {
                 if (original[x, y] != null)
                 {
-                    var obj = new GameObject(original[x, y].name+"kopy");
+                    var obj = new GameObject(original[x, y].name + "kopy");
                     obj.transform.SetParent(FiguresSimulation);
                     var piece = original[x, y];
                     switch (piece)
@@ -175,7 +175,7 @@ public class ChessRules : MonoBehaviour
                             {
                                 piece.CancelingSzachMoves[i, j] = false;
                             }
-                            
+
                         }
                     }
                 }
@@ -183,42 +183,63 @@ public class ChessRules : MonoBehaviour
         }
     }
 
+
     public string EvaluateGameState()
     {
         bool isWhiteTurn = ChessGameManager.instance.isWhiteTurn;
         ChessPiece[,] boardState = ChessGameManager.instance.boardState;
+        
 
         bool inCheck = IsInCheck(boardState, isWhiteTurn);
         bool legalMoves = HasLegalMoves(isWhiteTurn);
 
         if (inCheck)
         {
-            if (legalMoves)
+            if (!legalMoves)
             {
-                return "szach";  // Szach, ale gra trwa
+                ChessGameManager.instance.isWhiteTurn = !ChessGameManager.instance.isWhiteTurn;
+                Debug.Log("Mat! Koniec gry");
+                return "Mat";
             }
             else
             {
-                Debug.Log("mat");
-                
-               
-                
-                return "Mat";  // Szach i brak ruchów → Mat
-               
+                return "szach";
             }
         }
         else
         {
             if (!legalMoves)
             {
-                return "Pat";  // Brak szacha i brak ruchów → Pat
+                return "Pat";
             }
             else
             {
-                return "Nothing";  // Gra trwa
+                return "Nothing";
             }
         }
+    
+
+
+
+
+
     }
 
+    public ChessPiece FindKing(bool isWhite)
+    {
+        ChessPiece[,] boardState = ChessGameManager.instance.boardState;
 
+        for (int x = 0; x < 8; x++)
+        {
+            for (int y = 0; y < 8; y++)
+            {
+                if (boardState[x, y] is King king && king.isWhite == isWhite)
+                {
+                    return king;
+                }
+            }
+        }
+
+        return null;
+    }
 }

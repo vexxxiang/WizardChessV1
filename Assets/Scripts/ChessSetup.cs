@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class ChessSetup : MonoBehaviour
 {
-    public ChessBoard chessBoard; // Referencja do skryptu ChessBoard
+    // Referencja do skryptu ChessBoard
+    public ChessBoard chessBoard; 
 
     // Prefaby figur
     public GameObject whitePawnPrefab;
@@ -18,11 +19,10 @@ public class ChessSetup : MonoBehaviour
     public GameObject blackQueenPrefab;
     public GameObject whiteKingPrefab;
     public GameObject blackKingPrefab;
-    
 
-    //public ChessPiece[,] boardState = new ChessPiece[8, 8];
-
+    //Obiekt na scenie który przechowuje wszystkie bierki
     public GameObject _Bierki;
+
     public static ChessSetup instance;
 
     void Start()
@@ -34,13 +34,17 @@ public class ChessSetup : MonoBehaviour
 
     public void SetupPieces()
     {
-        
         // Ustawienie pionków
+        /*
         for (int x = 0; x < 8; x++)
         {
-            SpawnPiece(whitePawnPrefab, new Vector2Int(x, 1), true); // Bia³e pionki na drugim rzêdzie
-            SpawnPiece(blackPawnPrefab, new Vector2Int(x, 6), false); // Czarne pionki na siódmym rzêdzie
+            // Bia³e pionki na drugim rzêdzie
+            SpawnPiece(whitePawnPrefab, new Vector2Int(x, 1), true);
+
+            // Czarne pionki na siódmym rzêdzie
+            SpawnPiece(blackPawnPrefab, new Vector2Int(x, 6), false);
         }
+        */
         
         // Ustawienie wie¿
         SpawnPiece(whiteRookPrefab, new Vector2Int(0, 0), true);
@@ -83,8 +87,6 @@ public class ChessSetup : MonoBehaviour
             piece.boardPosition = position;
             piece.isWhite = isWhite;
             ChessGameManager.instance.boardState[position.x, position.y] = piece;
-        
-            
         }
         else {
             GameObject pieceObject = Instantiate(prefab, worldPosition, Quaternion.Euler(0, 180, 0), _Bierki.transform);
@@ -92,7 +94,6 @@ public class ChessSetup : MonoBehaviour
             piece.boardPosition = position;
             piece.isWhite = isWhite;
             ChessGameManager.instance.boardState[position.x, position.y] = piece;
-
         }
     }
 }
