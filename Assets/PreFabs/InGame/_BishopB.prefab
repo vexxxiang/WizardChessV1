@@ -1344,6 +1344,12 @@ MonoBehaviour:
   isWhite: 0
   Moved: 0
   King: 0
+  audioSource: {fileID: 0}
+  _Sounds:
+  - {fileID: 8300000, guid: 394ddc285c128f147ba39a0fb191830a, type: 3}
+  - {fileID: 8300000, guid: d3caa242429c35f4793b636f48349614, type: 3}
+  - {fileID: 8300000, guid: dd999f2a072bc894dae53865ed83d711, type: 3}
+  - {fileID: 8300000, guid: b09872de04faa264ca48a6cfbefab7c3, type: 3}
 --- !u!95 &-7622431801574231433
 Animator:
   serializedVersion: 4

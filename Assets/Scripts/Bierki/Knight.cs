@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class Knight : ChessPiece
 {
+    public AudioClip[] _Sounds;
+    public override AudioClip[] Sounds
+    {
+        get { return _Sounds; }
+        set { Sounds = _Sounds; }
+    }
+
+
     public override bool[,] GetAvailableMoves(ChessPiece[,] boardState)
     {
         bool[,] moves = new bool[8, 8]; // Tablica mo¿liwych ruchów (8x8 szachownica)

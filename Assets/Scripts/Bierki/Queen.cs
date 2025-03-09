@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class Queen : ChessPiece
 {
-   
+    public AudioClip[] _Sounds;
+    public override AudioClip[] Sounds
+    {
+        get { return _Sounds; }
+        set { Sounds = _Sounds; }
+    }
+
+
+
     public override bool[,] GetAvailableMoves(ChessPiece[,] boardState)
     {
         bool[,] moves = new bool[8, 8];

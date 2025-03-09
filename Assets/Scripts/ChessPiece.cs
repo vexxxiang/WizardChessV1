@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public  class ChessPiece : MonoBehaviour
+public abstract class ChessPiece : MonoBehaviour
 {
     public Vector2Int boardPosition;
     public bool isWhite;
@@ -9,12 +9,33 @@ public  class ChessPiece : MonoBehaviour
     public bool King = false;
     public bool[,] CancelingSzachMoves = new bool[8, 8];
 
+    public abstract AudioClip[] Sounds { get; set; }
+    public AudioSource audioSource ;
+
     public void Start()
     {
         if (gameObject.CompareTag("King"))
         {
             King = true;
         }
+    }
+
+    public void PlaySound()
+    {
+        
+        var number = Random.Range(0, 4);
+        Debug.Log(number);
+        if (audioSource == null)
+        {
+            audioSource = ChessGameManager.instance.gameObject.GetComponent<AudioSource>();
+        }
+        if(audioSource != null)
+        {
+            Debug.Log(Sounds[number].name);
+            audioSource.PlayOneShot(Sounds[number]);
+        }
+
+
     }
     public bool[,] GetLegalMoves(ChessPiece[,] boardState)
     {

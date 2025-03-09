@@ -21,21 +21,18 @@ public class ChessGameManager : MonoBehaviour
     public bool atackIsRunning = false;
     public GameObject model;
     public ChessPiece selectedPieceForPromotion;
-    public float TRPawn = 1f, TRRook = 0.16f, TRBishop = 2.16f, TRKnight = 1.5f, TRQueen = 1.16f, TRKing = 1.5f; // <- Czas 
-    public GameObject _Pawn, _Rook, _Bishop, _Knight, _Queen, _King, _PawnB, _RookB, _BishopB, _KnightB, _QueenB, _KingB; // <- Prefaby Destroyed
     private GameObject destroy;
     private Vector3 targetPosition;
-
-
-    public AudioSource audioSource; // Komponent AudioSource, przypisz w Inspectorze
-    public AudioClip captureSound;  // Plik dźwiękowy odtwarzany po zbiciu bierki
-
-  
-
     public GameObject turaB, turaW;
     public bool isSzach = false;
+    public float TRPawn = 1f, TRRook = 0.16f, TRBishop = 2.16f, TRKnight = 1.5f, TRQueen = 1.16f, TRKing = 1.5f; // <- Czas 
+    public GameObject _Pawn, _Rook, _Bishop, _Knight, _Queen, _King, _PawnB, _RookB, _BishopB, _KnightB, _QueenB, _KingB; // <- Prefaby Destroyed
+    
+    public AudioClip[] movingSounds;
+    public AudioSource audioSource;
 
- 
+
+
 
     void Start()
     {
@@ -43,6 +40,28 @@ public class ChessGameManager : MonoBehaviour
         instance = this;
         _ChessBoard.GetComponent<ChessBoard>().CreateBoard();
         this.gameObject.GetComponent<ChessSetup>().SetupPieces();
+    }
+    public void PlaySound()
+    {
+
+        if (audioSource == null)
+        {
+            audioSource = this.gameObject.GetComponent<AudioSource>();
+        }
+        if (audioSource != null && isWhiteTurn)
+        {
+      
+            audioSource.PlayOneShot(movingSounds[0]);
+            
+        }
+        if (audioSource != null && !isWhiteTurn)
+        {
+
+            audioSource.PlayOneShot(movingSounds[1]);
+
+        }
+
+
     }
     public void SelectPiece(ChessPiece piece, Vector2Int position)
     {
@@ -194,6 +213,10 @@ public class ChessGameManager : MonoBehaviour
             }
 
         }
+
+
+        
+
     }
         
     public void AtackPiece(Vector2Int targetPosition)
@@ -225,7 +248,7 @@ public class ChessGameManager : MonoBehaviour
     }
     IEnumerator AnimationFigureMove()
     {
-
+        
         var rotationThreshold = 0.001f;
         var rotationSpeed = 5f;
         var elapsedTime = 0f;
@@ -245,13 +268,12 @@ public class ChessGameManager : MonoBehaviour
             selectedPiece.transform.rotation = Quaternion.Slerp(selectedPiece.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
             yield return null;
         }
-        
-        // dzwiek <----
 
 
+        PlaySound();
         while (Vector3.Distance(selectedPiece.transform.position, new Vector3(CP.ClickedPlane.x, 0, CP.ClickedPlane.y)) > 0.001f)
         {
-            float t = elapsedTime / 1; // Normalizacja czasu (od 0 do 1)
+            float t = elapsedTime / 5f; // Normalizacja czasu (od 0 do 1)
             t = Mathf.SmoothStep(0f, 1f, t); // Dodanie efektu ease in-out
 
             selectedPiece.transform.position = Vector3.Lerp(selectedPiece.transform.position, new Vector3(CP.ClickedPlane.x, 0, CP.ClickedPlane.y), t);
@@ -355,10 +377,11 @@ public class ChessGameManager : MonoBehaviour
 
         // Obliczenie nowej pozycji docelowej z uwzględnieniem offsetu
         Vector3 preTargetPosition = selectedPiece.transform.position + QuatersLogics;
-
+        PlaySound();
         var startpos = selectedPiece.transform.position;
         var elapsedTimeMove = 0f;
         // Płynne przesuwanie
+        
         while (Vector3.Distance(selectedPiece.transform.position, preTargetPosition) > distanceThreshold)
         {
 
@@ -379,27 +402,12 @@ public class ChessGameManager : MonoBehaviour
         // Gdy obiekt dotrze do docelowej pozycji
 
         looking = true;
+        selectedPiece.GetComponent<ChessPiece>().PlaySound();
         selectedPiece.GetComponent<Animator>().SetBool("MoveAnimation", true);
         atackIsRunning = true;
 
 
-        if (selectedPiece.CompareTag("Pawn"))
-        {
-            Debug.Log("test");
-
-
-
-            if (audioSource == null)
-            { 
-                audioSource = GetComponent<AudioSource>();
-            }
-
-
-            if (audioSource != null && captureSound != null)
-            { 
-                audioSource.PlayOneShot(captureSound);
-            }
-        }
+       
 
 
 

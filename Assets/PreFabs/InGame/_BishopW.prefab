@@ -1810,6 +1810,7 @@ GameObject:
   - component: {fileID: 5375126763561990690}
   - component: {fileID: -8794543196799222295}
   - component: {fileID: -2919350300127635943}
+  - component: {fileID: 8757114762370594556}
   m_Layer: 8
   m_Name: _BishopW
   m_TagString: Bishop
@@ -1853,6 +1854,13 @@ MonoBehaviour:
   boardPosition: {x: 0, y: 0}
   isWhite: 0
   Moved: 0
+  King: 0
+  audioSource: {fileID: 0}
+  _Sounds:
+  - {fileID: 8300000, guid: 394ddc285c128f147ba39a0fb191830a, type: 3}
+  - {fileID: 8300000, guid: d3caa242429c35f4793b636f48349614, type: 3}
+  - {fileID: 8300000, guid: dd999f2a072bc894dae53865ed83d711, type: 3}
+  - {fileID: 8300000, guid: b09872de04faa264ca48a6cfbefab7c3, type: 3}
 --- !u!95 &-8794543196799222295
 Animator:
   serializedVersion: 4
@@ -1888,6 +1896,28 @@ MonoBehaviour:
   fightMode: 1
   weapon: {fileID: 7183557116699841955}
   meshCollider: {fileID: 0}
+--- !u!114 &8757114762370594556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4774206804877350246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 421e1c652836bf14a9195e04ece98be1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boardPosition: {x: 0, y: 0}
+  isWhite: 0
+  Moved: 0
+  King: 0
+  audioSource: {fileID: 0}
+  _Sounds:
+  - {fileID: 8300000, guid: 394ddc285c128f147ba39a0fb191830a, type: 3}
+  - {fileID: 8300000, guid: d3caa242429c35f4793b636f48349614, type: 3}
+  - {fileID: 8300000, guid: dd999f2a072bc894dae53865ed83d711, type: 3}
+  - {fileID: 8300000, guid: b09872de04faa264ca48a6cfbefab7c3, type: 3}
 --- !u!1 &4818024478938733796
 GameObject:
   m_ObjectHideFlags: 0

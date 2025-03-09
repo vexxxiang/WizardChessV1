@@ -3831,6 +3831,13 @@ MonoBehaviour:
   boardPosition: {x: 0, y: 0}
   isWhite: 0
   Moved: 0
+  King: 0
+  audioSource: {fileID: 0}
+  _Sounds:
+  - {fileID: 8300000, guid: 457b592326c890f41a920886f6ec668e, type: 3}
+  - {fileID: 8300000, guid: 0e7c043d9d147bf488b6c41218e15af3, type: 3}
+  - {fileID: 8300000, guid: 859eae839deac3f46953c271f9f28c06, type: 3}
+  - {fileID: 8300000, guid: d623adc95c890a34bb7b4f58842a6a93, type: 3}
 --- !u!95 &-8892458898032630562
 Animator:
   serializedVersion: 4
