@@ -26,13 +26,16 @@ public class ChessGameManager : MonoBehaviour
     private GameObject destroy;
     private Vector3 targetPosition;
 
-    
 
+    public AudioSource audioSource; // Komponent AudioSource, przypisz w Inspectorze
+    public AudioClip captureSound;  // Plik dźwiękowy odtwarzany po zbiciu bierki
+
+  
 
     public GameObject turaB, turaW;
     public bool isSzach = false;
 
-
+ 
 
     void Start()
     {
@@ -367,7 +370,11 @@ public class ChessGameManager : MonoBehaviour
             elapsedTimeMove += Time.deltaTime;
 
             yield return null;  // Czekaj na kolejny frame
+
+            
+
         }
+
         selectedPiece.transform.position = preTargetPosition;
         // Gdy obiekt dotrze do docelowej pozycji
 
@@ -376,6 +383,28 @@ public class ChessGameManager : MonoBehaviour
         atackIsRunning = true;
 
 
+        if (selectedPiece.CompareTag("Pawn"))
+        {
+            Debug.Log("test");
+
+
+
+            if (audioSource == null)
+            { 
+                audioSource = GetComponent<AudioSource>();
+            }
+
+
+            if (audioSource != null && captureSound != null)
+            { 
+                audioSource.PlayOneShot(captureSound);
+            }
+        }
+
+
+
+
+        // Reszta inicjalizacji...
 
 
 
@@ -401,8 +430,8 @@ public class ChessGameManager : MonoBehaviour
         {
             tu komenda do wywołania dzwieku
         }
-        
-        
+
+
 
         */
 
