@@ -10,7 +10,7 @@ public abstract class ChessPiece : MonoBehaviour
     public bool[,] CancelingSzachMoves = new bool[8, 8];
 
     public abstract AudioClip[] Sounds { get; set; }
-    public AudioSource audioSource ;
+    public AudioSource speakingAudioSource;
 
     public void Start()
     {
@@ -24,15 +24,13 @@ public abstract class ChessPiece : MonoBehaviour
     {
         
         var number = Random.Range(0, 4);
-        Debug.Log(number);
-        if (audioSource == null)
+        if (speakingAudioSource == null)
         {
-            audioSource = ChessGameManager.instance.gameObject.GetComponent<AudioSource>();
+            speakingAudioSource = SoundsSetings.instance.speakingAudioSource;
         }
-        if(audioSource != null)
+        if(speakingAudioSource != null)
         {
-            Debug.Log(Sounds[number].name);
-            audioSource.PlayOneShot(Sounds[number]);
+            speakingAudioSource.PlayOneShot(Sounds[number]);
         }
 
 

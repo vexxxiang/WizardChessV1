@@ -9,6 +9,7 @@ public class ChessGameManager : MonoBehaviour
     public ChessPiece[,] boardState = new ChessPiece[8, 8];  // Tablica stanu planszy (bierek)
     public ChessPiece selectedPiece; // Wybrana bierka
     public bool isWhiteTurn = true;  // Sprawdzanie, której stronie należy tura
+    public bool showTour = true;  // Sprawdzanie, której stronie należy tura
 
     public Transform _bierki;
     public GameObject _Camera, _ChessBoard;
@@ -29,7 +30,7 @@ public class ChessGameManager : MonoBehaviour
     public GameObject _Pawn, _Rook, _Bishop, _Knight, _Queen, _King, _PawnB, _RookB, _BishopB, _KnightB, _QueenB, _KingB; // <- Prefaby Destroyed
     
     public AudioClip[] movingSounds;
-    public AudioSource audioSource;
+    public AudioSource movingAudioSource;
 
 
 
@@ -44,20 +45,16 @@ public class ChessGameManager : MonoBehaviour
     public void PlaySound()
     {
 
-        if (audioSource == null)
-        {
-            audioSource = this.gameObject.GetComponent<AudioSource>();
-        }
-        if (audioSource != null && isWhiteTurn)
-        {
-      
-            audioSource.PlayOneShot(movingSounds[0]);
-            
-        }
-        if (audioSource != null && !isWhiteTurn)
+        if (isWhiteTurn)
         {
 
-            audioSource.PlayOneShot(movingSounds[1]);
+            movingAudioSource.PlayOneShot(movingSounds[0]);
+            
+        }
+        if (!isWhiteTurn)
+        {
+
+            movingAudioSource.PlayOneShot(movingSounds[1]);
 
         }
 
@@ -229,12 +226,12 @@ public class ChessGameManager : MonoBehaviour
             {
                 ChessBoard.instance.selecting = false;
                 
-                Debug.Log("GM: atakuje ->> " + targetPosition);
+                //Debug.Log("GM: atakuje ->> " + targetPosition);
                 StartCoroutine(AnimationFigureAtack());
                 
             }
             else {
-                Debug.Log("GM: atakuje ->> " + targetPosition);
+                //Debug.Log("GM: atakuje ->> " + targetPosition);
                 StartCoroutine(AnimationFigureAtack());
             }
             
@@ -697,14 +694,22 @@ public class ChessGameManager : MonoBehaviour
     public void FixedUpdate()
     {
 
-        if (isWhiteTurn)
+        if (isWhiteTurn && showTour)
         {
             turaB.SetActive(false);
             turaW.SetActive(true);
         }
-        else {
+        else if (!isWhiteTurn && showTour)
+        {
             turaB.SetActive(true);
             turaW.SetActive(false);
+        }
+        else if(!showTour){
+            if (turaB.activeSelf == true || turaW.activeSelf == true)
+            {
+                turaB.SetActive(false);
+                turaW.SetActive(false);
+            }
         }
 
         if (looking)
