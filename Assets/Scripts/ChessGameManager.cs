@@ -400,8 +400,10 @@ public class ChessGameManager : MonoBehaviour
 
         looking = true;
         selectedPiece.GetComponent<ChessPiece>().PlaySound();
+        selectedPiece.GetComponent<CollisionScript>().SwichMeshCollider();
+        targetFigure.GetComponent<CollisionScript>().SwichMeshColliderCapsule();
         selectedPiece.GetComponent<Animator>().SetBool("MoveAnimation", true);
-        atackIsRunning = true;
+        //atackIsRunning = true;
 
 
        
@@ -641,7 +643,7 @@ public class ChessGameManager : MonoBehaviour
         }
         
     }
-    public void changeModel()
+    /*public void changeModel()
     {
 
         selectedPiece.GetComponent<CollisionScript>().SwichMeshCollider();
@@ -652,16 +654,18 @@ public class ChessGameManager : MonoBehaviour
 
         destroy = Instantiate(model, targetPosition, Quat);
 
-        StartCoroutine(end());
     }
-    IEnumerator end()
+    */
+    public void end()
     {
-        yield return new WaitForSeconds(2f); // <--- zmienic jezeli animacje beda trawy dluzej
-        Destroy(destroy.gameObject);
+
+        looking = false;
+        Quaternion Quat = targetFigure.transform.rotation;
+        targetPosition = targetFigure.transform.position;
+        Destroy(targetFigure.gameObject);
         selectedPiece.GetComponent<CollisionScript>().SwichMeshCollider();
         ChessGameManager.instance.boardState[(int)targetPosition.x, (int)targetPosition.z] = null;
         ChessGameManager.instance.MovePiece(new Vector2Int((int)targetPosition.x, (int)targetPosition.z), true);
-        yield return new WaitForSeconds(1.1f);
         if (Promocja())
         {
             ShowPromoPanel();
@@ -716,9 +720,11 @@ public class ChessGameManager : MonoBehaviour
         {
             selectedPiece.transform.LookAt(new Vector3(CP.ClickedPlane.x, selectedPiece.transform.position.y, CP.ClickedPlane.y));
         }
+        
+        /*
+        
         if (atackIsRunning)
         {
-
             var timeRemaining = 0f;
             //dla białych
             if (targetFigure.CompareTag("Pawn") && targetFigure.isWhite) { timeRemaining = TRPawn; model = _Pawn; }
@@ -742,7 +748,7 @@ public class ChessGameManager : MonoBehaviour
 
 
         }
-
+        */
         if (Input.GetKeyDown(KeyCode.K))
         {
             string output = "\n"; // Nowa linia dla czytelności

@@ -19,8 +19,8 @@ public class SettingsPanel : MonoBehaviour
 
     public void Menu()
     {
-        if (panelSettings.activeSelf == true) { panelSettings.SetActive(false); Debug.Log("zamykam panel ustawieñ"); }
-        else if (panelSettings.activeSelf == false) { panelSettings.SetActive(true); Debug.Log("Otwieram panel ustawieñ"); }
+        if (panelSettings.activeSelf == true) { panelSettings.SetActive(false); }
+        else if (panelSettings.activeSelf == false) { panelSettings.SetActive(true); }
     }
 
     public void Update()
