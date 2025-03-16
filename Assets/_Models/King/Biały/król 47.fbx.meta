@@ -30,6 +30,69 @@ ModelImporter:
   - first:
       74: 8472665691497325963
     second: Armature|podstawaAction.001
+  - first:
+      74: -5684672910152580945
+    second: Cube.002|Armature|mixamo.com|Layer0
+  - first:
+      74: 5169807119324996255
+    second: Cube.002|Cube.046Action
+  - first:
+      74: 9029124811868418145
+    second: Cube.002|Cube.046Action.001
+  - first:
+      74: -2279237445879083570
+    second: Cube.002|Cube.046Action.002
+  - first:
+      74: 2159813578085831253
+    second: Cube.002|Cube.046Action.003
+  - first:
+      74: 6754767861953380687
+    second: Cube.002|Cylinder.003Action.001
+  - first:
+      74: 6852198083939875810
+    second: Cube.002|podstawaAction.001
+  - first:
+      74: -3606682429845354617
+    second: Cube.004|Armature|mixamo.com|Layer0
+  - first:
+      74: -8131540934110346073
+    second: Cube.004|Cube.046Action
+  - first:
+      74: -493965768524253550
+    second: Cube.004|Cube.046Action.001
+  - first:
+      74: -1274575562498864408
+    second: Cube.004|Cube.046Action.002
+  - first:
+      74: 8259757393416594372
+    second: Cube.004|Cube.046Action.003
+  - first:
+      74: 8266344005396895011
+    second: Cube.004|Cylinder.003Action.001
+  - first:
+      74: 2072814445174510490
+    second: Cube.004|podstawaAction.001
+  - first:
+      74: 8787272095699759388
+    second: Cube.046|Armature|mixamo.com|Layer0
+  - first:
+      74: -8281908042447016087
+    second: Cube.046|Cube.046Action
+  - first:
+      74: -7701744593069167239
+    second: Cube.046|Cube.046Action.001
+  - first:
+      74: -5168648643934729378
+    second: Cube.046|Cube.046Action.002
+  - first:
+      74: -1761236237357584998
+    second: Cube.046|Cube.046Action.003
+  - first:
+      74: -2832590387500771178
+    second: Cube.046|Cylinder.003Action.001
+  - first:
+      74: -8052763635610132317
+    second: Cube.046|podstawaAction.001
   externalObjects:
   - first:
       type: UnityEngine:Material

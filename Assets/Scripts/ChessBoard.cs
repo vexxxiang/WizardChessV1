@@ -13,7 +13,7 @@ public class ChessBoard : MonoBehaviour
     public bool selecting = true;
     public Vector2Int ClickedPlane;
     public ChessPiece ClickedFigure;
-
+   
 
     public void Start()
     {
@@ -110,9 +110,10 @@ public class ChessBoard : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
+
                 if (hit.collider.gameObject.CompareTag("Plansza") && selecting)
                 {
-                    //Debug.Log("hit");
+                    Debug.Log("hit");
                     ClickedPlane = hit.collider.gameObject.GetComponent<Cube>().Position; // <--- klikniete pole
 
                     

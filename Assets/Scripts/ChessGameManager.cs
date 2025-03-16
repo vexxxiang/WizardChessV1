@@ -9,6 +9,7 @@ public class ChessGameManager : MonoBehaviour
     public ChessPiece[,] boardState = new ChessPiece[8, 8];  // Tablica stanu planszy (bierek)
     public ChessPiece selectedPiece; // Wybrana bierka
     public bool isWhiteTurn = true;  // Sprawdzanie, której stronie należy tura
+    public bool showTour = true;  // Sprawdzanie, której stronie należy tura
 
     public Transform _bierki;
     public GameObject _Camera, _ChessBoard;
@@ -21,18 +22,18 @@ public class ChessGameManager : MonoBehaviour
     public bool atackIsRunning = false;
     public GameObject model;
     public ChessPiece selectedPieceForPromotion;
-    public float TRPawn = 1f, TRRook = 0.16f, TRBishop = 2.16f, TRKnight = 1.5f, TRQueen = 1.16f, TRKing = 1.5f; // <- Czas 
-    public GameObject _Pawn, _Rook, _Bishop, _Knight, _Queen, _King, _PawnB, _RookB, _BishopB, _KnightB, _QueenB, _KingB; // <- Prefaby Destroyed
     private GameObject destroy;
     private Vector3 targetPosition;
-
-    
-
-
     public GameObject turaB, turaW;
     public bool isSzach = false;
+    public float TRPawn = 1f, TRRook = 0.16f, TRBishop = 2.16f, TRKnight = 1.5f, TRQueen = 1.16f, TRKing = 1.5f; // <- Czas 
+    public GameObject _Pawn, _Rook, _Bishop, _Knight, _Queen, _King, _PawnB, _RookB, _BishopB, _KnightB, _QueenB, _KingB; // <- Prefaby Destroyed
+    
+    public AudioClip[] movingSounds;
+    public AudioSource movingAudioSource;
 
-
+    public float time;
+    public bool TimerOn;
 
     void Start()
     {
@@ -40,6 +41,24 @@ public class ChessGameManager : MonoBehaviour
         instance = this;
         _ChessBoard.GetComponent<ChessBoard>().CreateBoard();
         this.gameObject.GetComponent<ChessSetup>().SetupPieces();
+    }
+    public void PlaySound()
+    {
+
+        if (isWhiteTurn)
+        {
+
+            movingAudioSource.PlayOneShot(movingSounds[0]);
+            
+        }
+        if (!isWhiteTurn)
+        {
+
+            movingAudioSource.PlayOneShot(movingSounds[1]);
+
+        }
+
+
     }
     public void SelectPiece(ChessPiece piece, Vector2Int position)
     {
@@ -61,7 +80,7 @@ public class ChessGameManager : MonoBehaviour
 
         if (ChessRules.instance.EvaluateGameState() == "szach")
         {
-            CP = ChessBoard.instance;
+            //CP = ChessBoard.instance;
             if (selectedPiece != null)
             {
                 selectedPieceForPromotion = selectedPiece;
@@ -105,7 +124,7 @@ public class ChessGameManager : MonoBehaviour
         {
 
 
-            CP = ChessBoard.instance;
+            //CP = ChessBoard.instance;
             if (selectedPiece != null)
             {
                 selectedPieceForPromotion = selectedPiece;
@@ -191,10 +210,15 @@ public class ChessGameManager : MonoBehaviour
             }
 
         }
+
+
+        
+
     }
         
     public void AtackPiece(Vector2Int targetPosition)
     {
+        targetFigure = boardState[ChessBoard.instance.ClickedPlane.x, ChessBoard.instance.ClickedPlane.y];
         if (selectedPiece)
         {
             selectedPieceForPromotion = selectedPiece;
@@ -203,12 +227,12 @@ public class ChessGameManager : MonoBehaviour
             {
                 ChessBoard.instance.selecting = false;
                 
-                Debug.Log("GM: atakuje ->> " + targetPosition);
+                //Debug.Log("GM: atakuje ->> " + targetPosition);
                 StartCoroutine(AnimationFigureAtack());
                 
             }
             else {
-                Debug.Log("GM: atakuje ->> " + targetPosition);
+                //Debug.Log("GM: atakuje ->> " + targetPosition);
                 StartCoroutine(AnimationFigureAtack());
             }
             
@@ -222,14 +246,14 @@ public class ChessGameManager : MonoBehaviour
     }
     IEnumerator AnimationFigureMove()
     {
-
+        
         var rotationThreshold = 0.001f;
         var rotationSpeed = 5f;
         var elapsedTime = 0f;
         if (selectedPiece == null) yield break;
 
 
-        Vector3 direction = new Vector3(CP.ClickedPlane.x - selectedPiece.boardPosition.x, 0, CP.ClickedPlane.y - selectedPiece.boardPosition.y);
+        Vector3 direction = new Vector3(ChessBoard.instance.ClickedPlane.x - selectedPiece.boardPosition.x, 0, ChessBoard.instance.ClickedPlane.y - selectedPiece.boardPosition.y);
 
 
         Quaternion targetRotation = Quaternion.LookRotation(direction);
@@ -242,23 +266,22 @@ public class ChessGameManager : MonoBehaviour
             selectedPiece.transform.rotation = Quaternion.Slerp(selectedPiece.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
             yield return null;
         }
-        
-        // dzwiek <----
 
 
-        while (Vector3.Distance(selectedPiece.transform.position, new Vector3(CP.ClickedPlane.x, 0, CP.ClickedPlane.y)) > 0.001f)
+        PlaySound();
+        while (Vector3.Distance(selectedPiece.transform.position, new Vector3(ChessBoard.instance.ClickedPlane.x, 0, ChessBoard.instance.ClickedPlane.y)) > 0.001f)
         {
-            float t = elapsedTime / 1; // Normalizacja czasu (od 0 do 1)
+            float t = elapsedTime / 5f; // Normalizacja czasu (od 0 do 1)
             t = Mathf.SmoothStep(0f, 1f, t); // Dodanie efektu ease in-out
 
-            selectedPiece.transform.position = Vector3.Lerp(selectedPiece.transform.position, new Vector3(CP.ClickedPlane.x, 0, CP.ClickedPlane.y), t);
+            selectedPiece.transform.position = Vector3.Lerp(selectedPiece.transform.position, new Vector3(ChessBoard.instance.ClickedPlane.x, 0, ChessBoard.instance.ClickedPlane.y), t);
 
             elapsedTime += Time.deltaTime;
             yield return null; // Czekaj na kolejny frame
         }
-        selectedPiece.transform.position = new Vector3(CP.ClickedPlane.x, 0, CP.ClickedPlane.y);
+        selectedPiece.transform.position = new Vector3(ChessBoard.instance.ClickedPlane.x, 0, ChessBoard.instance.ClickedPlane.y);
         selectedPiece.GetComponent<ChessPiece>().Moved = true;
-        selectedPiece.SetPosition(CP.ClickedPlane, boardState);
+        selectedPiece.SetPosition(ChessBoard.instance.ClickedPlane, boardState);
         selectedPiece = null;
         if (!Promocja())
         {
@@ -277,7 +300,7 @@ public class ChessGameManager : MonoBehaviour
     }
     IEnumerator AnimationFigureAtack()
     {
-        targetFigure = boardState[CP.ClickedPlane.x, CP.ClickedPlane.y];
+        targetFigure = boardState[ChessBoard.instance.ClickedPlane.x,ChessBoard.instance.ClickedPlane.y];
         var rotationThreshold = 0.001f;
         var rotationSpeed = 5f;
         var offsetStopMoving = 0.65f;
@@ -286,7 +309,7 @@ public class ChessGameManager : MonoBehaviour
         if (selectedPiece == null) yield break;
 
 
-        Vector3 directionr = new Vector3(CP.ClickedPlane.x - selectedPiece.boardPosition.x, 0, CP.ClickedPlane.y - selectedPiece.boardPosition.y);
+        Vector3 directionr = new Vector3(ChessBoard.instance.ClickedPlane.x - selectedPiece.boardPosition.x, 0, ChessBoard.instance.ClickedPlane.y - selectedPiece.boardPosition.y);
 
 
         Quaternion targetRotation = Quaternion.LookRotation(directionr);
@@ -352,10 +375,11 @@ public class ChessGameManager : MonoBehaviour
 
         // Obliczenie nowej pozycji docelowej z uwzględnieniem offsetu
         Vector3 preTargetPosition = selectedPiece.transform.position + QuatersLogics;
-
+        PlaySound();
         var startpos = selectedPiece.transform.position;
         var elapsedTimeMove = 0f;
         // Płynne przesuwanie
+        
         while (Vector3.Distance(selectedPiece.transform.position, preTargetPosition) > distanceThreshold)
         {
 
@@ -367,15 +391,32 @@ public class ChessGameManager : MonoBehaviour
             elapsedTimeMove += Time.deltaTime;
 
             yield return null;  // Czekaj na kolejny frame
+
+            
+
         }
+
         selectedPiece.transform.position = preTargetPosition;
         // Gdy obiekt dotrze do docelowej pozycji
 
         looking = true;
+        selectedPiece.GetComponent<ChessPiece>().PlaySound();
+        selectedPiece.GetComponent<CollisionScript>().SwichMeshCollider();
+        targetFigure.GetComponent<CollisionScript>().SwichMeshColliderCapsule();
+        
+
         selectedPiece.GetComponent<Animator>().SetBool("MoveAnimation", true);
-        atackIsRunning = true;
+        time = 0;
+        TimerOn = true;
+        //atackIsRunning = true;
 
 
+
+
+
+
+
+        // Reszta inicjalizacji...
 
 
 
@@ -401,8 +442,8 @@ public class ChessGameManager : MonoBehaviour
         {
             tu komenda do wywołania dzwieku
         }
-        
-        
+
+
 
         */
 
@@ -607,7 +648,7 @@ public class ChessGameManager : MonoBehaviour
         }
         
     }
-    public void changeModel()
+    /*public void changeModel()
     {
 
         selectedPiece.GetComponent<CollisionScript>().SwichMeshCollider();
@@ -618,16 +659,17 @@ public class ChessGameManager : MonoBehaviour
 
         destroy = Instantiate(model, targetPosition, Quat);
 
-        StartCoroutine(end());
     }
-    IEnumerator end()
+    */
+    public void end()
     {
-        yield return new WaitForSeconds(2f); // <--- zmienic jezeli animacje beda trawy dluzej
-        Destroy(destroy.gameObject);
+
+        looking = false;
+        Quaternion Quat = targetFigure.transform.rotation;
+        targetPosition = targetFigure.transform.position;
         selectedPiece.GetComponent<CollisionScript>().SwichMeshCollider();
         ChessGameManager.instance.boardState[(int)targetPosition.x, (int)targetPosition.z] = null;
         ChessGameManager.instance.MovePiece(new Vector2Int((int)targetPosition.x, (int)targetPosition.z), true);
-        yield return new WaitForSeconds(1.1f);
         if (Promocja())
         {
             ShowPromoPanel();
@@ -659,24 +701,40 @@ public class ChessGameManager : MonoBehaviour
     
     public void FixedUpdate()
     {
-
-        if (isWhiteTurn)
+       
+        if (TimerOn)
+        {
+            time += Time.deltaTime;
+        }
+          
+        
+        if (isWhiteTurn && showTour)
         {
             turaB.SetActive(false);
             turaW.SetActive(true);
         }
-        else {
+        else if (!isWhiteTurn && showTour)
+        {
             turaB.SetActive(true);
             turaW.SetActive(false);
+        }
+        else if(!showTour){
+            if (turaB.activeSelf == true || turaW.activeSelf == true)
+            {
+                turaB.SetActive(false);
+                turaW.SetActive(false);
+            }
         }
 
         if (looking)
         {
-            selectedPiece.transform.LookAt(new Vector3(CP.ClickedPlane.x, selectedPiece.transform.position.y, CP.ClickedPlane.y));
+            selectedPiece.transform.LookAt(new Vector3(ChessBoard.instance.ClickedPlane.x, selectedPiece.transform.position.y, ChessBoard.instance.ClickedPlane.y));
         }
+        
+        /*
+        
         if (atackIsRunning)
         {
-
             var timeRemaining = 0f;
             //dla białych
             if (targetFigure.CompareTag("Pawn") && targetFigure.isWhite) { timeRemaining = TRPawn; model = _Pawn; }
@@ -700,7 +758,7 @@ public class ChessGameManager : MonoBehaviour
 
 
         }
-
+        */
         if (Input.GetKeyDown(KeyCode.K))
         {
             string output = "\n"; // Nowa linia dla czytelności

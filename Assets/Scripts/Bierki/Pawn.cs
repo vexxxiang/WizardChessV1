@@ -1,6 +1,19 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 public class Pawn : ChessPiece
 {
-   
+    public AudioClip[] _Sounds;
+    public override AudioClip[] Sounds
+    {
+        get { return _Sounds; }
+        set { Sounds = _Sounds; }
+    }
+
+
+
+
+
     public override bool[,] GetAvailableMoves(ChessPiece[,] boardState)
     {
         bool[,] moves = new bool[8, 8];
