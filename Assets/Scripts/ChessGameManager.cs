@@ -32,8 +32,8 @@ public class ChessGameManager : MonoBehaviour
     public AudioClip[] movingSounds;
     public AudioSource movingAudioSource;
 
-
-
+    public float time;
+    public bool TimerOn;
 
     void Start()
     {
@@ -80,7 +80,7 @@ public class ChessGameManager : MonoBehaviour
 
         if (ChessRules.instance.EvaluateGameState() == "szach")
         {
-            CP = ChessBoard.instance;
+            //CP = ChessBoard.instance;
             if (selectedPiece != null)
             {
                 selectedPieceForPromotion = selectedPiece;
@@ -124,7 +124,7 @@ public class ChessGameManager : MonoBehaviour
         {
 
 
-            CP = ChessBoard.instance;
+            //CP = ChessBoard.instance;
             if (selectedPiece != null)
             {
                 selectedPieceForPromotion = selectedPiece;
@@ -218,6 +218,7 @@ public class ChessGameManager : MonoBehaviour
         
     public void AtackPiece(Vector2Int targetPosition)
     {
+        targetFigure = boardState[ChessBoard.instance.ClickedPlane.x, ChessBoard.instance.ClickedPlane.y];
         if (selectedPiece)
         {
             selectedPieceForPromotion = selectedPiece;
@@ -252,7 +253,7 @@ public class ChessGameManager : MonoBehaviour
         if (selectedPiece == null) yield break;
 
 
-        Vector3 direction = new Vector3(CP.ClickedPlane.x - selectedPiece.boardPosition.x, 0, CP.ClickedPlane.y - selectedPiece.boardPosition.y);
+        Vector3 direction = new Vector3(ChessBoard.instance.ClickedPlane.x - selectedPiece.boardPosition.x, 0, ChessBoard.instance.ClickedPlane.y - selectedPiece.boardPosition.y);
 
 
         Quaternion targetRotation = Quaternion.LookRotation(direction);
@@ -268,19 +269,19 @@ public class ChessGameManager : MonoBehaviour
 
 
         PlaySound();
-        while (Vector3.Distance(selectedPiece.transform.position, new Vector3(CP.ClickedPlane.x, 0, CP.ClickedPlane.y)) > 0.001f)
+        while (Vector3.Distance(selectedPiece.transform.position, new Vector3(ChessBoard.instance.ClickedPlane.x, 0, ChessBoard.instance.ClickedPlane.y)) > 0.001f)
         {
             float t = elapsedTime / 5f; // Normalizacja czasu (od 0 do 1)
             t = Mathf.SmoothStep(0f, 1f, t); // Dodanie efektu ease in-out
 
-            selectedPiece.transform.position = Vector3.Lerp(selectedPiece.transform.position, new Vector3(CP.ClickedPlane.x, 0, CP.ClickedPlane.y), t);
+            selectedPiece.transform.position = Vector3.Lerp(selectedPiece.transform.position, new Vector3(ChessBoard.instance.ClickedPlane.x, 0, ChessBoard.instance.ClickedPlane.y), t);
 
             elapsedTime += Time.deltaTime;
             yield return null; // Czekaj na kolejny frame
         }
-        selectedPiece.transform.position = new Vector3(CP.ClickedPlane.x, 0, CP.ClickedPlane.y);
+        selectedPiece.transform.position = new Vector3(ChessBoard.instance.ClickedPlane.x, 0, ChessBoard.instance.ClickedPlane.y);
         selectedPiece.GetComponent<ChessPiece>().Moved = true;
-        selectedPiece.SetPosition(CP.ClickedPlane, boardState);
+        selectedPiece.SetPosition(ChessBoard.instance.ClickedPlane, boardState);
         selectedPiece = null;
         if (!Promocja())
         {
@@ -299,7 +300,7 @@ public class ChessGameManager : MonoBehaviour
     }
     IEnumerator AnimationFigureAtack()
     {
-        targetFigure = boardState[CP.ClickedPlane.x, CP.ClickedPlane.y];
+        targetFigure = boardState[ChessBoard.instance.ClickedPlane.x,ChessBoard.instance.ClickedPlane.y];
         var rotationThreshold = 0.001f;
         var rotationSpeed = 5f;
         var offsetStopMoving = 0.65f;
@@ -308,7 +309,7 @@ public class ChessGameManager : MonoBehaviour
         if (selectedPiece == null) yield break;
 
 
-        Vector3 directionr = new Vector3(CP.ClickedPlane.x - selectedPiece.boardPosition.x, 0, CP.ClickedPlane.y - selectedPiece.boardPosition.y);
+        Vector3 directionr = new Vector3(ChessBoard.instance.ClickedPlane.x - selectedPiece.boardPosition.x, 0, ChessBoard.instance.ClickedPlane.y - selectedPiece.boardPosition.y);
 
 
         Quaternion targetRotation = Quaternion.LookRotation(directionr);
@@ -402,11 +403,15 @@ public class ChessGameManager : MonoBehaviour
         selectedPiece.GetComponent<ChessPiece>().PlaySound();
         selectedPiece.GetComponent<CollisionScript>().SwichMeshCollider();
         targetFigure.GetComponent<CollisionScript>().SwichMeshColliderCapsule();
+        
+
         selectedPiece.GetComponent<Animator>().SetBool("MoveAnimation", true);
+        time = 0;
+        TimerOn = true;
         //atackIsRunning = true;
 
 
-       
+
 
 
 
@@ -662,7 +667,6 @@ public class ChessGameManager : MonoBehaviour
         looking = false;
         Quaternion Quat = targetFigure.transform.rotation;
         targetPosition = targetFigure.transform.position;
-        Destroy(targetFigure.gameObject);
         selectedPiece.GetComponent<CollisionScript>().SwichMeshCollider();
         ChessGameManager.instance.boardState[(int)targetPosition.x, (int)targetPosition.z] = null;
         ChessGameManager.instance.MovePiece(new Vector2Int((int)targetPosition.x, (int)targetPosition.z), true);
@@ -697,7 +701,13 @@ public class ChessGameManager : MonoBehaviour
     
     public void FixedUpdate()
     {
-
+       
+        if (TimerOn)
+        {
+            time += Time.deltaTime;
+        }
+          
+        
         if (isWhiteTurn && showTour)
         {
             turaB.SetActive(false);
@@ -718,7 +728,7 @@ public class ChessGameManager : MonoBehaviour
 
         if (looking)
         {
-            selectedPiece.transform.LookAt(new Vector3(CP.ClickedPlane.x, selectedPiece.transform.position.y, CP.ClickedPlane.y));
+            selectedPiece.transform.LookAt(new Vector3(ChessBoard.instance.ClickedPlane.x, selectedPiece.transform.position.y, ChessBoard.instance.ClickedPlane.y));
         }
         
         /*

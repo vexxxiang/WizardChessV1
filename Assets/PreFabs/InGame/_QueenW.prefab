@@ -43,7 +43,8 @@ GameObject:
   - component: {fileID: 1106913628846417767}
   - component: {fileID: 1346015201123254896}
   - component: {fileID: 357540768599685977}
-  - component: {fileID: 4815688026770944821}
+  - component: {fileID: 1511992287208485070}
+  - component: {fileID: 4413445803798846810}
   m_Layer: 17
   m_Name: 212k.002
   m_TagString: Untagged
@@ -58,8 +59,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 106605945657752482}
-  m_LocalRotation: {x: -0.670242, y: 0.014795553, z: 0.022985239, w: 0.741639}
-  m_LocalPosition: {x: 0.0000000127141675, y: 0, z: -0.000000059604645}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -167,7 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b57d248a41e6af459848b56e777f6c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!64 &4815688026770944821
+--- !u!64 &1511992287208485070
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -180,7 +181,23 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: -384026681900318340, guid: 6b2f73c16d1afe24dbd5f41d5047fc36, type: 3}
+--- !u!54 &4413445803798846810
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 106605945657752482}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &297710328067957209
 GameObject:
   m_ObjectHideFlags: 0
@@ -494,7 +511,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1320986632480120364}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.6219797, y: 0, z: 6.528299}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1461,7 +1478,6 @@ GameObject:
   - component: {fileID: 7229067787056759994}
   - component: {fileID: 3134129682488285645}
   - component: {fileID: 2515139230366237191}
-  - component: {fileID: 5356094207163954928}
   m_Layer: 2
   m_Name: Capsule
   m_TagString: Untagged
@@ -1478,7 +1494,7 @@ Transform:
   m_GameObject: {fileID: 6813115664094070407}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1.1147, z: 0}
-  m_LocalScale: {x: 0.61346, y: 0.92304, z: 0.5}
+  m_LocalScale: {x: 0.7855356, y: 0.92304, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1810102883680781462}
@@ -1561,22 +1577,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DestroyModel: {fileID: 7092466395304841172, guid: b71612864f0ac4c479d807faceffbaff, type: 3}
---- !u!54 &5356094207163954928
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6813115664094070407}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
+  DestroyObject: {fileID: 0}
+  TRPawn: 1
+  TRRook: 0.2
+  TRBishop: 2
+  TRKnight: 1.5
+  TRQueen: 1.16
+  TRKing: 1.3
 --- !u!1 &7035729866413091674
 GameObject:
   m_ObjectHideFlags: 0
