@@ -19,7 +19,7 @@ public class SettingsPanel : MonoBehaviour
 
     public void Menu()
     {
-        if (panelSettings.activeSelf == true) { panelSettings.SetActive(false); }
+        if (panelSettings.activeSelf == true) { panelSettings.SetActive(false);  }
         else if (panelSettings.activeSelf == false) { panelSettings.SetActive(true); }
     }
 
