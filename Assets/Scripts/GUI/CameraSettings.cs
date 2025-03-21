@@ -49,6 +49,8 @@ public class CameraSettings : MonoBehaviour
 
     IEnumerator RotateCamera(float startAngle, float endAngle)
     {
+        heightSlider.GetComponent<Slider>().interactable = false;
+
         float elapsedTime = 0f;
         while (elapsedTime < animationDuration)
         {
@@ -68,6 +70,7 @@ public class CameraSettings : MonoBehaviour
 
         // Na końcu ustawiamy dokładnie końcową rotację, by uniknąć ewentualnych niedokładności
         target.transform.rotation = Quaternion.Euler(0f, endAngle, 0f);
+        heightSlider.GetComponent<Slider>().interactable = true;
     }
 
     public void UpdateCameraHeight(float value)
