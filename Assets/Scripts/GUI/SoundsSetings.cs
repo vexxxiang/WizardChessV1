@@ -9,6 +9,7 @@ public class SoundsSetings : MonoBehaviour
     public Slider sliderVolumeMoving;
     public Slider sliderVolumeAtackVoice;
     public AudioSource movingAudioSource, speakingAudioSource;
+    public GameObject saveLoad;
 
 
    public float sliderVolumeMovingValue, sliderVolumeAtackVoiceValue;
@@ -16,8 +17,8 @@ public class SoundsSetings : MonoBehaviour
 
     public void Start()
     {
-        
-        SaveLoad.instance.LoadData();
+
+        saveLoad.GetComponent<SaveLoad>().LoadData();
         instance = this;
         sliderVolumeMoving.onValueChanged.AddListener(delegate { UpdateVolume(sliderVolumeMovingValue, "sliderVolumeMoving"); }); ;
         sliderVolumeAtackVoice.onValueChanged.AddListener(delegate { UpdateVolume(sliderVolumeAtackVoiceValue, "sliderVolumeAtackVoice"); }); ;
@@ -43,7 +44,7 @@ public class SoundsSetings : MonoBehaviour
         {
             speakingAudioSource.volume = value;
         }
-        SaveLoad.instance.SaveData();
+        saveLoad.GetComponent<SaveLoad>().SaveData();
 
 
     }

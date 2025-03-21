@@ -39,7 +39,7 @@ public class SaveLoad : MonoBehaviour
         string path = Application.persistentDataPath + "/settingsData.json";
         File.WriteAllText(path, json);
 
-        Debug.Log("zapisoano");
+        //Debug.Log("zapisoano");
         
     }
 

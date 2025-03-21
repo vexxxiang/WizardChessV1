@@ -72,7 +72,8 @@ public class CameraSettings : MonoBehaviour
 
     public void UpdateCameraHeight(float value)
     {
-        SaveLoad.instance.SaveData();
+        gameManager.GetComponent<SaveLoad>().SaveData();
+        
 
         if (gameManager.isWhiteTurn)
         {
@@ -106,8 +107,7 @@ public class CameraSettings : MonoBehaviour
         }
         transform.LookAt(boardCenter);
 
-
-        SaveLoad.instance.SaveData();
+        gameManager.GetComponent<SaveLoad>().SaveData();
         
 
         

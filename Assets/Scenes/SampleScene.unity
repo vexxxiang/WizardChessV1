@@ -3363,6 +3363,7 @@ MonoBehaviour:
   sliderVolumeAtackVoice: {fileID: 522590620}
   movingAudioSource: {fileID: 1145515218}
   speakingAudioSource: {fileID: 1145515219}
+  saveLoad: {fileID: 1145515213}
   sliderVolumeMovingValue: 0
   sliderVolumeAtackVoiceValue: 0
 --- !u!1 &701176450
