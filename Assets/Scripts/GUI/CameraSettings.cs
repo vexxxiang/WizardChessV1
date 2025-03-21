@@ -40,6 +40,7 @@ public class CameraSettings : MonoBehaviour
 
     public void RotateAroundBoard([CallerMemberName] string callerName = "")
     {
+
         //Debug.Log($"SomeMethod was called by: {callerName}");
         float startAngle = target.transform.rotation.eulerAngles.y;  // Pobieramy obecny kąt Y
         float endAngle = !gameManager.isWhiteTurn ? 180f : 0f;  // Ustawiamy kąt docelowy
@@ -49,6 +50,9 @@ public class CameraSettings : MonoBehaviour
 
     IEnumerator RotateCamera(float startAngle, float endAngle)
     {
+
+        heightSlider.getcomponent
+
         float elapsedTime = 0f;
         while (elapsedTime < animationDuration)
         {
