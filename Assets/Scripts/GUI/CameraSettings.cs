@@ -5,6 +5,9 @@ using System.Runtime.CompilerServices;
 
 public class CameraSettings : MonoBehaviour
 {
+    public static CameraSettings instance;
+    public float heightCamera;
+
     public Transform boardCenter; // Środek planszy
     
     public ChessGameManager gameManager; // Odniesienie do ChessGameManager
@@ -13,10 +16,20 @@ public class CameraSettings : MonoBehaviour
     public float animationDuration = 1.2f; // Czas trwania animacji (możesz dostosować)
     private Vector3 offset; // Przesunięcie kamery w stosunku do targetu
 
+
+    public void Start()
+    {
+        
+        instance = this;
+        heightSlider.onValueChanged.AddListener(delegate { UpdateCameraHeight(heightSlider.value); }); ;
+        DontDestroyOnLoad(this.gameObject);
+    }
     void Update()
     {
+        heightCamera = heightSlider.value;
         RotateCamera();
-        heightSlider.onValueChanged.AddListener(delegate { UpdateCameraHeight(heightSlider.value); }); ; 
+
+
     }
     void RotateCamera()
     {
@@ -59,6 +72,8 @@ public class CameraSettings : MonoBehaviour
 
     public void UpdateCameraHeight(float value)
     {
+        gameManager.GetComponent<SaveLoad>().SaveData();
+        
 
         if (gameManager.isWhiteTurn)
         {
@@ -91,5 +106,19 @@ public class CameraSettings : MonoBehaviour
             transform.position = new Vector3(transform.position.x, bezierPosition.y, bezierPosition.z);
         }
         transform.LookAt(boardCenter);
+
+        gameManager.GetComponent<SaveLoad>().SaveData();
+        
+
+        
+    }
+
+    public void LoadSettings(float cameraHeight)
+    {
+        Debug.Log("camHeight");
+        heightSlider.value = cameraHeight;
+        UpdateCameraHeight(cameraHeight);
+        
+
     }
 }

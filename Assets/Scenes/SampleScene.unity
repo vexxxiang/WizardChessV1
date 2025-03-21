@@ -3363,6 +3363,9 @@ MonoBehaviour:
   sliderVolumeAtackVoice: {fileID: 522590620}
   movingAudioSource: {fileID: 1145515218}
   speakingAudioSource: {fileID: 1145515219}
+  saveLoad: {fileID: 1145515213}
+  sliderVolumeMovingValue: 0
+  sliderVolumeAtackVoiceValue: 0
 --- !u!1 &701176450
 GameObject:
   m_ObjectHideFlags: 0
@@ -4450,6 +4453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33be7d03ec2208e44b838598f306dc96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  heightCamera: 0
   boardCenter: {fileID: 1999730343}
   gameManager: {fileID: 1145515214}
   heightSlider: {fileID: 515686059}
@@ -5064,6 +5068,7 @@ GameObject:
   - component: {fileID: 1145515217}
   - component: {fileID: 1145515214}
   - component: {fileID: 1145515216}
+  - component: {fileID: 1145515220}
   - component: {fileID: 1145515218}
   - component: {fileID: 1145515219}
   m_Layer: 0
@@ -5118,7 +5123,7 @@ MonoBehaviour:
   _King: {fileID: 3744114031844811651, guid: 88d199882e2e738419afb9fb30a03e9d, type: 3}
   _PawnB: {fileID: 4338015046443365408, guid: 39b66af7c867f1c44b3819091be6a51f, type: 3}
   _RookB: {fileID: 8832592319442311498, guid: fc2f02630d762914bb1d9dafc09a3105, type: 3}
-  _BishopB: {fileID: 5087646662890790228, guid: df294bc2594b3944ca97a2b79d5d3eaa, type: 3}
+  _BishopB: {fileID: 2851441057561809888, guid: 27b659803367169448dd9b83b36427e9, type: 3}
   _KnightB: {fileID: 543701153637940810, guid: e1f73595a690b514dbcafaab2d7e1bd6, type: 3}
   _QueenB: {fileID: 7340176887950476511, guid: 35c3aab5ae1556f4ab41c1152eb6fa10, type: 3}
   _KingB: {fileID: 4835575994868412266, guid: 3c9dbbbec72da2446a0394f92391ab79, type: 3}
@@ -5160,8 +5165,8 @@ MonoBehaviour:
   blackPawnPrefab: {fileID: 5921257504564495447, guid: 406e17b71bbe035438ba6c899805a85e, type: 3}
   whiteRookPrefab: {fileID: 5181760318613528011, guid: b083d1fd3ef63724191dde05b8089f04, type: 3}
   blackRookPrefab: {fileID: 9212614030359626441, guid: 5a5aa320e9163ad4eba775f0ad8ba897, type: 3}
-  whiteKnightPrefab: {fileID: 6917971306283229629, guid: 5172915bdeb1ecf4cbe6611c21a8bfa5, type: 3}
-  blackKnightPrefab: {fileID: 2057785122261492485, guid: d7227ac431d22084f85ee55d281a0994, type: 3}
+  whiteKnightPrefab: {fileID: 4365531163098796694, guid: b94e41fa09d7352499701695eb5cf3ad, type: 3}
+  blackKnightPrefab: {fileID: 4365531163098796694, guid: 01aaeaa8be7c8674caf2e7462838dcd3, type: 3}
   whiteBishopPrefab: {fileID: 4774206804877350246, guid: b5f534ead4418c24c8e7ed919fc2101d, type: 3}
   blackBishopPrefab: {fileID: 2851441057561809888, guid: 27b659803367169448dd9b83b36427e9, type: 3}
   whiteQueenPrefab: {fileID: 1320986632480120364, guid: 0e8ae13db4edb6b4faab12ceeb4efae4, type: 3}
@@ -5376,6 +5381,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1145515220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145515213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6295777ae2dfcce4daab8ab33990feac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundSystem: {fileID: 682432950}
+  cameraSettings: {fileID: 963194225}
 --- !u!1 &1181673276
 GameObject:
   m_ObjectHideFlags: 0
