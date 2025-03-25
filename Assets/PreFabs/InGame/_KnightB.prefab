@@ -331,7 +331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c0640cce7e638b4da4e08a4b5f627e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DestroyModel: {fileID: 543701153637940810, guid: e1f73595a690b514dbcafaab2d7e1bd6, type: 3}
+  DestroyModel: {fileID: 1321521021299827936, guid: 5d2ec211a4c96c04ea8dfc5cbe61abf8, type: 3}
   DestroyObject: {fileID: 0}
   TRPawn: 1
   TRRook: 0.2
