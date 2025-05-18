@@ -5035,6 +5035,7 @@ MonoBehaviour:
   movingSounds:
   - {fileID: 8300000, guid: cd43c4b7df09eb44d971237a24e409b8, type: 3}
   - {fileID: 8300000, guid: 37d524969d49ede42acdb03c7e50d62a, type: 3}
+  DestroySound: {fileID: 8300000, guid: 0ae85e2fea05f7a429125038da14706c, type: 3}
   movingAudioSource: {fileID: 1145515218}
   time: 0
   TimerOn: 0
