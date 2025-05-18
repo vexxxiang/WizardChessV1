@@ -266,7 +266,7 @@ public class ChessGameManager : MonoBehaviour
         PlaySound();
         while (Vector3.Distance(selectedPiece.transform.position, new Vector3(ChessBoard.instance.ClickedPlane.x, 0, ChessBoard.instance.ClickedPlane.y)) > 0.001f)
         {
-            float t = elapsedTime / 5f; // Normalizacja czasu (od 0 do 1)
+            float t = elapsedTime / 7.0f; // Normalizacja czasu (od 0 do 1)--------------------------------------------------------------------------------------------- tu przy poruszaniu czas zmieniasz
             t = Mathf.SmoothStep(0f, 1f, t); // Dodanie efektu ease in-out
 
             selectedPiece.transform.position = Vector3.Lerp(selectedPiece.transform.position, new Vector3(ChessBoard.instance.ClickedPlane.x, 0, ChessBoard.instance.ClickedPlane.y), t);
@@ -372,8 +372,9 @@ public class ChessGameManager : MonoBehaviour
         while (Vector3.Distance(selectedPiece.transform.position, preTargetPosition) > distanceThreshold)
         {
 
-            float t = elapsedTimeMove / 1; // Normalizacja czasu (od 0 do 1)
-            t = Mathf.SmoothStep(0f, 1f, t); // Dodanie efektu ease in-out
+            float t = elapsedTimeMove / 1.0f; // Normalizacja czasu (od 0 do 1) ------------------------------------------------------------------------------- tu przy atak czas zmieniasz
+            //t = Mathf.SmoothStep(0f, 1f, t); // Dodanie efektu ease in-out
+            t = -t * -Mathf.Sqrt(t*t*1.2f);
 
             selectedPiece.transform.position = Vector3.Lerp(startpos, preTargetPosition, t);
             selectedPiece.transform.rotation = Quaternion.Slerp(selectedPiece.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
@@ -459,7 +460,7 @@ public class ChessGameManager : MonoBehaviour
         //Debug.Log(direction1 + "<-kierunek | rotacja -> " + targetRotation1);
         //Debug.Log(direction2 + "<-kierunek | rotacja -> " + targetRotation2);
 
-
+        
         while (Quaternion.Angle(FirstPiece.transform.rotation, targetRotation1) > Threshold)
         {
             FirstPiece.transform.rotation = Quaternion.Slerp(FirstPiece.transform.rotation, targetRotation1, Time.deltaTime * rotationSpeed);
@@ -468,10 +469,10 @@ public class ChessGameManager : MonoBehaviour
         }
         FirstPiece.transform.rotation = targetRotation1;
         SecPiece.transform.rotation = targetRotation2;
-
+        PlaySound();
         while (Vector3.Distance(FirstPiece.transform.position, new Vector3(FirstPos.x, 0, FirstPos.y)) > Threshold)
         {
-            float t = elapsedTime / 1; // Normalizacja czasu (od 0 do 1)
+            float t = elapsedTime / 8.0f; // Normalizacja czasu (od 0 do 1)------------------------------------------------------------------------------------------------------------------- tu przy roszadzie czas zmieniasz
             t = Mathf.SmoothStep(0f, 1f, t); // Dodanie efektu ease in-out
 
             FirstPiece.transform.position = Vector3.Lerp(FirstPiece.transform.position, new Vector3(FirstPos.x, 0, FirstPos.y), t);
@@ -489,6 +490,7 @@ public class ChessGameManager : MonoBehaviour
         FirstPiece.SetPosition(FirstPos, boardState);
         SecPiece.SetPosition(SecPos, boardState);
         selectedPiece = null;
+        ChessBoard.instance.odznacz();
         zmianaTury();
         
 
@@ -516,6 +518,12 @@ public class ChessGameManager : MonoBehaviour
                         ChessBoard.instance.selecting = false;
                         StartCoroutine(MoveRoszada(boardState[0, 0], new Vector2Int(3, 0), boardState[4, 0], new Vector2Int(2, 0)));
                     }
+                    else
+                    {
+                        ChessBoard.instance.odznacz();
+                        ChessBoard.instance.selecting = true;
+                        selectedPiece = null;
+                    }
                 }
             }
             else // Kingside castling for white
@@ -530,6 +538,12 @@ public class ChessGameManager : MonoBehaviour
                     {
                         _ChessBoard.GetComponent<ChessBoard>().selecting = false;
                         StartCoroutine(MoveRoszada(boardState[7, 0], new Vector2Int(5, 0), boardState[4, 0], new Vector2Int(6, 0)));
+                    }
+                    else
+                    {
+                        ChessBoard.instance.odznacz();
+                        ChessBoard.instance.selecting = true;
+                        selectedPiece = null;
                     }
                 }
             }
@@ -548,6 +562,12 @@ public class ChessGameManager : MonoBehaviour
                     {
                         StartCoroutine(MoveRoszada(boardState[0, 7], new Vector2Int(3, 7), boardState[4, 7], new Vector2Int(2, 7)));
                     }
+                    else
+                    {
+                        ChessBoard.instance.odznacz();
+                        ChessBoard.instance.selecting = true;
+                        selectedPiece = null;
+                    }
                 }
             }
             else // Kingside castling for black
@@ -561,6 +581,11 @@ public class ChessGameManager : MonoBehaviour
                     if (!ChessRules.instance.IsInCheckPosition(boardState, isWhiteTurn, positionsToCheck))
                     {
                         StartCoroutine(MoveRoszada(boardState[7, 7], new Vector2Int(5, 7), boardState[4, 7], new Vector2Int(6, 7)));
+                    }
+                    else {
+                        ChessBoard.instance.odznacz();
+                        ChessBoard.instance.selecting = true;
+                        selectedPiece = null;
                     }
                 }
             }

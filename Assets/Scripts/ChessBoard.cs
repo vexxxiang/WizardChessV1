@@ -55,13 +55,13 @@ public class ChessBoard : MonoBehaviour
             }
         }
     }
-    public void odznacz(Vector2Int position)
+    public void odznacz()
     {
         //Debug.Log("Odznaczam pole: " + position);
 
         foreach (GameObject i in Plansza)
         {
-            if (position == i.GetComponent<Cube>().Position)
+            if (i.GetComponent<Cube>().Selected == true)
             {
                 i.GetComponent<Cube>().Selected = false;
                 i.GetComponent<Cube>().PreRefresh(0);
@@ -148,7 +148,7 @@ public class ChessBoard : MonoBehaviour
                                 }
                             }
                         }
-                        odznacz(GM.selectedPiece.boardPosition);
+                        odznacz();
                         GM.MovePiece(ClickedPlane, false);
 
                     }
@@ -166,7 +166,7 @@ public class ChessBoard : MonoBehaviour
                                     var RookPos = GM.selectedPiece.boardPosition;
 
                                     GM.Roszada(RookPos);
-                                    odznacz(GM.selectedPiece.boardPosition);
+                                    
 
                                 }
                                 else if (GM.selectedPiece.CompareTag("King"))
@@ -174,7 +174,7 @@ public class ChessBoard : MonoBehaviour
 
                                     var RookPos = GM.boardState[ClickedPlane.x, ClickedPlane.y].boardPosition;
                                     GM.Roszada(RookPos);
-                                    odznacz(GM.selectedPiece.boardPosition);
+                                    
 
                                 }
                                 else
@@ -186,14 +186,14 @@ public class ChessBoard : MonoBehaviour
                             else if (GM.selectedPiece.boardPosition == ClickedPlane && GM.selectedPiece != null)
                             {
                                 GM.UnSelectPiece();
-                                odznacz(ClickedPlane);
+                                odznacz();
                             }
                             // je�eli mamy zaznaczon� bierke i klikniemy inn� tego samego koloru to podmieniamy wybran� bierke
                             else if (GM.boardState[ClickedPlane.x, ClickedPlane.y].isWhite == GM.isWhiteTurn)
                             {
                                 
 
-                                odznacz(GM.selectedPiece.boardPosition);
+                                odznacz();
                                 GM.UnSelectPiece();
                                 zaznacz(ClickedPlane);
                                 GM.SelectPiece(GM.boardState[ClickedPlane.x, ClickedPlane.y], ClickedPlane);
@@ -208,7 +208,7 @@ public class ChessBoard : MonoBehaviour
                             bool[,] availableMoves = GM.selectedPiece.CancelingSzachMoves;
                             if (availableMoves[ClickedPlane.x, ClickedPlane.y] && ChessRules.instance.EvaluateGameState() == "Nothing" || GM.selectedPiece.CancelingSzachMoves[ClickedPlane.x,ClickedPlane.y] == true && ChessRules.instance.EvaluateGameState() == "szach")
                             {
-                                odznacz(GM.selectedPiece.boardPosition);
+                                odznacz();
                                 Debug.Log(GM.selectedPiece + " Atakuje: " + GM.boardState[ClickedPlane.x, ClickedPlane.y].GetComponent<ChessPiece>() + "Na pozycji:" + ClickedPlane);
                                 GM.AtackPiece(ClickedPlane);
                             }
