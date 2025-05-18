@@ -56,6 +56,35 @@ public class ChessRules : MonoBehaviour
         return false;
     }
 
+public bool IsInCheckPosition(ChessPiece[,] boardState, bool isWhiteTurn, List<(int x, int y)> positions)
+{
+    // For each piece of the opponent, check if it can attack any of the specified positions
+    for (int x = 0; x < 8; x++)
+    {
+        for (int y = 0; y < 8; y++)
+        {
+            ChessPiece piece = boardState[x, y];
+            if (piece != null && piece.isWhite != isWhiteTurn)
+            {
+                bool[,] moves = piece.GetAvailableMoves(boardState);
+
+                foreach (var pos in positions)
+                {
+                    if (moves[pos.x, pos.y])
+                    {
+                        Debug.Log("Figura " + piece.name + " z " + (piece.isWhite ? "białych" : "czarnych") +
+                                  " atakuje pole (" + pos.x + ", " + pos.y + ").");
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+
     public bool HasLegalMoves(bool isWhiteTurn)
     {
         ChessPiece[,] boardState = ChessGameManager.instance.boardState;

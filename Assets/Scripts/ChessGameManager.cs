@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using TMPro;
+using System.Collections.Generic;
 
 public class ChessGameManager : MonoBehaviour
 {
@@ -190,8 +191,9 @@ public class ChessGameManager : MonoBehaviour
             {
                 Debug.Log("Nie wybrano bierki.");
             }
-            if (ChessRules.instance.EvaluateGameState() == "Mat")
+            if (ChessRules.instance.EvaluateGameState() == "Pat")
             { 
+                Debug.Log("pat");
             }
 
 
@@ -261,13 +263,6 @@ public class ChessGameManager : MonoBehaviour
         //Debug.Log(direction + "<-kierunek | rotacja -> " + targetRotation);
 
 
-        while (Quaternion.Angle(selectedPiece.transform.rotation, targetRotation) > rotationThreshold)
-        {
-            selectedPiece.transform.rotation = Quaternion.Slerp(selectedPiece.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-            yield return null;
-        }
-
-
         PlaySound();
         while (Vector3.Distance(selectedPiece.transform.position, new Vector3(ChessBoard.instance.ClickedPlane.x, 0, ChessBoard.instance.ClickedPlane.y)) > 0.001f)
         {
@@ -275,7 +270,7 @@ public class ChessGameManager : MonoBehaviour
             t = Mathf.SmoothStep(0f, 1f, t); // Dodanie efektu ease in-out
 
             selectedPiece.transform.position = Vector3.Lerp(selectedPiece.transform.position, new Vector3(ChessBoard.instance.ClickedPlane.x, 0, ChessBoard.instance.ClickedPlane.y), t);
-
+            selectedPiece.transform.rotation = Quaternion.Slerp(selectedPiece.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
             elapsedTime += Time.deltaTime;
             yield return null; // Czekaj na kolejny frame
         }
@@ -316,12 +311,6 @@ public class ChessGameManager : MonoBehaviour
 
         //Debug.Log(directionr + "<-kierunek | rotacja -> " + targetRotation);
 
-
-        while (Quaternion.Angle(selectedPiece.transform.rotation, targetRotation) > rotationThreshold)
-        {
-            selectedPiece.transform.rotation = Quaternion.Slerp(selectedPiece.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-            yield return null;
-        }
         if (targetFigure == null) yield break;
 
         // Obliczanie różnicy w pozycjach (pozostawiamy Z i X do przesunięcia)
@@ -387,7 +376,7 @@ public class ChessGameManager : MonoBehaviour
             t = Mathf.SmoothStep(0f, 1f, t); // Dodanie efektu ease in-out
 
             selectedPiece.transform.position = Vector3.Lerp(startpos, preTargetPosition, t);
-
+            selectedPiece.transform.rotation = Quaternion.Slerp(selectedPiece.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
             elapsedTimeMove += Time.deltaTime;
 
             yield return null;  // Czekaj na kolejny frame
@@ -506,52 +495,78 @@ public class ChessGameManager : MonoBehaviour
 
 
     }
+
     public void Roszada(Vector2Int RookPos)
     {
+        List<(int x, int y)> positionsToCheck = new List<(int x, int y)>();
+        bool canCastle = false;
+
         if (isWhiteTurn)
         {
-            if (RookPos.x == 0)
+            if (RookPos.x == 0) // Queenside castling for white
             {
                 if (boardState[1, 0] == null && boardState[2, 0] == null && boardState[3, 0] == null)
                 {
-                    ChessBoard.instance.selecting = false;
-                    StartCoroutine(MoveRoszada(boardState[0, 0], new Vector2Int(3, 0), boardState[4, 0], new Vector2Int(2, 0)));
+                    positionsToCheck.Add((2, 0)); // King's destination
+                    positionsToCheck.Add((3, 0)); // Square it passes through
+                    positionsToCheck.Add((4, 0)); // King's current position
+
+                    if (!ChessRules.instance.IsInCheckPosition(boardState, isWhiteTurn, positionsToCheck))
+                    {
+                        ChessBoard.instance.selecting = false;
+                        StartCoroutine(MoveRoszada(boardState[0, 0], new Vector2Int(3, 0), boardState[4, 0], new Vector2Int(2, 0)));
+                    }
                 }
             }
-            else
+            else // Kingside castling for white
             {
                 if (boardState[5, 0] == null && boardState[6, 0] == null)
                 {
-                    _ChessBoard.GetComponent<ChessBoard>().selecting = false;
-                    StartCoroutine(MoveRoszada(boardState[7, 0], new Vector2Int(5, 0), boardState[4, 0], new Vector2Int(6, 0)));
+                    positionsToCheck.Add((4, 0));
+                    positionsToCheck.Add((5, 0));
+                    positionsToCheck.Add((6, 0));
+
+                    if (!ChessRules.instance.IsInCheckPosition(boardState, isWhiteTurn, positionsToCheck))
+                    {
+                        _ChessBoard.GetComponent<ChessBoard>().selecting = false;
+                        StartCoroutine(MoveRoszada(boardState[7, 0], new Vector2Int(5, 0), boardState[4, 0], new Vector2Int(6, 0)));
+                    }
                 }
-
             }
-
         }
         else
         {
-            if (RookPos.x == 0)
+            if (RookPos.x == 0) // Queenside castling for black
             {
                 if (boardState[1, 7] == null && boardState[2, 7] == null && boardState[3, 7] == null)
                 {
+                    positionsToCheck.Add((2, 7));
+                    positionsToCheck.Add((3, 7));
+                    positionsToCheck.Add((4, 7));
 
-                    StartCoroutine(MoveRoszada(boardState[0, 7], new Vector2Int(3, 7), boardState[4, 7], new Vector2Int(2, 7)));
-
+                    if (!ChessRules.instance.IsInCheckPosition(boardState, isWhiteTurn, positionsToCheck))
+                    {
+                        StartCoroutine(MoveRoszada(boardState[0, 7], new Vector2Int(3, 7), boardState[4, 7], new Vector2Int(2, 7)));
+                    }
                 }
             }
-            else
+            else // Kingside castling for black
             {
                 if (boardState[5, 7] == null && boardState[6, 7] == null)
                 {
+                    positionsToCheck.Add((4, 7));
+                    positionsToCheck.Add((5, 7));
+                    positionsToCheck.Add((6, 7));
 
-                    StartCoroutine(MoveRoszada(boardState[7, 7], new Vector2Int(5, 7), boardState[4, 7], new Vector2Int(6, 7)));
-
+                    if (!ChessRules.instance.IsInCheckPosition(boardState, isWhiteTurn, positionsToCheck))
+                    {
+                        StartCoroutine(MoveRoszada(boardState[7, 7], new Vector2Int(5, 7), boardState[4, 7], new Vector2Int(6, 7)));
+                    }
                 }
-
             }
         }
     }
+
     public bool SimulateMoveForCheck(Vector2Int from, Vector2Int to)
     {
         ChessPiece[,] tempBoard = new ChessPiece[8, 8];

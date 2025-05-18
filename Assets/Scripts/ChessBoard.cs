@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class ChessBoard : MonoBehaviour
 {
@@ -69,7 +70,7 @@ public class ChessBoard : MonoBehaviour
     }
     public void empty(Vector2Int position)
     {
-        //Debug.Log("Klikniêto puste pole: " + position);
+        //Debug.Log("Klikniï¿½to puste pole: " + position);
 
         foreach (GameObject i in Plansza)
         {
@@ -117,7 +118,7 @@ public class ChessBoard : MonoBehaviour
                     ClickedPlane = hit.collider.gameObject.GetComponent<Cube>().Position; // <--- klikniete pole
 
                     
-                    //klikniêcie pustego pola nie maj¹c wybranej bierki
+                    //klikniï¿½cie pustego pola nie majï¿½c wybranej bierki
                     if (GM.boardState[ClickedPlane.x, ClickedPlane.y] == null && GM.selectedPiece == null)
                     {
                         empty(ClickedPlane);
@@ -125,6 +126,28 @@ public class ChessBoard : MonoBehaviour
                     else if (selecting && GM.boardState[ClickedPlane.x, ClickedPlane.y] == null && GM.selectedPiece != null)
                     {
                         GM.selectedPiece.GetLegalMoves(GM.boardState);
+
+                        // En Passant logic
+                        if (GM.selectedPiece is Pawn)
+                        {
+                            int dx = ClickedPlane.x - GM.selectedPiece.boardPosition.x;
+                            int dy = ClickedPlane.y - GM.selectedPiece.boardPosition.y;
+
+                            // Check if it's a diagonal move into an empty square (en passant)
+                            if (Math.Abs(dx) == 1 && dy == (GM.selectedPiece.isWhite ? 1 : -1))
+                            {
+                                int capturedPawnX = ClickedPlane.x;
+                                int capturedPawnY = ClickedPlane.y + (GM.selectedPiece.isWhite ? -1 : 1);
+
+                                ChessPiece capturedPawn = GM.boardState[capturedPawnX, capturedPawnY];
+                                if (capturedPawn != null && capturedPawn is Pawn && capturedPawn.isWhite != GM.selectedPiece.isWhite && capturedPawn.lastmoved)
+                                {
+                                    // Kill the pawn
+                                    Destroy( capturedPawn.gameObject );
+                                    GM.boardState[capturedPawnX, capturedPawnY] = null;
+                                }
+                            }
+                        }
                         odznacz(GM.selectedPiece.boardPosition);
                         GM.MovePiece(ClickedPlane, false);
 
@@ -156,7 +179,7 @@ public class ChessBoard : MonoBehaviour
                                 }
                                 else
                                 {
-                                    Debug.Log("Nieczekiwany b³¹d 002");
+                                    Debug.Log("Nieczekiwany bï¿½ï¿½d 002");
                                 }
                             }
                             //odznaczanie bierki
@@ -165,7 +188,7 @@ public class ChessBoard : MonoBehaviour
                                 GM.UnSelectPiece();
                                 odznacz(ClickedPlane);
                             }
-                            // je¿eli mamy zaznaczon¹ bierke i klikniemy inn¹ tego samego koloru to podmieniamy wybran¹ bierke
+                            // jeï¿½eli mamy zaznaczonï¿½ bierke i klikniemy innï¿½ tego samego koloru to podmieniamy wybranï¿½ bierke
                             else if (GM.boardState[ClickedPlane.x, ClickedPlane.y].isWhite == GM.isWhiteTurn)
                             {
                                 
@@ -204,7 +227,7 @@ public class ChessBoard : MonoBehaviour
                             if (GM.selectedPiece == null)
 
                             {
-                                //jezeli cos jest na polu to wybieramy t¹ figure za klikniêt¹
+                                //jezeli cos jest na polu to wybieramy tï¿½ figure za klikniï¿½tï¿½
                                 GM.SelectPiece(GM.boardState[ClickedPlane.x, ClickedPlane.y].GetComponent<ChessPiece>(), ClickedPlane);
                                 zaznacz(ClickedPlane);
 

@@ -8,6 +8,7 @@ public abstract class ChessPiece : MonoBehaviour
     public bool Moved = false;
     public bool King = false;
     public bool[,] CancelingSzachMoves = new bool[8, 8];
+    public bool lastmoved = false;
 
     public abstract AudioClip[] Sounds { get; set; }
     public AudioSource speakingAudioSource;
@@ -47,7 +48,7 @@ public abstract class ChessPiece : MonoBehaviour
                 CancelingSzachMoves[x, y] = false;
                 if (possibleMoves[x, y])
                 {
-                    // Tworzymy symulacjê planszy
+                    // Tworzymy symulacjï¿½ planszy
                     ChessPiece[,] simulation = ChessRules.instance.DeepCopyBoard(boardState);
                     ChessPiece movedPiece = simulation[boardPosition.x, boardPosition.y];
 
@@ -56,7 +57,7 @@ public abstract class ChessPiece : MonoBehaviour
                     movedPiece.boardPosition = new Vector2Int(x, y);
                     simulation[x, y] = movedPiece;
 
-                    // Sprawdzamy, czy po ruchu król jest w szachu
+                    // Sprawdzamy, czy po ruchu krï¿½l jest w szachu
                     if (!ChessRules.instance.IsInCheck(simulation, isWhite))
                     {
                         legalMoves[x, y] = true;
@@ -77,14 +78,36 @@ public abstract class ChessPiece : MonoBehaviour
 
     public virtual void SetPosition(Vector2Int newPosition, ChessPiece[,] boardState)
     {
-        // Usuñ figurê ze starego miejsca
+        // Reset lastmoved on all other pieces
+        for (int x = 0; x < 8; x++)
+        {
+            for (int y = 0; y < 8; y++)
+            {
+                ChessPiece piece = boardState[x, y];
+                if (piece != null && piece != this)
+                {
+                    piece.lastmoved = false;
+                }
+            }
+        }
+
+        // Special case: if this is a pawn and it's moving two squares forward
+        if (this is Pawn)
+        {
+            int direction = isWhite ? 1 : -1;
+            if (Mathf.Abs(newPosition.y - boardPosition.y) == 2 && newPosition.x == boardPosition.x)
+            {
+                lastmoved = true;
+            }
+        }
+        // Usuï¿½ figurï¿½ ze starego miejsca
         boardState[boardPosition.x, boardPosition.y] = null;
 
-        // Aktualizuj pozycjê i planszê
+        // Aktualizuj pozycjï¿½ i planszï¿½
         boardPosition = newPosition;
         boardState[newPosition.x, newPosition.y] = this;
 
-        // Aktualizacja fizycznej pozycji w œwiecie gry
+        // Aktualizacja fizycznej pozycji w ï¿½wiecie gry
         transform.position = new Vector3(newPosition.x, 0, newPosition.y);
     }
 

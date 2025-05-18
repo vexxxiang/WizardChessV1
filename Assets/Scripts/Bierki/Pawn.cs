@@ -14,42 +14,67 @@ public class Pawn : ChessPiece
 
 
 
-    public override bool[,] GetAvailableMoves(ChessPiece[,] boardState)
+public override bool[,] GetAvailableMoves(ChessPiece[,] boardState)
+{
+    bool[,] moves = new bool[8, 8];
+    int direction = isWhite ? 1 : -1;
+
+    // 1. Normal forward move
+    if (IsInsideBoard(boardPosition.x, boardPosition.y + direction) &&
+        boardState[boardPosition.x, boardPosition.y + direction] == null)
     {
-        bool[,] moves = new bool[8, 8];
+        moves[boardPosition.x, boardPosition.y + direction] = true;
 
-        // Normalny ruch do przodu (jeœli pole jest puste)
-        int direction = isWhite ? 1 : -1;  // Okreœlamy kierunek (w górê lub w dó³)
-        if (IsInsideBoard(boardPosition.x, boardPosition.y + direction) && boardState[boardPosition.x, boardPosition.y + direction] == null)
+        // 2. Double move from starting position
+        if ((isWhite && boardPosition.y == 1) || (!isWhite && boardPosition.y == 6))
         {
-            moves[boardPosition.x, boardPosition.y + direction] = true;
-
-            // Pierwszy ruch: mo¿e przesun¹æ siê o 2 pola do przodu (jeœli oba pola s¹ puste)
-            if ((isWhite && boardPosition.y == 1) || (!isWhite && boardPosition.y == 6))
+            if (boardState[boardPosition.x, boardPosition.y + 2 * direction] == null)
             {
-                // Sprawdzamy, czy oba pola s¹ puste, aby pionek móg³ siê poruszyæ o 2 pola
-                if (boardState[boardPosition.x, boardPosition.y + direction] == null && boardState[boardPosition.x, boardPosition.y + 2 * direction] == null)
+                moves[boardPosition.x, boardPosition.y + 2 * direction] = true;
+            }
+        }
+    }
+
+    // 3. Diagonal captures (standard)
+    for (int dx = -1; dx <= 1; dx += 2) // dx = -1 (left), +1 (right)
+    {
+        int targetX = boardPosition.x + dx;
+        int targetY = boardPosition.y + direction;
+
+        if (IsInsideBoard(targetX, targetY))
+        {
+            ChessPiece target = boardState[targetX, targetY];
+            if (target != null && target.isWhite != isWhite)
+            {
+                moves[targetX, targetY] = true;
+            }
+        }
+    }
+
+    // 4. En passant
+    for (int dx = -1; dx <= 1; dx += 2)
+    {
+        int adjX = boardPosition.x + dx;
+        int adjY = boardPosition.y;
+
+        if (IsInsideBoard(adjX, adjY))
+        {
+            ChessPiece adjacent = boardState[adjX, adjY];
+
+            // Enemy pawn next to this one, just made a double move
+            if (adjacent != null && adjacent is Pawn && adjacent.isWhite != isWhite && adjacent.lastmoved)
+            {
+                int targetY = boardPosition.y + direction;
+
+                // The square behind the enemy pawn must be empty (standard for en passant)
+                if (boardState[adjX, targetY] == null)
                 {
-                    moves[boardPosition.x, boardPosition.y + 2 * direction] = true;
+                    moves[adjX, targetY] = true;
                 }
             }
         }
-
-        // Atak na skos (jeœli jest przeciwnik)
-        if (IsInsideBoard(boardPosition.x + 1, boardPosition.y + direction) && boardState[boardPosition.x + 1, boardPosition.y + direction] != null &&
-            boardState[boardPosition.x + 1, boardPosition.y + direction].isWhite != isWhite)
-        {
-            moves[boardPosition.x + 1, boardPosition.y + direction] = true;
-        }
-
-        if (IsInsideBoard(boardPosition.x - 1, boardPosition.y + direction) && boardState[boardPosition.x - 1, boardPosition.y + direction] != null &&
-            boardState[boardPosition.x - 1, boardPosition.y + direction].isWhite != isWhite)
-        {
-            moves[boardPosition.x - 1, boardPosition.y + direction] = true;
-        }
-
-        return moves;
     }
 
-    
+    return moves;
+}
 }
