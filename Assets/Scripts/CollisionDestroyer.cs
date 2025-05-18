@@ -25,6 +25,8 @@ public class CollisionDestroyer : MonoBehaviour
 
     public void Break(GameObject other) {
 
+        
+
         float WaitingTime = 0;
         if (ChessGameManager.instance.selectedPiece != null)
         {

@@ -31,6 +31,7 @@ public class ChessGameManager : MonoBehaviour
     public GameObject _Pawn, _Rook, _Bishop, _Knight, _Queen, _King, _PawnB, _RookB, _BishopB, _KnightB, _QueenB, _KingB; // <- Prefaby Destroyed
     
     public AudioClip[] movingSounds;
+    public AudioClip DestroySound;
     public AudioSource movingAudioSource;
 
     public float time;
@@ -50,6 +51,7 @@ public class ChessGameManager : MonoBehaviour
         {
 
             movingAudioSource.PlayOneShot(movingSounds[0]);
+            
             
         }
         if (!isWhiteTurn)
@@ -396,8 +398,25 @@ public class ChessGameManager : MonoBehaviour
         
 
         selectedPiece.GetComponent<Animator>().SetBool("MoveAnimation", true);
+
+       
         time = 0;
         TimerOn = true;
+
+        var dealyTime = 0.85f;
+        switch (selectedPiece.tag)
+        {
+
+
+            case "Pawn": dealyTime = TRPawn; break;
+            case "Rook": dealyTime = TRRook; break;
+            case "Knight": dealyTime = TRKnight; break;
+            case "Bishop": dealyTime = TRBishop; break;
+            case "King": dealyTime = TRKing; break;
+            case "Queen": dealyTime = TRQueen; break;
+        }
+        yield return new WaitForSeconds(dealyTime); //-------------------------------------------------------------------------------tu delay odglosu niszczenia od zaczęcia animacji ataku
+        movingAudioSource.PlayOneShot(DestroySound);
         //atackIsRunning = true;
 
 
