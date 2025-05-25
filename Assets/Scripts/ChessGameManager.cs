@@ -268,7 +268,7 @@ public class ChessGameManager : MonoBehaviour
         PlaySound();
         while (Vector3.Distance(selectedPiece.transform.position, new Vector3(ChessBoard.instance.ClickedPlane.x, 0, ChessBoard.instance.ClickedPlane.y)) > 0.001f)
         {
-            float t = elapsedTime / 7.0f; // Normalizacja czasu (od 0 do 1)--------------------------------------------------------------------------------------------- tu przy poruszaniu czas zmieniasz
+            float t = elapsedTime / 15.0f; // Normalizacja czasu (od 0 do 1)--------------------------------------------------------------------------------------------- tu przy poruszaniu czas zmieniasz
             t = Mathf.SmoothStep(0f, 1f, t); // Dodanie efektu ease in-out
 
             selectedPiece.transform.position = Vector3.Lerp(selectedPiece.transform.position, new Vector3(ChessBoard.instance.ClickedPlane.x, 0, ChessBoard.instance.ClickedPlane.y), t);
@@ -374,9 +374,9 @@ public class ChessGameManager : MonoBehaviour
         while (Vector3.Distance(selectedPiece.transform.position, preTargetPosition) > distanceThreshold)
         {
 
-            float t = elapsedTimeMove / 1.0f; // Normalizacja czasu (od 0 do 1) ------------------------------------------------------------------------------- tu przy atak czas zmieniasz
-            //t = Mathf.SmoothStep(0f, 1f, t); // Dodanie efektu ease in-out
-            t = -t * -Mathf.Sqrt(t*t*1.2f);
+            float t = elapsedTimeMove / 1.24f; // Normalizacja czasu (od 0 do 1) ------------------------------------------------------------------------------- tu przy atak czas zmieniasz
+            t = Mathf.SmoothStep(0f, 1f, t); // Dodanie efektu ease in-out
+            //t = -t * -Mathf.Sqrt(t*t*1.2f);
 
             selectedPiece.transform.position = Vector3.Lerp(startpos, preTargetPosition, t);
             selectedPiece.transform.rotation = Quaternion.Slerp(selectedPiece.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
@@ -491,7 +491,7 @@ public class ChessGameManager : MonoBehaviour
         PlaySound();
         while (Vector3.Distance(FirstPiece.transform.position, new Vector3(FirstPos.x, 0, FirstPos.y)) > Threshold)
         {
-            float t = elapsedTime / 8.0f; // Normalizacja czasu (od 0 do 1)------------------------------------------------------------------------------------------------------------------- tu przy roszadzie czas zmieniasz
+            float t = elapsedTime / 10.0f; // Normalizacja czasu (od 0 do 1)-----15powinno być szybciej-------------------------------------------------------------------------------------------------------------- tu przy roszadzie czas zmieniasz
             t = Mathf.SmoothStep(0f, 1f, t); // Dodanie efektu ease in-out
 
             FirstPiece.transform.position = Vector3.Lerp(FirstPiece.transform.position, new Vector3(FirstPos.x, 0, FirstPos.y), t);
