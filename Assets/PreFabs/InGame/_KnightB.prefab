@@ -959,6 +959,7 @@ MonoBehaviour:
   isWhite: 0
   Moved: 0
   King: 0
+  lastmoved: 0
   speakingAudioSource: {fileID: 0}
   _Sounds:
   - {fileID: 8300000, guid: ec5e836d775a7a842aaee92074395daf, type: 3}

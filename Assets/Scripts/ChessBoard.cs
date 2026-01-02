@@ -11,7 +11,7 @@ public class ChessBoard : MonoBehaviour
     public Vector2Int PreLastClick;
     public GameObject _Camera, promotionPanel;
     public static ChessBoard instance;
-    public bool selecting = true;
+    public bool selecting = false;
     public Vector2Int ClickedPlane;
     public ChessPiece ClickedFigure;
    
@@ -23,6 +23,7 @@ public class ChessBoard : MonoBehaviour
     }
     public void CreateBoard()
     {
+        
         for (int x = 0; x < 8; x++)
         {
             for (int z = 0; z < 8; z++) // Zmieniamy y na z (poziom planszy)
@@ -40,6 +41,7 @@ public class ChessBoard : MonoBehaviour
         {
             i.GetComponent<Cube>().PreRefresh(0);
         }
+        
     }
     public void zaznacz(Vector2Int position)
     {

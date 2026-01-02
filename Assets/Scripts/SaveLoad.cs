@@ -10,6 +10,7 @@ public class SettingsData
 {
     public float movementVolume;
     public float atackVoiceVolume;
+    public float destructionVolume;
     public float cameraHeight;
 }
 
@@ -30,8 +31,9 @@ public class SaveLoad : MonoBehaviour
 
         SettingsData settingsData = new SettingsData
         {
-            movementVolume = soundSystem.GetComponent<SoundsSetings>().sliderVolumeMovingValue,
-            atackVoiceVolume = soundSystem.GetComponent<SoundsSetings>().sliderVolumeAtackVoiceValue,
+            movementVolume = soundSystem.GetComponent<SoundsSettings>().sliderVolumeMovingValue,
+            atackVoiceVolume = soundSystem.GetComponent<SoundsSettings>().sliderVolumeAtackVoiceValue,
+            destructionVolume = soundSystem.GetComponent<SoundsSettings>().sliderVolumeDestructionValue,
             cameraHeight = cameraSettings.GetComponent<CameraSettings>().heightCamera
         };
         string json = JsonUtility.ToJson(settingsData);
@@ -55,25 +57,27 @@ public class SaveLoad : MonoBehaviour
             // Sprawdzenie, czy plik nie jest pusty
             if (string.IsNullOrEmpty(json))
             {
-                Debug.Log("Plik jest pusty, ustawienia nie mog¹ byæ za³adowane.");
-                // Ustawienie domyœlnych wartoœci, gdy plik jest pusty
-                soundSystem.GetComponent<SoundsSetings>().LoadSettings(0.5f, 0.5f);
+                Debug.Log("Plik jest pusty, ustawienia nie mogï¿½ byï¿½ zaï¿½adowane.");
+                // Ustawienie domyï¿½lnych wartoï¿½ci, gdy plik jest pusty
+                soundSystem.GetComponent<SoundsSettings>().LoadSettings(0.5f, 0.5f,0.5f);
                 cameraSettings.GetComponent<CameraSettings>().LoadSettings(0.7f);
             }
             else
             {
                 SettingsData settingsData = JsonUtility.FromJson<SettingsData>(json);
-                soundSystem.GetComponent<SoundsSetings>().LoadSettings(settingsData.movementVolume, settingsData.atackVoiceVolume);
+                soundSystem.GetComponent<SoundsSettings>().LoadSettings(settingsData.movementVolume, settingsData.atackVoiceVolume, settingsData.destructionVolume);
                 cameraSettings.GetComponent<CameraSettings>().LoadSettings(settingsData.cameraHeight);
             }
         }
         else
         {
-            Debug.Log("Nie ma zapisanych ustawieñ");
-            // Ustawienie domyœlnych wartoœci, gdy plik nie istnieje
-            soundSystem.GetComponent<SoundsSetings>().LoadSettings(0.5f, 0.5f);
+            Debug.Log("Nie ma zapisanych ustawieï¿½");
+            // Ustawienie domyï¿½lnych wartoï¿½ci, gdy plik nie istnieje
+            soundSystem.GetComponent<SoundsSettings>().LoadSettings(0.5f, 0.5f,0.5f);
             cameraSettings.GetComponent<CameraSettings>().LoadSettings(0.7f);
         }
+
+        SaveData();
 
     }
 }

@@ -1974,6 +1974,7 @@ MonoBehaviour:
   isWhite: 0
   Moved: 0
   King: 0
+  lastmoved: 0
   speakingAudioSource: {fileID: 0}
   _Sounds:
   - {fileID: 8300000, guid: 394ddc285c128f147ba39a0fb191830a, type: 3}

@@ -31,8 +31,10 @@ public class ChessGameManager : MonoBehaviour
     public GameObject _Pawn, _Rook, _Bishop, _Knight, _Queen, _King, _PawnB, _RookB, _BishopB, _KnightB, _QueenB, _KingB; // <- Prefaby Destroyed
     
     public AudioClip[] movingSounds;
+    public AudioClip spinSounds;
     public AudioClip DestroySound;
     public AudioSource movingAudioSource;
+    public AudioSource destructionAudioSource;
 
     public float time;
     public bool TimerOn;
@@ -60,9 +62,16 @@ public class ChessGameManager : MonoBehaviour
             movingAudioSource.PlayOneShot(movingSounds[1]);
 
         }
+        
 
 
     }
+
+    void PlaySoundSpin()
+    {
+        movingAudioSource.PlayOneShot(spinSounds);
+    }
+
     public void SelectPiece(ChessPiece piece, Vector2Int position)
     {
         if ((isWhiteTurn && piece.isWhite) || (!isWhiteTurn && !piece.isWhite))
@@ -268,7 +277,7 @@ public class ChessGameManager : MonoBehaviour
         PlaySound();
         while (Vector3.Distance(selectedPiece.transform.position, new Vector3(ChessBoard.instance.ClickedPlane.x, 0, ChessBoard.instance.ClickedPlane.y)) > 0.001f)
         {
-            float t = elapsedTime / 15.0f; // Normalizacja czasu (od 0 do 1)--------------------------------------------------------------------------------------------- tu przy poruszaniu czas zmieniasz
+            float t = elapsedTime / 6.5f; // Normalizacja czasu (od 0 do 1)--------------------------------------------------------------------------------------------- tu przy poruszaniu czas zmieniasz
             t = Mathf.SmoothStep(0f, 1f, t); // Dodanie efektu ease in-out
 
             selectedPiece.transform.position = Vector3.Lerp(selectedPiece.transform.position, new Vector3(ChessBoard.instance.ClickedPlane.x, 0, ChessBoard.instance.ClickedPlane.y), t);
@@ -416,7 +425,7 @@ public class ChessGameManager : MonoBehaviour
             case "Queen": dealyTime = TRQueen; break;
         }
         yield return new WaitForSeconds(dealyTime); //-------------------------------------------------------------------------------tu delay odglosu niszczenia od zaczęcia animacji ataku
-        movingAudioSource.PlayOneShot(DestroySound);
+        destructionAudioSource.PlayOneShot(DestroySound);
         //atackIsRunning = true;
 
 
@@ -464,15 +473,15 @@ public class ChessGameManager : MonoBehaviour
 
 
         var Threshold = 0.001f;
-        var rotationSpeed = 5f;
+        var rotationSpeed = 10f;
         var elapsedTime = 0f;
         if (selectedPiece == null) yield break;
-
+        PlaySoundSpin();
 
         Vector3 direction1 = new Vector3(FirstPos.x - FirstPiece.boardPosition.x, 0, FirstPos.y - FirstPiece.boardPosition.y);
         Vector3 direction2 = new Vector3(SecPos.x - SecPiece.boardPosition.x, 0, SecPos.y - SecPiece.boardPosition.y);
 
-
+        
         Quaternion targetRotation1 = Quaternion.LookRotation(direction1);
         Quaternion targetRotation2 = Quaternion.LookRotation(direction2);
 

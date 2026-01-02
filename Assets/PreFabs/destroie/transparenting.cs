@@ -7,6 +7,8 @@ public class transparenting : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+         var renderer = GetComponent<Renderer>();
+        renderer.material = new Material(renderer.material);
         StartCoroutine(FadeOut());
         
     }
@@ -39,21 +41,21 @@ public class transparenting : MonoBehaviour
         mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
         mat.renderQueue = 3000; // Kolejka Transparent
 
-        // Pobranie koloru materia³u
+        // Pobranie koloru materiaï¿½u
         Color startColor = mat.color;
-        Color targetColor = new Color(startColor.r, startColor.g, startColor.b, 0f); // Docelowy kolor (pe³na przezroczystoœæ)
-        yield return new WaitForSeconds(1f); // OpóŸnienie 1 sekundy przed startem
+        Color targetColor = new Color(startColor.r, startColor.g, startColor.b, 0f); // Docelowy kolor (peï¿½na przezroczystoï¿½ï¿½)
+        yield return new WaitForSeconds(1f); // Opï¿½nienie 1 sekundy przed startem
         // Animacja zanikania z efektem Ease In -> Ease Out
         while (elapsedTime < fadeDuration)
         {
             float t = elapsedTime / fadeDuration;
-            float alpha = Mathf.Pow(t, 1.5f); // T^2 -> Ease In (wolny start), potem szybkie zejœcie
+            float alpha = Mathf.Pow(t, 1.5f); // T^2 -> Ease In (wolny start), potem szybkie zejï¿½cie
             mat.color = new Color(startColor.r, startColor.g, startColor.b, 1f - alpha);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        // Ustawienie pe³nej przezroczystoœci na koñcu
+        // Ustawienie peï¿½nej przezroczystoï¿½ci na koï¿½cu
         mat.color = targetColor;
         gameObject.SetActive(false);
     }

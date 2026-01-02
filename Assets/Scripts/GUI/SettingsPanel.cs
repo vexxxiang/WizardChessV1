@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,43 +7,23 @@ using UnityEngine.UI;
 
 public class SettingsPanel : MonoBehaviour
 {
-    public GameObject soundsSystem;
+    public static SettingsPanel instance;
     public GameObject sliderCamera;
     public GameObject fpsCounter;
-
-    public GameObject _volumeSlider;
+    
     public GameObject _colorTour;
     public GameObject _sliderCamera;
     public GameObject _fpsCounter;
 
-    public GameObject panelSettings;
 
-    public void Menu()
+    public void Start()
     {
-        if (panelSettings.activeSelf == true) { panelSettings.SetActive(false);  }
-        else if (panelSettings.activeSelf == false) { panelSettings.SetActive(true); }
+        instance = this;
     }
 
     public void Update()
     {
-
-        if (_volumeSlider.GetComponent<Toggle>().isOn)
-        {
-            if (soundsSystem.activeSelf == false)
-            {
-                soundsSystem.SetActive(true);
-            }
-        }
-        else
-        {
-            if (soundsSystem.activeSelf == true)
-            {
-                soundsSystem.SetActive(false);
-            }
-        }
-
-
-
+        
         if (_sliderCamera.GetComponent<Toggle>().isOn)
         {
             if (sliderCamera.activeSelf == false)

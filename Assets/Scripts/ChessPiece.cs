@@ -27,7 +27,7 @@ public abstract class ChessPiece : MonoBehaviour
         var number = Random.Range(0, 4);
         if (speakingAudioSource == null)
         {
-            speakingAudioSource = SoundsSetings.instance.speakingAudioSource;
+            speakingAudioSource = Camera.main.GetComponent<AudioSource>();
         }
         if(speakingAudioSource != null)
         {
