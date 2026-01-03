@@ -9,12 +9,16 @@ public class ChessGameManager : MonoBehaviour
     public static ChessGameManager instance;
     public ChessPiece[,] boardState = new ChessPiece[8, 8];  // Tablica stanu planszy (bierek)
     public ChessPiece selectedPiece; // Wybrana bierka
-    public bool isWhiteTurn = true;  // Sprawdzanie, której stronie należy tura
+    public bool isWhiteTurn = true ;  // Sprawdzanie, której stronie należy tura
+
+   
     public bool showTour = true;  // Sprawdzanie, której stronie należy tura
 
     public Transform _bierki;
     public GameObject _Camera, _ChessBoard;
     public GameObject PromotionPanel;
+    public GameObject WinPanel;
+    public GameObject HeadColor;
     public ChessPiece Piece, promotionPiece;
     public Vector3 finalPos;
     public ChessBoard CP;
@@ -46,6 +50,29 @@ public class ChessGameManager : MonoBehaviour
         _ChessBoard.GetComponent<ChessBoard>().CreateBoard();
         this.gameObject.GetComponent<ChessSetup>().SetupPieces();
     }
+
+    /*
+    public void OnTurnChanged()
+    {
+        if (isWhiteTurn && showTour)
+        {
+            HeadColor.gameObject.SetActive(true);
+            HeadColor.GetComponent<HeadLooking>().white();
+        }
+        else if (!isWhiteTurn && showTour)
+        {
+            HeadColor.gameObject.SetActive(true);
+            HeadColor.GetComponent<HeadLooking>().black();
+        }
+        else if(!showTour){
+            if (turaB.activeSelf == true || turaW.activeSelf == true)
+            {
+                HeadColor.gameObject.SetActive(false);
+            }
+        }
+    }
+    */
+
     public void PlaySound()
     {
 
@@ -204,6 +231,7 @@ public class ChessGameManager : MonoBehaviour
             }
             if (ChessRules.instance.EvaluateGameState() == "Pat")
             { 
+                WinPanel.GetComponent<WinPanelManagment>().pat();
                 Debug.Log("pat");
             }
 
@@ -212,11 +240,13 @@ public class ChessGameManager : MonoBehaviour
             {
                 if (isWhiteTurn)
                 {
+                    WinPanel.GetComponent<WinPanelManagment>().whiteWin();
                     Debug.Log("wygrały czarne");
                     DestroyKing();
                 }
                 else
                 {
+                    WinPanel.GetComponent<WinPanelManagment>().blackWin();
                     Debug.Log("wygrały białe");
                     DestroyKing();
                 }
@@ -653,6 +683,7 @@ public class ChessGameManager : MonoBehaviour
     public void zmianaTury()
     {
         isWhiteTurn = !isWhiteTurn;
+        HeadColor.GetComponent<HeadLooking>().SwitchColor();
         string gameState = ChessRules.instance.EvaluateGameState();
 
         //if (!ChessRules.instance.HasLegalMoves(isWhiteTurn) && ChessRules.instance.IsInCheck(boardState,isWhiteTurn))
@@ -668,11 +699,13 @@ public class ChessGameManager : MonoBehaviour
             // Wyświetl komunikat o wygranej
             if (isWhiteTurn)
             {
+                WinPanel.GetComponent<WinPanelManagment>().whiteWin();
                 Debug.Log("Wygrały białe");
 
             }
             else
             {
+                WinPanel.GetComponent<WinPanelManagment>().blackWin();
                 Debug.Log("Wygrały czarne");
             }
             DestroyKing();
@@ -775,24 +808,24 @@ public class ChessGameManager : MonoBehaviour
             time += Time.deltaTime;
         }
           
-        
+        /*
         if (isWhiteTurn && showTour)
         {
-            turaB.SetActive(false);
-            turaW.SetActive(true);
+            HeadColor.gameObject.SetActive(true);
+            HeadColor.GetComponent<HeadLooking>().white();
         }
         else if (!isWhiteTurn && showTour)
         {
-            turaB.SetActive(true);
-            turaW.SetActive(false);
+            HeadColor.gameObject.SetActive(true);
+            HeadColor.GetComponent<HeadLooking>().black();
         }
         else if(!showTour){
             if (turaB.activeSelf == true || turaW.activeSelf == true)
             {
-                turaB.SetActive(false);
-                turaW.SetActive(false);
+                HeadColor.gameObject.SetActive(false);
             }
         }
+        */
 
         if (looking)
         {

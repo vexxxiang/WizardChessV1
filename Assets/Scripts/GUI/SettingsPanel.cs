@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class SettingsPanel : MonoBehaviour
 {
+    
     public static SettingsPanel instance;
     public GameObject sliderCamera;
     public GameObject fpsCounter;
@@ -62,6 +63,7 @@ public class SettingsPanel : MonoBehaviour
         {
             if (ChessGameManager.instance.showTour == false)
             {
+                ChessGameManager.instance.HeadColor.gameObject.SetActive(true);
                 ChessGameManager.instance.showTour = true;
             }
         }
@@ -69,6 +71,7 @@ public class SettingsPanel : MonoBehaviour
         {
             if (ChessGameManager.instance.showTour == true)
             {
+                ChessGameManager.instance.HeadColor.gameObject.SetActive(false);
                 ChessGameManager.instance.showTour = false;
             }
         }

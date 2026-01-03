@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public abstract class ChessPiece : MonoBehaviour
 {
@@ -19,6 +21,19 @@ public abstract class ChessPiece : MonoBehaviour
         {
             King = true;
         }
+    }
+
+    private void OnDisable()
+    {
+        if (speakingAudioSource == null)
+        {
+            speakingAudioSource = Camera.main.GetComponent<AudioSource>();
+        }
+        if(speakingAudioSource != null)
+        {
+            speakingAudioSource.Stop();
+        }
+       
     }
 
     public void PlaySound()
