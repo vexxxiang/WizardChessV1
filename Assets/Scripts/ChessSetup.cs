@@ -39,13 +39,13 @@ public class ChessSetup : MonoBehaviour
         for (int x = 0; x < 8; x++)
         {
             // Bia�e pionki na drugim rz�dzie
-            SpawnPiece(whitePawnPrefab, new Vector2Int(x, 6), true);
+            SpawnPiece(whitePawnPrefab, new Vector2Int(x, 1), true);
 
             // Czarne pionki na si�dmym rz�dzie
-            SpawnPiece(blackPawnPrefab, new Vector2Int(x, 1), false);
+            SpawnPiece(blackPawnPrefab, new Vector2Int(x, 6), false);
         }
         
-       /*
+
         // Ustawienie wie�
         SpawnPiece(whiteRookPrefab, new Vector2Int(0, 0), true);
         SpawnPiece(whiteRookPrefab, new Vector2Int(7, 0), true);
@@ -70,7 +70,7 @@ public class ChessSetup : MonoBehaviour
         
 
         
-       */
+
        // Ustawienie go�c�w
        SpawnPiece(whiteBishopPrefab, new Vector2Int(2, 0), true);
        SpawnPiece(whiteBishopPrefab, new Vector2Int(5, 0), true);

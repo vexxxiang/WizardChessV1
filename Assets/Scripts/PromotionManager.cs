@@ -7,6 +7,17 @@ public class PromotionManager : MonoBehaviour
     public string _Bierka;
     public GameObject _Camera;
     public static PromotionManager instance;
+    public GameObject[] Heads;
+
+
+    public void HeadColorUpdate()
+    {
+        foreach (GameObject head in Heads)
+        {
+            head.GetComponent<PromoPanelHeadLooking>().UpdateColor();
+        }
+    }
+
     public void Start()
     {
         instance = this;
@@ -31,7 +42,7 @@ public class PromotionManager : MonoBehaviour
         _Bierka = Bierka;
 
         var piece = ChessGameManager.instance.selectedPieceForPromotion;
-        //Debug.Log("Bierka która podlega promocji -->> " + piece + " i zamienia sie na _Bierka");
+        //Debug.Log("Bierka ktï¿½ra podlega promocji -->> " + piece + " i zamienia sie na _Bierka");
         switch (_Bierka)
         {
             case ("Rook"):

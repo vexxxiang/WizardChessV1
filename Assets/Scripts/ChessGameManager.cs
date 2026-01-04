@@ -779,6 +779,7 @@ public class ChessGameManager : MonoBehaviour
     public void ShowPromoPanel()
     {
         PromotionPanel.SetActive(true);
+        PromotionPanel.GetComponent<PromotionManager>().HeadColorUpdate();
 
     }
     public void DestroyKing()

@@ -20,8 +20,10 @@ public class SettingsPanel : MonoBehaviour
     public void Start()
     {
         instance = this;
+        
+        this.gameObject.SetActive(false);
     }
-
+    
     public void Update()
     {
         
