@@ -23,31 +23,14 @@ public abstract class ChessPiece : MonoBehaviour
         }
     }
 
-    private void OnDisable()
-    {
-        if (speakingAudioSource == null)
-        {
-            speakingAudioSource = Camera.main.GetComponent<AudioSource>();
-        }
-        if(speakingAudioSource != null)
-        {
-            speakingAudioSource.Stop();
-        }
-       
-    }
+    
 
     public void PlaySound()
     {
         
         var number = Random.Range(0, 4);
-        if (speakingAudioSource == null)
-        {
-            speakingAudioSource = Camera.main.GetComponent<AudioSource>();
-        }
-        if(speakingAudioSource != null)
-        {
-            speakingAudioSource.PlayOneShot(Sounds[number]);
-        }
+        SoundsSettings.instance.speakingAudioSource.PlayOneShot(Sounds[number]);
+        
 
 
     }

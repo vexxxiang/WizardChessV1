@@ -69,14 +69,6 @@ public class ChessSetup : MonoBehaviour
         SpawnPiece(blackQueenPrefab, new Vector2Int(3, 7), false);
         
 
-        
-
-       // Ustawienie go�c�w
-       SpawnPiece(whiteBishopPrefab, new Vector2Int(2, 0), true);
-       SpawnPiece(whiteBishopPrefab, new Vector2Int(5, 0), true);
-       SpawnPiece(blackBishopPrefab, new Vector2Int(2, 7), false);
-       SpawnPiece(blackBishopPrefab, new Vector2Int(5, 7), false);
-
        // Ustawienie kr�l�w
        SpawnPiece(whiteKingPrefab, new Vector2Int(4, 0), true);
        SpawnPiece(blackKingPrefab, new Vector2Int(4, 7), false);
